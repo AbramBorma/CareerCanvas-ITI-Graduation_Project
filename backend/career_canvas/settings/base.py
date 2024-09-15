@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_ihnt$vpp671vk8naw39$qr%rgo#!2^c=%w5dg==+6*hxhz^=&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -37,14 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users',
     'rest_framework',
     'api.apps.ApiConfig',
      'corsheaders',
     'users.apps.UsersConfig',
     'exams.apps.ExamsConfig',
     'portfolio.apps.PortfolioConfig',
-    
+    'rest_framework_simplejwt',
 ]
+
+INSTALLED_APPS += ['rest_framework_simplejwt.token_blacklist']
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,11 +92,11 @@ WSGI_APPLICATION = 'career_canvas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'career_canvas'),
-        'USER': os.getenv('DB_USER', 'career_canvas'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'iti_GP'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),  # or '127.0.0.1'
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': 'career_canvas',
+        'USER':  'career_canvas',
+        'PASSWORD': 'iti_GP',
+        'HOST': 'localhost',  # or '127.0.0.1'
+        'PORT': '5432',
     }
 }
 
@@ -150,10 +155,57 @@ STATICFILES_DIRS = [
 ]
 
 
-# settings.py
-
 
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
 ]
+
+
+# Import necessary module
+from datetime import timedelta
+
+# Add/Update REST framework authentication settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+# Configure Simple JWT settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Set token lifetime
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Set refresh token lifetime
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',  # Default is HS256 (HMAC using SHA-256)
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Use 'Bearer' or 'JWT'
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+}
+
+
+# For development
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# For production (using SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'your_email_host'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your_email@example.com'
+EMAIL_HOST_PASSWORD = 'your_email_password'
+
+DEFAULT_FROM_EMAIL = 'your_email@example.com'
+
+PASSWORD_RESET_TIMEOUT = 86400  # 1 day in seconds
+
+
+import pprint
+pprint.pprint(DATABASES)
+
+
+
+

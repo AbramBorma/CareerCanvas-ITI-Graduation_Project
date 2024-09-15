@@ -3,7 +3,7 @@ import os
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['your-production-domain.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 DATABASES = {
     'default': {
