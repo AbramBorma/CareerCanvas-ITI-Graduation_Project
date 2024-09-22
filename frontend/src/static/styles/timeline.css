@@ -1,0 +1,73 @@
+.timeline {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    max-width: 80%;
+    margin: 40px auto;
+    padding: 10px;
+    background-color: #f4f7f8;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.MuiTimelineItem-root {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0; /* Reduced padding to reduce space between bullets */
+    position: relative;
+}
+
+.MuiTimelineDot-root {
+    width: 15px; /* Reduce bullet size */
+    height: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+.MuiTimelineConnector-root {
+    background-color: #dd0c0c;
+    height: 80px; /* Height of the connector */
+    width: 5px; /* Slightly thinner line */
+}
+
+.MuiTimelineContent-root {
+    font-size: 2rem !important; /* Set font size to 2rem */
+    color: #00468B;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: bolder;
+    letter-spacing: 1.5px;
+    text-transform: capitalize;
+    width: 40%;
+    padding: 5px 10px; /* Adjust padding to fine-tune spacing */
+    transition: all 0.8s ease;
+    cursor: pointer;
+}
+
+.MuiTimelineContent-root:hover {
+    color: #ff4107;
+    transform: scale(1.05);
+}
+
+.left-content {
+    text-align: right;
+}
+
+.right-content {
+    text-align: left;
+}
+
+/* Style for the one-line header */
+.process-header {
+    font-size: 2.5rem;
+    color: #108ea1;
+    text-align: center;
+    margin-top: 12rem;
+    margin-bottom: 20px;
+    font-style: italic;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    letter-spacing: 2px;
+}

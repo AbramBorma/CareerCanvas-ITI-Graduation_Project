@@ -1,0 +1,29 @@
+/* App.css */
+
+/* Flexbox for the overall body */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center; /* Center the container */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Main container that holds PageLanding and CodeEditor */
+.main-container {
+    width: 800px; /* Fixed width for both PageLanding and CodeEditor */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Add space between PageLanding and CodeEditor */
+}
+
+/* Optional: styling for PageLanding and CodeEditor */
+.page-landing {
+    width: 100%;
+}
+
+.code-editor {
+    width: 100%;
+}
