@@ -1,0 +1,53 @@
+.exams-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align items */
+    padding: 20px;
+}
+
+.exams-title {
+    color: #002346; /* Main color */
+    font-size: 2.5em; /* Larger font size */
+    margin-bottom: 20px; /* Space below the title */
+    text-align: center; /* Center text */
+}
+
+.select-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Full width for the container */
+    max-width: 400px; /* Limit the width of the container */
+}
+
+.exam-select {
+    padding: 12px;
+    font-size: 1.1em;
+    border: 1px solid #002346; /* Border color */
+    border-radius: 5px;
+    margin-bottom: 15px; /* Space below the select box */
+    width: 100%; /* Full width for the select */
+    cursor: pointer;
+}
+
+.start-exam-button {
+    background-color: #002346; /* Main color */
+    color: white; /* White text */
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%; /* Full width for the button */
+}
+
+.start-exam-button:hover {
+    background-color: #001d32; /* Darker shade for hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.start-exam-button:disabled {
+    background-color: #ccc; /* Disabled button color */
+    cursor: not-allowed; /* Not-allowed cursor */
+}
