@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_ihnt$vpp671vk8naw39$qr%rgo#!2^c=%w5dg==+6*hxhz^=&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
@@ -95,7 +95,7 @@ DATABASES = {
         'NAME': 'career_canvas',
         'USER':  'career_canvas',
         'PASSWORD': 'iti_GP',
-        'HOST': 'localhost',  # or '127.0.0.1'
+        'HOST': '127.0.0.1',  # or '127.0.0.1'
         'PORT': '5432',
     }
 }
