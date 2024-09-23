@@ -1,0 +1,72 @@
+.container {
+    background-color: #002346;
+    height: 200px;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.logo, .internal-links, .external-links, .subscribe {
+    height: 180px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.logo p, .internal-links p, .external-links p, .subscribe p {
+    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: bold;
+}
+.internal-links ul, .external-links ul {
+    text-align: left;
+    padding: 0;
+    list-style: none;
+    margin: 0;
+}
+.external-links ul {
+    text-align: center;
+}
+.internal-links ul li, .external-links ul li {
+    margin-bottom: 5px;
+}
+.internal-links ul li a, .external-links ul li a {
+    text-decoration: none;
+    color: white;
+}
+.internal-links ul li a:hover, .external-links ul li a:hover {
+    text-decoration: none;
+    color: #108ea1;
+}
+.subscribe form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.subscribe form input {
+    width: 100%; /* Full width of the container */
+    padding: 15px 10px;
+    border-radius: 8px;
+    margin-bottom: 10px; /* Space between input and button */
+    box-sizing: border-box;
+}
+.subscribe form input::placeholder {
+    font-style: italic;
+    font-size: 0.75rem;
+}
+.subscribe form Button {
+    width: 50%; /* Full width of the container */
+    margin: 5px auto;
+    padding: 10px;
+    color: white;
+    background-color: #51a6fc;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+.subscribe form Button:hover {
+    background-color: #4097e1; /* Darker on hover */
+}
