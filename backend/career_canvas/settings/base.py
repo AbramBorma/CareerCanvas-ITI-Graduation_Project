@@ -145,6 +145,8 @@ REST_FRAMEWORK = {
 )
 }
 
+from datetime import timedelta
+
 
 SIMPLE_JWT = {
 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -180,3 +182,5 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+AUTH_USER_MODEL = 'users.User'
