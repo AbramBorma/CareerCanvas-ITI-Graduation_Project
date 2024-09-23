@@ -1,38 +1,41 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class Exam(models.Model):
-    SUBJECT_CHOICES = [
-        ('HTML', 'HTML'),
-        ('JS', 'JavaScript'),
-        ('PHP', 'PHP'),
-        ('Python', 'Python'),
-        ('NodeJS', 'NodeJS'),
-    ]
-
-    LEVEL_CHOICES = [
-        ('Easy', 'Easy'),
-        ('Intermediate', 'Intermediate'),
-        ('Advanced', 'Advanced'),
-    ]
-
-    subject = models.CharField(max_length=20, choices=SUBJECT_CHOICES)
-    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
-    time_limit = models.IntegerField(default=15)  # 15 minutes
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.subject} - {self.level}"
+        return self.name
 
 class Question(models.Model):
-    exam = models.ForeignKey(Exam, related_name="questions", on_delete=models.CASCADE)
-    text = models.TextField()
+    LEVEL_CHOICES = [
+        ('easy', 'Easy'),
+        ('intermediate', 'Intermediate'),
+        ('advanced', 'Advanced'),
+    ]
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="questions")
+    question_text = models.TextField()
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    option1 = models.CharField(max_length=200)
+    option2 = models.CharField(max_length=200)
+    option3 = models.CharField(max_length=200)
+    option4 = models.CharField(max_length=200)
+    correct_answer = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.text
+        return self.question_text[:50]
 
-class Answer(models.Model):
-    question = models.ForeignKey(Question, related_name="answers", on_delete=models.CASCADE)
-    text = models.CharField(max_length=255)
-    is_correct = models.BooleanField(default=False)
+class Exam(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    level = models.CharField(max_length=20, choices=Question.LEVEL_CHOICES)
+    date_taken = models.DateTimeField(auto_now_add=True)
+
+class ExamResult(models.Model):
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name="results")
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user_answer = models.CharField(max_length=200)
+    is_correct = models.BooleanField()
 
     def __str__(self):
-        return self.text
+        return f"Exam: {self.exam.id} - Question: {self.question.id} - Correct: {self.is_correct}"

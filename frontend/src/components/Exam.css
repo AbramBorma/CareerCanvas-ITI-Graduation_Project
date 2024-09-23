@@ -1,0 +1,69 @@
+.exams-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align items */
+    padding: 20px;
+}
+
+.exams-title {
+    color: #002346; /* Main color */
+    font-size: 2.5em; /* Larger font size */
+    margin-bottom: 20px; /* Space below the title */
+    text-align: center; /* Center text */
+}
+
+.exams-list {
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+    width: 100%; /* Full width for the list */
+    max-width: 400px; /* Limit the width of the list */
+}
+
+.exams-list li {
+    margin-bottom: 15px; /* Space between buttons */
+    position: relative; /* Positioning for dropdown */
+}
+
+/* Dropdown button */
+.dropdown-button {
+    background-color: #002346; /* Main color */
+    color: white; /* White text */
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%; /* Full width for the button */
+    text-align: left; /* Align text to the left */
+}
+
+.dropdown-button:hover {
+    background-color: #001d32; /* Darker shade for hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: block;
+    position: absolute;
+    background-color: white; /* White background for dropdown */
+    min-width: 200px; /* Minimum width for the dropdown */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    margin-top: 5px; /* Space between button and dropdown */
+}
+
+/* Links inside dropdown */
+.dropdown-content a {
+    color: #002346; /* Main color for links */
+    padding: 10px;
+    text-decoration: none;
+    display: block; /* Block display for links */
+    transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f0f4ff; /* Light hover effect */
+}
