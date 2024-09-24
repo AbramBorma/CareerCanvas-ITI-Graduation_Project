@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 djangorestframework
 psycopg2-binary
 psycopg2
@@ -8,3 +9,31 @@ djangorestframework-simplejwt
 PyJWT
 django-jazzmin
 python-dotenv
+=======
+sudo apt-get update
+
+sudo apt-get install postgresql postgresql-contrib
+
+pip3 install djangorestframework
+
+pip3 install psycopg2-binary
+
+sudo apt-get install libpq-dev
+
+pip3 install psycopg2
+
+export DJANGO_SETTINGS_MODULE=career_canvas.settings.development
+
+source ~/.bashrc
+
+python3 manage.py runserver
+
+sudo -u postgres psql
+
+CREATE DATABASE career_canvas;
+CREATE USER career_canvas WITH PASSWORD 'iti_GP';
+ALTER ROLE career_canvas SET client_encoding TO 'utf8';
+ALTER ROLE career_canvas SET default_transaction_isolation TO 'read committed';
+ALTER ROLE career_canvas SET timezone TO 'UTC';             
+GRANT ALL PRIVILEGES ON DATABASE career_canvas TO career_canvas;
+>>>>>>> f8688c4 (didn't add anything)
