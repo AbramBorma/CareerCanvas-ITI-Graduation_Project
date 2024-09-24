@@ -37,7 +37,11 @@ const Exam = () => {
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [loaded,setLoaded] = useState(false)
 
-
+useEffect(()=>{
+    if(window){
+     window.onblur = ()=> console.log('submiteddddddddddd')
+    }
+},[])
 
     useEffect(() => {
         console.log("Selected Subject:", subject); // Log the selected subject

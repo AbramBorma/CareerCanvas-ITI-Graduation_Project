@@ -15,6 +15,11 @@ const CodeEditor = () => {
   const [isLoading, setIsLoading] = useState(false);
 
 
+  useEffect(()=>{
+    if(window){
+     window.onblur = ()=> console.log('submiteddddddddddd')
+    }
+},[])
 
 
   const onMount = (editor) => {
