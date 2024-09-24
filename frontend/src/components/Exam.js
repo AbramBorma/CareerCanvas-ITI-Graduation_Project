@@ -21,12 +21,23 @@ const examQuestions = {
     // Add other subjects with their questions...
 };
 
+// document.addEventListener('visibilitychange',()=>{
+//     console.log('submited')
+//     return()=>document.removeEventListener('visibilitychange')
+// })
+// if(window){
+//     window.onblur = ()=> console.log('submiteddddddddddd')
+// }
+
+
 const Exam = () => {
     const { subject } = useParams();
     const [timeLeft, setTimeLeft] = useState(900); // 15 minutes = 900 seconds
     const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [loaded,setLoaded] = useState(false)
+
+
 
     useEffect(() => {
         console.log("Selected Subject:", subject); // Log the selected subject
