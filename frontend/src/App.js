@@ -10,28 +10,22 @@ import EditProfile from './components/EditProfile'
 
 
 import './App.css';
-import Navbar from "./components/NavBar";
-import Footer from "./components/Footer";
-import Home from './components/Home';
-import Exams from './components/Exams';
-import Exam from './components/Exam'; 
-import CodeEditor from './components/CodeEditor'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from "./components/Home"
+import PortfolioForm from './components/PortfolioForm';
 
 function App() {
-    return (
-      <>
-      {/* <Navbar /> */}
-      <div className="App">
-          <Routes>
-            <Route path="" element={<Home />} />
-            <Route path="/monaco" element={<CodeEditor />} />
-            <Route path="/exams" element={<Exams />} />
-            <Route path="/exams/:subject" element={<Exam />} />
-          </Routes>
-       </div>
-        {/* <Footer /> */}
-        </>
-    );
+  return (
+    <div className="App">
+      <Router>
+        <Routes>
+          <Route path="/" element={ <Home />}></Route>
+          <Route path='/portfolio' element={ <PortfolioForm />}></Route>
+        </Routes>
+      </Router>
+    </div>
+  );
 }
 
 export default App;
