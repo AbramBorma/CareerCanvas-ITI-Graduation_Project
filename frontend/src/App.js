@@ -1,16 +1,18 @@
 import './App.css';
-import Navbar from "./components/NavBar"
-import PageLanding from "./components/PageLanding"
-import Footer from "./components/Footer"
-import TimeLine from "./components/TimeLine"
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from "./components/Home"
+import PortfolioForm from './components/PortfolioForm';
 
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      <PageLanding />
-      <TimeLine />
-      <Footer />
+      <Router>
+        <Routes>
+          <Route path="/" element={ <Home />}></Route>
+          <Route path='/portfolio' element={ <PortfolioForm />}></Route>
+        </Routes>
+      </Router>
     </div>
   );
 }
