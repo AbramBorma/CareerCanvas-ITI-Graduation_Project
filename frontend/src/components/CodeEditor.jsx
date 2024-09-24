@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle"
@@ -7,19 +7,86 @@ import { Editor } from "@monaco-editor/react";
 import { LANGUAGE_VERSIONS, CODE_SNIPPETS } from "./constants";
 // import Output from "./Output";
 
+const template = `
+/*
+Complete the function solveMeFirst to compute the sum of two integers.
+
+Example
+a=7
+b=3
+Return 10
+
+Function Description
+Complete the solveMeFirst function in the editor below.
+solveMeFirst has the following parameters:
+int a: the first value
+int b: the second value
+Returns
+- int: the sum of  and 
+  useEffect(()=>{
+    if(window){
+     window.onblur = ()=> console.log('submiteddddddddddd')
+    }
+},[])
+Constraints
+1<=a,b<=1000
+
+Sample Input
+a = 2
+b = 3
+Sample Output
+5
+
+*/
+
+
+
+function solveMeFirst(a, b) {
+  // Hint: Type return a+b below   
+}
+
+
+function main() {
+    var a = INPUT
+    var b = INPUT
+
+    var res = solveMeFirst(a, b);
+    console.log(res);
+}
+
+main()
+
+`
+
+const input = [2,3]
+
+// let test =`{
+// "list":[1,2,3,5],
+// "num":5,
+// "textnum":"5",
+// "text":"adadd"
+// }
+// `
+
+
 const CodeEditor = () => {
   const editorRef = useRef();
   const [value, setValue] = useState("");
   const [language, setLanguage] = useState("javascript");
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadings, setIsLoadings] = useState(false);
+
 
 
   useEffect(()=>{
     if(window){
-     window.onblur = ()=> console.log('submiteddddddddddd')
+      window.onblur = ()=> console.log('submiteddddddddddd')
     }
-},[])
+  },[])
+  
+  // test=JSON.parse(test)
+  // console.log(test)
 
 
   const onMount = (editor) => {
@@ -36,12 +103,18 @@ const CodeEditor = () => {
 
   function run() {
     setIsLoading(true);
+    let fvalue=value;
+    for (let index = 0; index < input.length; index++) {
+      fvalue=fvalue.replace("INPUT",input[index])
+        }
+
+        console.log(fvalue)
     axios.post("https://emkc.org/api/v2/piston/execute", {
       language: language,
       version: LANGUAGE_VERSIONS[language],
       files: [
         {
-          content: value,
+          content: fvalue,
         },
       ],
     })
@@ -72,16 +145,21 @@ const CodeEditor = () => {
 
   return (
     <div className="bg-dark vh-100">
-      <div className="d-flex justify-content-center vh-10">
-        <button onClick={run} className="btn btn-success px-5">
+      <div className="d-flex justify-content-center vh-10 pt-2">
+        <button onClick={run} className="btn btn-success px-5 mx-2">
           {isLoading ?
-            <div class="spinner-border" role="status"><span class="sr-only"></span></div>
+            <div className="spinner-border" role="status"><span className="sr-only"></span></div>
             : <span>RUN</span>}
+        </button>
+        <button onClick={run} className="btn btn-outline-success px-5 mx-2">
+          {isLoadings ?
+            <div className="spinner-border" role="status"><span className="sr-only"></span></div>
+            : <span>Submit</span>}
         </button>
       </div>
       <div className="d-flex justify-content-between pt-3">
         {/* <LanguageSelector language={language} onSelect={onSelect} /> */}
-        <div className="container w-50 vh-75" >
+        <div className=" w-50 vh-75" >
           <Editor
             options={{
               minimap: {
@@ -91,15 +169,15 @@ const CodeEditor = () => {
             height="75vh"
             theme="vs-dark"
             language="javascript"
-            defaultValue={CODE_SNIPPETS[language]}
+            defaultValue={template}
             onMount={onMount}
             value={value}
             onChange={(value) => setValue(value)}
           />
         </div>
-        <div className="container w-50 vh-75 border text-light bg-black">
+        <div className=" w-50 vh-75 p-2 border text-light bg-black">
           {output
-            ? output.map((line, i) => <p key={i}>{line}</p>)
+            ? output.map((line, i) => <p className="text-light mb-1" key={i}>{line}</p>)
             : 'Click "Run" to see the output here'}
         </div>
 
@@ -112,3 +190,4 @@ const CodeEditor = () => {
   );
 };
 export default CodeEditor;
+
