@@ -7,3 +7,4 @@ django-cors-headers
 djangorestframework-simplejwt
 PyJWT
 django-jazzmin
+python-dotenv
