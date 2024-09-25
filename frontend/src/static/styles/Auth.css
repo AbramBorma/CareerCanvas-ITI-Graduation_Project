@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #f8f8f8;
+}
+
+.page-content {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-v7-content {
+    width: 910px;
+    color: #002346;
+    margin: 175px 0;
+    font-family: 'Open Sans', sans-serif;
+    position: relative;
+    display: flex;
+    background: #fff;
+}
+
+.form-v7-content .form-left {
+    position: relative;
+    color: #fff;
+    font-weight: 400;
+    width: 45%;
+    height: auto;
+    background-image: url('../imgs/form-v7.jpg');
+    background-size: cover;
+    padding: 30px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.form-v7-content .form-left p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.form-v7-content .form-left .text-1 {
+    margin-bottom: 35px;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 3px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-v7-content .form-left .text-2 {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.form-v7-content .form-detail {
+    padding: 73px 80px 41px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+}
+
+.form-v7-content .form-detail h2 {
+    font-size: 25px;
+    font-weight: 700;
+    color: #002346;
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+    margin-bottom: 58px;
+}
+
+.form-v7-content .form-detail h2::after {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 3px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #002346;
+}
+
+.form-v7-content .form-detail .form-row {
+    width: 100%;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-v7-content .form-detail .form-row label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.form-v7-content .form-detail .form-row input {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    border-bottom: 2px solid #e5e5e5;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    background: transparent;
+    outline: none;
+}
+
+.form-v7-content .form-detail .form-row input:focus {
+    border-bottom: 2px solid #002346;
+}
+
+.form-v7-content .form-detail .form-row input::-webkit-input-placeholder {
+    color: #666;
+}
+
+.form-v7-content .form-detail .form-row input::-moz-placeholder {
+    color: #666;
+}
+
+.form-v7-content .form-detail .form-row input:-ms-input-placeholder {
+    color: #666;
+}
+
+.form-v7-content .form-detail .form-row input:-moz-placeholder {
+    color: #666;
+}
+
+.form-v7-content .form-detail .form-checkbox {
+    padding-top: 9px;
+    padding-bottom: 37px;
+}
+
+.form-v7-content .form-detail .form-checkbox input {
+    width: auto;
+    margin-right: 10px;
+    transform: translateY(1px);
+}
+
+.form-v7-content .form-detail .form-checkbox label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+}
+
+.form-v7-content .form-detail .form-checkbox label a {
+    color: #002346;
+    text-decoration: none;
+}
+
+.form-v7-content .form-detail .form-checkbox label a:hover {
+    text-decoration: underline;
+}
+
+.form-v7-content .form-detail .form-row-last {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.form-v7-content .form-detail .form-row-last input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    background: #002346;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.form-v7-content .form-detail .form-row-last input:hover {
+    background: #87ceeb;
+}
+
+.form-v7-content .form-detail .register {
+    background: #002346;
+    border-radius: 4px;
+    width: 180px;
+    border: none;
+    margin: -13px 0 50px 0px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.form-v7-content .form-detail .register:hover {
+    background: #87ceeb;
+}
+
+.form-v7-content .form-detail .form-row-last p {
+    padding-top: 15px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #666;
+}
+
+.form-v7-content .form-detail .form-row-last a {
+    font-size: 16px;
+    color: #002346;
+    padding-left: 15px;
+}
+
+.form-v7-content .form-detail .form-row-last a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 991px) {
+    .form-v7-content {
+        margin: 180px 20px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .form-v7-content .form-left {
+        width: 100%;
+    }
+    .form-v7-content .form-detail {
+        padding: 30px 20px 30px;
+        width: 100%;
+    }
+}
+
+.link-button {
+    background: none;
+    color: #002346;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+.link-button:hover {
+    color: #87ceeb;
+}

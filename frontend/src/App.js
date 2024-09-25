@@ -18,10 +18,12 @@ import TimeLine from "./components/TimeLine"
 function App() {
   return (
     <div className="App">
-      <Navbar />
+       <Navbar /> 
       <PageLanding />
       <TimeLine />
-      <Footer />
+      <Footer /> 
+      {/* <Registerpage /> 
+      <Loginpage /> */}
     </div>
   );
 }
