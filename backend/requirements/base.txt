@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 djangorestframework
 psycopg2-binary
 psycopg2
@@ -9,7 +9,7 @@ djangorestframework-simplejwt
 PyJWT
 django-jazzmin
 python-dotenv
-=======
+
 sudo apt-get update
 
 sudo apt-get install postgresql postgresql-contrib
@@ -36,4 +36,4 @@ ALTER ROLE career_canvas SET client_encoding TO 'utf8';
 ALTER ROLE career_canvas SET default_transaction_isolation TO 'read committed';
 ALTER ROLE career_canvas SET timezone TO 'UTC';             
 GRANT ALL PRIVILEGES ON DATABASE career_canvas TO career_canvas;
->>>>>>> f8688c4 (didn't add anything)
+
