@@ -1,5 +1,14 @@
-import { Routes, Route } from 'react-router-dom';
-// import "bootstrap/dist/css/bootstrap.min.css";
+import React from 'react'
+
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
+import PrivateRoute from "./utils/PrivateRoute"
+import { AuthProvider } from './context/AuthContext'
+
+import Registerpage from './components/Registerpage'
+import Loginpage from './components/Loginpage'
+import EditProfile from './components/EditProfile'
+
+
 import './App.css';
 import Navbar from "./components/NavBar";
 import Footer from "./components/Footer";
