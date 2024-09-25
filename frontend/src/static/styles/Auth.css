@@ -247,3 +247,11 @@ body {
 .link-button:hover {
     color: #87ceeb;
 }
+
+.image-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-top: 15px;
+    border-radius: 50%;
+}

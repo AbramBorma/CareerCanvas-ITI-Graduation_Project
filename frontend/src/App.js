@@ -23,7 +23,8 @@ function App() {
       <TimeLine />
       <Footer /> 
       {/* <Registerpage /> 
-      <Loginpage /> */}
+      <Loginpage />
+      <EditProfile /> */}
     </div>
   );
 }
