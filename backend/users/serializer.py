@@ -18,6 +18,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 =======
         
 >>>>>>> 09cd084 (Accepted incoming changes)
+
         token['full_name'] = user.profile.full_name
         token['username'] = user.username
         token['email'] = user.email
@@ -32,6 +33,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         
 =======
 >>>>>>> 09cd084 (Accepted incoming changes)
+
+        token['linkedin'] = user.profile.linkedin
+        token['github'] = user.profile.github
+        token['leetcode'] = user.profile.leetcode
+        token['hackerrank'] = user.profile.hackerrank
+        
         return token
 
 class RegisterSerializer(serializers.ModelSerializer):
