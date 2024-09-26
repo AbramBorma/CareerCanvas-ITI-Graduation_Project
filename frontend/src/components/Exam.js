@@ -116,7 +116,8 @@ useEffect(()=>{
         };
 
         try {
-            const response = await fetch('/api/exams/submit/', {
+            console.log(userAnswers)
+            const response = await fetch('http://127.0.0.1:8000/exams/api/exams/submit/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

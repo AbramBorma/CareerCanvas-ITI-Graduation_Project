@@ -58,7 +58,7 @@ main()
 
 `
 
-const input = [2,3]
+const input = [2, 3]
 
 // let test =`{
 // "list":[1,2,3,5],
@@ -76,15 +76,28 @@ const CodeEditor = () => {
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadings, setIsLoadings] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(900); // 15 minutes = 900 seconds
 
 
 
-  useEffect(()=>{
-    if(window){
-      window.onblur = ()=> console.log('submiteddddddddddd')
+  useEffect(() => {
+    if (window) {
+      window.onblur = () => console.log('submiteddddddddddd')
     }
-  },[])
-  
+    // const timer = setInterval(() => {
+    //   setTimeLeft((prevTime) => {
+    //     if (prevTime <= 0) {
+    //       clearInterval(timer);
+    //       // handleSubmit(); // Automatically submit when time is up
+    //       return 0;
+    //     }
+    //     return prevTime - 1;
+    //   });
+    // }, 1000);
+
+    // return () => clearInterval(timer);
+  }, [])
+
   // test=JSON.parse(test)
   // console.log(test)
 
@@ -103,12 +116,12 @@ const CodeEditor = () => {
 
   function run() {
     setIsLoading(true);
-    let fvalue=value;
+    let fvalue = value;
     for (let index = 0; index < input.length; index++) {
-      fvalue=fvalue.replace("INPUT",input[index])
-        }
+      fvalue = fvalue.replace("INPUT", input[index])
+    }
 
-        console.log(fvalue)
+    console.log(fvalue)
     axios.post("https://emkc.org/api/v2/piston/execute", {
       language: language,
       version: LANGUAGE_VERSIONS[language],
@@ -146,6 +159,7 @@ const CodeEditor = () => {
   return (
     <div className="bg-dark vh-100">
       <div className="d-flex justify-content-center vh-10 pt-2">
+        {/* <h5 className="text-danger te">Time Left: {Math.floor(timeLeft / 60)}:{('0' + (timeLeft % 60)).slice(-2)}</h5> */}
         <button onClick={run} className="btn btn-success px-5 mx-2">
           {isLoading ?
             <div className="spinner-border" role="status"><span className="sr-only"></span></div>
