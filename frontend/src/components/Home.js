@@ -1,20 +1,17 @@
-import '../App.css';
-import React from 'react';
+import Navbar from "./NavBar"
 import PageLanding from "./PageLanding"
+import Footer from "./Footer"
 import TimeLine from "./TimeLine"
-// import Navbar from "./NavBar";
-// import Footer from "./Footer";
 
+function App() {
+  return (
+    <div className="App">
+      <Navbar />
+      <PageLanding />
+      <TimeLine />
+      <Footer />
+    </div>
+  );
+}
 
-const Home = () => {
-    return (
-        <div className="App">
-          <PageLanding />
-          <TimeLine />
-        </div>
-      );
-};
-
-export default Home;
-
-
+export default App;

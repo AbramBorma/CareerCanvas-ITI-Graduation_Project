@@ -11,7 +11,7 @@ import CodeEditor from './components/CodeEditor'
 function App() {
     return (
       <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="App">
           <Routes>
             <Route path="" element={<Home />} />
@@ -20,7 +20,7 @@ function App() {
             <Route path="/exams/:subject" element={<Exam />} />
           </Routes>
        </div>
-        <Footer />
+        {/* <Footer /> */}
         </>
     );
 }

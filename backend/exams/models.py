@@ -12,6 +12,7 @@ class Question(models.Model):
         ('easy', 'Easy'),
         ('intermediate', 'Intermediate'),
         ('advanced', 'Advanced'),
+        ('coding', 'Coding'),
     ]
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="questions")
     question_text = models.TextField()
