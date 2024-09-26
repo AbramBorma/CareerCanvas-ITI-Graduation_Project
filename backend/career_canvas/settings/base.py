@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    # 'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     'api.apps.ApiConfig',
      'corsheaders',
     'users.apps.UsersConfig',
@@ -59,7 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'career_canvas.urls'
@@ -89,16 +92,12 @@ WSGI_APPLICATION = 'career_canvas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'career_canvas',
-        'USER':  'career_canvas',
-        'PASSWORD': 'iti_GP',
-        'HOST': '127.0.0.1',  # or '127.0.0.1'
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -147,65 +146,48 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'users.CustomUser'
+REST_FRAMEWORK = {
+'DEFAULT_AUTHENTICATION_CLASSES': (
+'rest_framework_simplejwt.authentication.JWTAuthentication',
+)
+}
 
-STATICFILES_DIRS = [
-
-    "/home/doss/Desktop/ITI Graduation Project/CareerCanvas-ITI-Graduation_Project/backend/career_canvas/static"
-]
-
-
-
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React development server
-]
-
-
-# Import necessary module
 from datetime import timedelta
 
-# Add/Update REST framework authentication settings
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
 
-# Configure Simple JWT settings
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Set token lifetime
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Set refresh token lifetime
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',  # Default is HS256 (HMAC using SHA-256)
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('Bearer',),  # Use 'Bearer' or 'JWT'
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
+'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+'REFRESH_TOKEN_LIFETIME': timedelta(days=50),
+'ROTATE_REFRESH_TOKENS': True,
+'BLACKLIST_AFTER_ROTATION': True,
+'UPDATE_LAST_LOGIN': False,
+
+'ALGORITHM': 'HS256',
+
+'VERIFYING_KEY': None,
+'AUDIENCE': None,
+'ISSUER': None,
+'JWK_URL': None,
+'LEEWAY': 0,
+
+'AUTH_HEADER_TYPES': ('Bearer',),
+'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+'USER_ID_FIELD': 'id',
+'USER_ID_CLAIM': 'user_id',
+'USER_AUTHENTICATION_RULE':
+'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+'TOKEN_TYPE_CLAIM': 'token_type',
+'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+'JTI_CLAIM': 'jti',
+
+'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
+CORS_ALLOW_ALL_ORIGINS = True
 
-# For development
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# For production (using SMTP)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'your_email_host'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your_email@example.com'
-EMAIL_HOST_PASSWORD = 'your_email_password'
-
-DEFAULT_FROM_EMAIL = 'your_email@example.com'
-
-PASSWORD_RESET_TIMEOUT = 86400  # 1 day in seconds
-
-
-import pprint
-pprint.pprint(DATABASES)
-
-
-
-
+AUTH_USER_MODEL = 'users.User'

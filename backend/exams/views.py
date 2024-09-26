@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Subject, Question, Exam, ExamResult
-from django.contrib.auth.models import User
 
 class FetchQuestions(APIView):
     def get(self, request, subject_name, level):
@@ -40,5 +39,5 @@ class SubmitExam(APIView):
             ExamResult.objects.create(exam=exam, question=question, user_answer=user_answer, is_correct=is_correct)
             total_questions += 1
 
-        score = (correct_answers / total_questions) * 100
+        score = (correct_answers / total_questions) * 100 if total_questions > 0 else 0
         return Response({"score": score}, status=status.HTTP_200_OK)

@@ -1,13 +1,17 @@
+import Navbar from "./NavBar"
+import PageLanding from "./PageLanding"
+import Footer from "./Footer"
+import TimeLine from "./TimeLine"
 
-import React from 'react';
+function App() {
+  return (
+    <div className="App">
+      <Navbar />
+      <PageLanding />
+      <TimeLine />
+      <Footer />
+    </div>
+  );
+}
 
-const Home = () => {
-    return (
-        <div>
-            <h1>Welcome to the Exam App</h1>
-            <p>This is the home page.</p>
-        </div>
-    );
-};
-
-export default Home;
+export default App;

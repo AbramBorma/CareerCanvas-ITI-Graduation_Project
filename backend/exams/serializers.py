@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import Exam, Question, Answer
+from .models import Exam, Question, ExamResult
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Answer
+        model = ExamResult
         fields = '__all__'
 
 class QuestionSerializer(serializers.ModelSerializer):

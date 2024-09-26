@@ -1,7 +1,18 @@
 from .base import *
+from dotenv import load_dotenv
 import os
 
-DEBUG = False
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+dotenv_path = os.path.join(BASE_DIR, '.env.dev')
+
+print(f"Loading dotenv from: {dotenv_path}") 
+
+load_dotenv(dotenv_path)
+
+print(f"DB_NAME: {os.getenv('DB_NAME')}")
+print(f"DB_USER: {os.getenv('DB_USER')}")
+
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -18,3 +29,4 @@ DATABASES = {
 
 # Development-specific email backend, caching, etc.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+

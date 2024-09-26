@@ -1,65 +1,97 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import './ExamStyles.css';
+import '../static/styles/ExamStyles.css'
+
+// Sample questions structure
+const examQuestions = {
+    html: {
+        easy: [
+            { id: 1, question_text: "What does HTML stand for?", options: ["Hyper Text Markup Language", "Hyperlinks and Text Markup Language"] },
+            // Add more easy questions...
+        ],
+        medium: [
+            { id: 2, question_text: "Which HTML element defines the title of a document?", options: ["<title>", "<head>", "<meta>"] },
+            // Add more medium questions...
+        ],
+        hard: [
+            { id: 3, question_text: "What is the purpose of the <head> tag?", options: ["Contains meta information", "Defines the body of the document"] },
+            // Add more hard questions...
+        ],
+    },
+    // Add other subjects with their questions...
+};
+
+// document.addEventListener('visibilitychange',()=>{
+//     console.log('submited')
+//     return()=>document.removeEventListener('visibilitychange')
+// })
+// if(window){
+//     window.onblur = ()=> console.log('submiteddddddddddd')
+// }
+
 
 const Exam = () => {
-    const { subject, level } = useParams();
+    const { subject } = useParams();
     const [timeLeft, setTimeLeft] = useState(900); // 15 minutes = 900 seconds
     const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
+    const [loaded,setLoaded] = useState(false)
+
+useEffect(()=>{
+    if(window){
+     window.onblur = ()=> console.log('submiteddddddddddd')
+    }
+},[])
 
     useEffect(() => {
-      const examQuestions = {
-          html: {
-              easy: [
-                  { id: 1, text: 'What does HTML stand for?', answers: [{ id: 1, text: 'Hypertext Markup Language' }, { id: 2, text: 'Hightext Machine Language' }] },
-                  { id: 2, text: 'Which HTML element is used to define the title of a document?', answers: [{ id: 3, text: '<title>' }, { id: 4, text: '<head>' }] },
-                  { id: 3, text: 'What tag is used to create a hyperlink?', answers: [{ id: 5, text: '<a>' }, { id: 6, text: '<link>' }] },
-                  { id: 4, text: 'Which attribute is used to specify an inline style?', answers: [{ id: 7, text: 'style' }, { id: 8, text: 'class' }] },
-                  { id: 5, text: 'What does the <br> tag do?', answers: [{ id: 9, text: 'Inserts a line break' }, { id: 10, text: 'Inserts a paragraph' }] },
-                  { id: 6, text: 'What is the correct HTML for inserting an image?', answers: [{ id: 11, text: '<img src="url">' }, { id: 12, text: '<image src="url">' }] },
-                  { id: 7, text: 'Which HTML element is used to define the body of the document?', answers: [{ id: 13, text: '<body>' }, { id: 14, text: '<main>' }] },
-                  { id: 8, text: 'What does the <title> tag do?', answers: [{ id: 15, text: 'Sets the title of the document' }, { id: 16, text: 'Defines a section' }] },
-                  { id: 9, text: 'Which element defines the footer of a document?', answers: [{ id: 17, text: '<footer>' }, { id: 18, text: '<bottom>' }] },
-                  { id: 10, text: 'Which HTML element is used for comments?', answers: [{ id: 19, text: '<!-- comment -->' }, { id: 20, text: '<comment>' }] },
-              ],
-              intermediate: [
-                  { id: 1, text: 'Which of the following tags are used to create a list in HTML?', answers: [{ id: 1, text: '<ul>' }, { id: 2, text: '<li>' }, { id: 3, text: '<ol>' }] },
-                  { id: 2, text: 'What is the purpose of the <div> tag?', answers: [{ id: 4, text: 'To create a division or section in an HTML document' }, { id: 5, text: 'To add a paragraph' }] },
-                  { id: 3, text: 'What is the difference between <b> and <strong> tags?', answers: [{ id: 6, text: '<b> is for styling, <strong> is for importance' }, { id: 7, text: '<b> makes text bold, <strong> emphasizes it semantically' }] },
-                  { id: 4, text: 'Which HTML attribute is used to specify the character set for the document?', answers: [{ id: 8, text: 'charset' }, { id: 9, text: 'meta' }] },
-                  { id: 5, text: 'What does the <section> tag represent?', answers: [{ id: 10, text: 'A thematic grouping of content' }, { id: 11, text: 'A navigation link' }] },
-                  { id: 6, text: 'How can you open a link in a new tab?', answers: [{ id: 12, text: 'Use target="_blank"' }, { id: 13, text: 'Use target="_new"' }] },
-                  { id: 7, text: 'What is the purpose of the <header> tag?', answers: [{ id: 14, text: 'To define the header of a document or section' }, { id: 15, text: 'To create a navigation menu' }] },
-                  { id: 8, text: 'Which of the following is a semantic HTML element?', answers: [{ id: 16, text: '<article>' }, { id: 17, text: '<div>' }] },
-                  { id: 9, text: 'What does the <form> element do?', answers: [{ id: 18, text: 'Collect user input' }, { id: 19, text: 'Display images' }] },
-                  { id: 10, text: 'Which element is used for creating an input field?', answers: [{ id: 20, text: '<input>' }, { id: 21, text: '<field>' }] },
-              ],
-              advanced: [
-                  { id: 1, text: 'What is the purpose of the <!DOCTYPE html> declaration?', answers: [{ id: 1, text: 'To define the document type' }, { id: 2, text: 'To link CSS files' }] },
-                  { id: 2, text: 'Explain the difference between block-level and inline elements in HTML.', answers: [{ id: 3, text: 'Block-level elements take the full width, while inline elements only take as much width as necessary.' }] },
-                  { id: 3, text: 'What are ARIA roles in HTML?', answers: [{ id: 4, text: 'Attributes that enhance accessibility' }, { id: 5, text: 'Styles for HTML elements' }] },
-                  { id: 4, text: 'What is the significance of the <meta> tag?', answers: [{ id: 6, text: 'Provides metadata about the HTML document' }, { id: 7, text: 'Defines a CSS stylesheet' }] },
-                  { id: 5, text: 'What is the difference between <script src="..."> and <script>...</script>?', answers: [{ id: 8, text: 'One loads an external file, the other contains inline code' }, { id: 9, text: 'They are the same' }] },
-                  { id: 6, text: 'What is the purpose of the <canvas> element?', answers: [{ id: 10, text: 'To draw graphics on the fly' }, { id: 11, text: 'To create forms' }] },
-                  { id: 7, text: 'How do you make a responsive web design using HTML?', answers: [{ id: 12, text: 'Using the viewport meta tag' }, { id: 13, text: 'Using media queries' }] },
-                  { id: 8, text: 'What is an HTML5 data attribute?', answers: [{ id: 14, text: 'A way to store extra data on standard elements' }, { id: 15, text: 'A deprecated feature' }] },
-                  { id: 9, text: 'What is the role of the <title> tag in an HTML document?', answers: [{ id: 16, text: 'Sets the title that appears in the browser tab' }, { id: 17, text: 'Defines the main heading' }] },
-                  { id: 10, text: 'How does the <link> element function in HTML?', answers: [{ id: 18, text: 'Links external resources like CSS' }, { id: 19, text: 'Defines a script' }] },
-              ],
-          },
-          // Add similar structures for other subjects (js, php, python, nodejs) here
-      };
+        console.log("Selected Subject:", subject); // Log the selected subject
 
+        const getRandomQuestions = () => {
+            const subjectKey = subject.toLowerCase();
+            const subjectQuestions = examQuestions[subjectKey];
 
-        // Set questions based on subject and level
-        setQuestions(examQuestions[subject][level]);
+            if (!subjectQuestions) {
+                console.error("No questions available for the selected subject");
+                return [];
+            }
 
-        // Timer setup
+            const { easy, medium, hard } = subjectQuestions;
+
+            const allQuestions = [];
+            // Randomly select questions
+            for (let i = 0; i < 10 && easy.length > 0; i++) {
+                const randomIndex = Math.floor(Math.random() * easy.length);
+                allQuestions.push(easy[randomIndex]);
+                easy.splice(randomIndex, 1);
+            }
+
+            for (let i = 0; i < 10 && medium.length > 0; i++) {
+                const randomIndex = Math.floor(Math.random() * medium.length);
+                allQuestions.push(medium[randomIndex]);
+                medium.splice(randomIndex, 1);
+            }
+
+            for (let i = 0; i < 5 && hard.length > 0; i++) {
+                const randomIndex = Math.floor(Math.random() * hard.length);
+                allQuestions.push(hard[randomIndex]);
+                hard.splice(randomIndex, 1);
+            }
+
+            
+            console.log("Selected Questions:", allQuestions); // Log selected questions
+            return allQuestions;
+        };
+
+                
+
+        const fetchedQuestions = getRandomQuestions();
+        setQuestions(fetchedQuestions);
+
         const timer = setInterval(() => {
             setTimeLeft((prevTime) => {
                 if (prevTime <= 0) {
                     clearInterval(timer);
+                    handleSubmit(); // Automatically submit when time is up
                     return 0;
                 }
                 return prevTime - 1;
@@ -67,7 +99,8 @@ const Exam = () => {
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [subject, level]);
+
+    }, []);
 
     const handleAnswerChange = (questionId, answerId) => {
         setSelectedAnswers((prev) => ({
@@ -76,28 +109,46 @@ const Exam = () => {
         }));
     };
 
-    const handleSubmit = () => {
-        alert("Exam submitted! Your answers: " + JSON.stringify(selectedAnswers));
-        // Here you can also handle the logic to calculate scores, etc.
+    const handleSubmit = async () => {
+        const userAnswers = {
+            subject_id: subject,
+            answers: selectedAnswers,
+        };
+
+        try {
+            console.log(userAnswers)
+            const response = await fetch('http://127.0.0.1:8000/exams/api/exams/submit/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userAnswers),
+            });
+
+            const result = await response.json();
+            alert(`Exam submitted! Your score: ${result.score}`);
+        } catch (error) {
+            console.error('Error submitting exam:', error);
+        }
     };
 
     return (
         <div className="exam-container">
-            <h2>{subject.charAt(0).toUpperCase() + subject.slice(1)} - {level.charAt(0).toUpperCase() + level.slice(1)} Level</h2>
+            <h2>{subject.charAt(0).toUpperCase() + subject.slice(1)} Exam</h2>
             <h4>Time Left: {Math.floor(timeLeft / 60)}:{('0' + (timeLeft % 60)).slice(-2)}</h4>
             <ul>
                 {questions.length > 0 ? questions.map((q) => (
                     <li key={q.id}>
-                        <p>{q.text}</p>
+                        <p>{q.question_text}</p>
                         <ul>
-                            {q.answers.map((a) => (
-                                <li key={a.id}>
+                            {q.options.map((a, index) => (
+                                <li key={index}>
                                     <input
                                         type="radio"
                                         name={`question-${q.id}`}
-                                        onChange={() => handleAnswerChange(q.id, a.id)}
+                                        onChange={() => handleAnswerChange(q.id, a)}
                                     />
-                                    {a.text}
+                                    {a}
                                 </li>
                             ))}
                         </ul>
@@ -105,7 +156,7 @@ const Exam = () => {
                 )) : <p>No questions available for this exam.</p>}
             </ul>
             {timeLeft === 0 && <p>Time's up!</p>}
-            <button className="submit-button" onClick={handleSubmit}>Submit</button>
+            <button className="submit-button" onClick={handleSubmit} disabled={timeLeft === 0}>Submit</button>
         </div>
     );
 };
