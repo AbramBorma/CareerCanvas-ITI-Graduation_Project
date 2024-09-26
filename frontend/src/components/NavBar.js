@@ -87,7 +87,13 @@ function ResponsiveAppBar() {
                 key={page}
                 onClick={handleCloseNavMenu}
                 component={Link}
-                to={page === 'Portfolio' ? "/portfolio/form" : "/"}
+                to={
+                  page === 'Portfolio' 
+                    ? '/portfolio/form' 
+                    : page === 'Examine' 
+                    ? '/exams' 
+                    : '/'
+                }
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}

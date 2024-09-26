@@ -13,27 +13,19 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 09cd084 (Accepted incoming changes)
 
         token['full_name'] = user.profile.full_name
         token['username'] = user.username
         token['email'] = user.email
         token['bio'] = user.profile.bio
         token['image'] = str(user.profile.image)
-<<<<<<< HEAD
 
         token['linkedin'] = user.profile.linkedin
         token['github'] = user.profile.github
         token['leetcode'] = user.profile.leetcode
         token['hackerrank'] = user.profile.hackerrank
         
-=======
->>>>>>> 09cd084 (Accepted incoming changes)
-
         token['linkedin'] = user.profile.linkedin
         token['github'] = user.profile.github
         token['leetcode'] = user.profile.leetcode

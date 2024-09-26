@@ -29,14 +29,14 @@
 .external-links ul {
     text-align: center;
 }
-.internal-links ul li, .external-links ul li {
+.internal-links ul .il-linl, .external-links ul .il-linl {
     margin-bottom: 5px;
 }
-.internal-links ul li a, .external-links ul li a {
+.internal-links ul .il-linl a, .external-links ul .il-linl a {
     text-decoration: none;
     color: white;
 }
-.internal-links ul li a:hover, .external-links ul li a:hover {
+.internal-links ul .il-linl a:hover, .external-links ul .il-linl a:hover {
     text-decoration: none;
     color: #108ea1;
 }
@@ -56,7 +56,7 @@
     font-style: italic;
     font-size: 0.75rem;
 }
-.subscribe form Button {
+.subscribe form .cta-button-borma {
     width: 50%; /* Full width of the container */
     margin: 5px auto;
     padding: 10px;
@@ -67,6 +67,6 @@
     cursor: pointer;
     box-sizing: border-box;
 }
-.subscribe form Button:hover {
+.subscribe form .cta-button-borma:hover {
     background-color: #4097e1; /* Darker on hover */
 }
