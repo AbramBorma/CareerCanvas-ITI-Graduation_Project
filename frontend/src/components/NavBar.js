@@ -87,7 +87,7 @@ function ResponsiveAppBar() {
                 key={page}
                 onClick={handleCloseNavMenu}
                 component={Link}
-                to={page === 'Portfolio' ? "/portfolio" : "/"}
+                to={page === 'Portfolio' ? "/portfolio/form" : "/"}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
@@ -97,8 +97,18 @@ function ResponsiveAppBar() {
 
           {/* Add Register and Login Buttons */}
           <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px' }}>
-            <Button sx={{ color: 'white' }}>Register</Button>
-            <Button sx={{ color: 'white' }}>Login</Button>
+            <Button 
+            sx={{ color: 'white' }}
+            LinkComponent={Link}
+            to="/register"
+            >
+              Register</Button>
+            <Button 
+            sx={{ color: 'white' }}
+            component={Link}
+            to="/login"
+            >
+              Login</Button>
           </Box>
 
           {/* Avatar and Settings */}

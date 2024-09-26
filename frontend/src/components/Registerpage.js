@@ -1,9 +1,13 @@
 import React from 'react'
 import '../static/styles/Auth.css';
+import Navbar from './NavBar';
+import Footer from './Footer';
 
 
 function Registerpage() {
   return (
+  <>
+    <Navbar />
     <div className="page-content">
       <div className="form-v7-content">
         <div className="form-left">
@@ -48,6 +52,9 @@ function Registerpage() {
         </form>
       </div>
     </div>
+    <Footer />
+  </>
+
   );
 }
 
