@@ -196,21 +196,23 @@ def user_view(request):
     data = f"Hello User {request.user.username}, you have access to this view."
     return Response({'response': data}, status=status.HTTP_200_OK)
 
-
 @api_view(['POST'])
-@permission_classes([IsAdmin])
+@permission_classes([IsAdmin])  # السماح للمشرف فقط بتنفيذ هذه العملية
 def approve_user(request, user_id):
     try:
+        # الحصول على المستخدم بناءً على ID والموافقة عليه إذا كان ضمن ITI
         user = User.objects.get(id=user_id, organization=Organization.ITI)
         user.is_active = True
         user.save()
 
+        # إرسال البريد الإلكتروني للمستخدم لإبلاغه بالتفعيل
         send_mail(
             'Account Approved',
-            f'Congratulations {user.username}, your ITI account has been approved.',
+            f'Congratulations {user.username}, your ITI account has been approved and your role is {user.role}.',
             settings.DEFAULT_FROM_EMAIL,
             [user.email],
         )
         return Response({'message': 'User account approved and email sent.'}, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({'error': 'User not found or not in ITI organization.'}, status=status.HTTP_404_NOT_FOUND)
+    
