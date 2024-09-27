@@ -8,3 +8,4 @@ djangorestframework-simplejwt
 PyJWT
 django-jazzmin
 python-dotenv
+django-rest-passwordreset

@@ -2,10 +2,15 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 
+class Role(models.TextChoices):
+    ADMIN = "admin", "Admin"
+    USER = "user", "User"
+    ITI = "iti", "ITI"
 
 class User(AbstractUser):
     username = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
+    role = models.CharField(max_length=10,choices=Role.choices, default=Role.USER, )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

@@ -53,3 +53,25 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("No user is associated with this email address")
+        return value
+    
+
+
+class SetNewPasswordSerializer(serializers.Serializer):
+    new_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        password = data.get('new_password')
+        return data
+
+    def save(self, user):
+        password = self.validated_data['new_password']
+        user.set_password(password)
+        user.save()
