@@ -1,8 +1,10 @@
-// index.js
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom/client";
 import './index.css';
 import App from './App';
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter} from 'react-router-dom';
+
 
 // Suppress ResizeObserver errors
 if (typeof window !== "undefined") {
@@ -13,9 +15,11 @@ if (typeof window !== "undefined") {
   window.addEventListener("unhandledrejection", resizeObserverErr);
 }
 
-ReactDOM.render(
-  <React.StrictMode>
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+   <BrowserRouter>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+   </BrowserRouter>
 );
+
+reportWebVitals();

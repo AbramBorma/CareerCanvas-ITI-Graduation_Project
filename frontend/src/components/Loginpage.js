@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom'; 
 import AuthContext from '../context/AuthContext';
 import '../static/styles/Auth.css';
+import Navbar from './NavBar';
+import Footer from './Footer';
 
 function LoginPage() {
   const { loginUser } = useContext(AuthContext); 
@@ -19,7 +21,9 @@ function LoginPage() {
   };
 
   return (
-    <div className="page-content">
+    <>
+      <Navbar />
+      <div className="page-content">
       <div className="form-v7-content">
         <div className="form-left">
           <p className="text-1">LogIn</p>
@@ -70,6 +74,8 @@ function LoginPage() {
         </form>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
 

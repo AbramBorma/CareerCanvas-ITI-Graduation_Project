@@ -1,3 +1,4 @@
+
 djangorestframework
 psycopg2-binary
 psycopg2
@@ -8,4 +9,3 @@ djangorestframework-simplejwt
 PyJWT
 django-jazzmin
 python-dotenv
-django-rest-passwordreset
