@@ -1,30 +1,59 @@
-import React from 'react'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
-import PrivateRoute from "./utils/PrivateRoute"
-import { AuthProvider } from './context/AuthContext'
+import PrivateRoute from "./utils/PrivateRoute";
+import { AuthProvider } from './context/AuthContext';
 
-import Registerpage from './components/Registerpage'
-import Loginpage from './components/Loginpage'
-import EditProfile from './components/EditProfile'
-
+import RegisterPage from './components/Registerpage';
+import LoginPage from './components/Loginpage';
+import EditProfile from './components/EditProfile';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 
 import './App.css';
-import Navbar from "./components/NavBar"
-import PageLanding from "./components/PageLanding"
-import Footer from "./components/Footer"
-import TimeLine from "./components/TimeLine"
+import Navbar from "./components/NavBar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <div className="App">
-       <Navbar /> 
-      <PageLanding />
-      <TimeLine />
-      <Footer /> 
-      {/* <Registerpage /> 
-      <Loginpage />
-      <EditProfile /> */}
+      <Router>
+        <AuthProvider>
+
+
+          <Routes>
+            {/* Redirect the root path to the login page */}
+            <Route path="/" element={<Navigate to="/login" />} />
+            
+            {/* Define the login page route */}
+            <Route path="/login" element={<LoginPage />} />
+
+            {/* Define the registration page route */}
+            <Route path="/register" element={<RegisterPage />} />
+
+            {/* Define the forgot password route */}
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+
+            {/* Define the reset password route */}
+            <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
+
+            {/* Example of a private route for editing profile */}
+            {/* 
+            <Route 
+              path="/edit-profile" 
+              element={
+                <PrivateRoute>
+                  <EditProfile />
+                </PrivateRoute>
+              } 
+            /> 
+            */}
+          </Routes>
+
+          {/* Include Footer */}
+        </AuthProvider>
+      </Router>
     </div>
   );
 }

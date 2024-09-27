@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react';
 import '../static/styles/Auth.css';
 
+function RegisterPage() {
+  const [passwordShown, setPasswordShown] = useState(false);
+  const [confirmPasswordShown, setConfirmPasswordShown] = useState(false);
 
-function Registerpage() {
+  const togglePasswordVisibility = () => {
+    setPasswordShown(!passwordShown);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setConfirmPasswordShown(!confirmPasswordShown);
+  };
+
   return (
     <div className="page-content">
       <div className="form-v7-content">
@@ -25,24 +35,38 @@ function Registerpage() {
               pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
             />
           </div>
-          <div className="form-row">
+          <div className="form-row password-container">
             <label htmlFor="password">PASSWORD</label>
-            <input type="password" name="password" id="password" className="input-text" required />
+            <input
+              type={passwordShown ? 'text' : 'password'}
+              name="password"
+              id="password"
+              className="input-text"
+              required
+            />
+            <i
+              className={`fa ${passwordShown ? 'fa-eye-slash' : 'fa-eye'} password-icon`}
+              onClick={togglePasswordVisibility}
+            ></i>
           </div>
-          <div className="form-row">
+          <div className="form-row password-container">
             <label htmlFor="confirm_password">CONFIRM PASSWORD</label>
             <input
-              type="password"
+              type={confirmPasswordShown ? 'text' : 'password'}
               name="confirm_password"
               id="confirm_password"
               className="input-text"
               required
             />
+            <i
+              className={`fa ${confirmPasswordShown ? 'fa-eye-slash' : 'fa-eye'} password-icon`}
+              onClick={toggleConfirmPasswordVisibility}
+            ></i>
           </div>
           <div className="form-row-last">
             <input type="submit" name="register" className="register" value="Register" />
             <p>
-                Or if you have an account then, <a href="/login">Sign in</a>
+              Or if you have an account then, <a href="/login">Sign in</a>
             </p>
           </div>
         </form>
@@ -51,4 +75,4 @@ function Registerpage() {
   );
 }
 
-export default Registerpage
+export default RegisterPage;
