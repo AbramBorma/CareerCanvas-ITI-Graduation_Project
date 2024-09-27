@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import logo from '../static/imgs/careercanvas-high-resolution-logo-white-transparent.png';
+import { Link } from 'react-router-dom';
 
 const pages = ['Home', 'Portfolio', 'Examine'];
 const settings = ['Profile', 'Portfolio', 'Logout'];
@@ -85,6 +86,14 @@ function ResponsiveAppBar() {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
+                component={Link}
+                to={
+                  page === 'Portfolio' 
+                    ? '/portfolio/form' 
+                    : page === 'Examine' 
+                    ? '/exams' 
+                    : '/'
+                }
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
@@ -94,8 +103,18 @@ function ResponsiveAppBar() {
 
           {/* Add Register and Login Buttons */}
           <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px' }}>
-            <Button sx={{ color: 'white' }}>Register</Button>
-            <Button sx={{ color: 'white' }}>Login</Button>
+            <Button 
+            sx={{ color: 'white' }}
+            LinkComponent={Link}
+            to="/register"
+            >
+              Register</Button>
+            <Button 
+            sx={{ color: 'white' }}
+            component={Link}
+            to="/login"
+            >
+              Login</Button>
           </Box>
 
           {/* Avatar and Settings */}

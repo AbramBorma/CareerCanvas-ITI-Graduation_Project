@@ -97,6 +97,9 @@ const CodeEditor = () => {
   const [rerender, setRerender] = useState(false)
   const [runcase, setRuncase] = useState([]);
   const [runexpect, setRunexpect] = useState([]);
+  const [runstate, setRunstate] = useState();
+  const [runerror, setRunerorr] = useState(false);
+
 
 
 
@@ -114,9 +117,6 @@ const CodeEditor = () => {
         setRuncase(JSON.parse(fioption).input)
         setIsLoading(false)
         // setTimeout(()=>console.log("["+runcase+"]"),1)
-
-
-
 
       }
       fetchedQuestion()
@@ -187,14 +187,20 @@ const CodeEditor = () => {
         setIsLoading(false);
         console.log(runexpect)
         // const outtest= output[0].replace(/\s/g, '');
-        console.log(eval(output[0]))
-        
-  if (eval(output[0]).toString() === runexpect.toString()) console.log("successsssssss")
-      }).catch(error => {
-        console.log(error);
-        setIsLoading(false);
+        console.log(output.length)
+        if(output.length >1){
+        if (eval(output[0]).toString() === runexpect.toString()) console.log("successsssssss")
+        }
+      setRunstate(true)
+        console.log("state",runstate)
+        console.log("eroor",runerror)
+        }).catch(error => {
+      console.log(error);
+      setRunerorr(true)
+      setIsLoading(false);
+      console.log("state",runstate)
+console.log("eroor",runerror)
       })
-
 
   }
 
@@ -258,10 +264,16 @@ const CodeEditor = () => {
           </div>
 
         </div>)}
-      {/* <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {/* {runerror?
+          (<div className="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>)
+      :(runstate? 
+      (<div className="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div> */}
+        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>):<></>)} */}
     </div>
   );
 };

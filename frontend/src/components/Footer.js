@@ -21,16 +21,16 @@ const Footer = () => {
                 <div className="internal-links">
                     <p>CareerCanvas Features</p>
                     <ul>
-                        <li>
+                        <li className='il-linl'>
                             <a href="register.html">Register</a>
                         </li>
-                        <li>
+                        <li className='il-linl'>
                             <a href="login.html">Login</a>
                         </li>
-                        <li>
+                        <li className='il-linl'>
                             <a href="portfolio.html">Portfolio</a>
                         </li>
-                        <li>
+                        <li className='il-linl'>
                             <a href="examination.html">Examination</a>
                         </li>
                     </ul>
@@ -47,7 +47,7 @@ const Footer = () => {
                     <p>Subscribe to our Newsletter</p>
                     <form action="">
                         <input type="email" name="email" id="email" placeholder='Enter Email Address' />
-                        <Button type='submit' className='cta-button'>Subscribe</Button>
+                        <Button type='submit' className='cta-button-borma'>Subscribe</Button>
                     </form>
                 </div>
             </div>
