@@ -86,6 +86,8 @@ class PasswordResetView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+######################################################################################################################################
+
 
 class PasswordResetConfirmView(APIView):
     def post(self, request, uidb64, token, *args, **kwargs):
@@ -102,8 +104,12 @@ class PasswordResetConfirmView(APIView):
                 return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid link or expired.'}, status=status.HTTP_400_BAD_REQUEST)
 
+######################################################################################################################################
+
 
 token_generator = PasswordResetTokenGenerator()
+
+######################################################################################################################################
 
 @api_view(['POST'])
 def send_password_reset_email(request):
@@ -126,6 +132,7 @@ def send_password_reset_email(request):
     except User.DoesNotExist:
         return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
+######################################################################################################################################
 
 @api_view(['POST'])
 def reset_password_confirm(request, uidb64, token):
@@ -143,3 +150,5 @@ def reset_password_confirm(request, uidb64, token):
 
     except User.DoesNotExist:
         return Response({'error': 'Invalid user'}, status=status.HTTP_404_NOT_FOUND)
+
+######################################################################################################################################
