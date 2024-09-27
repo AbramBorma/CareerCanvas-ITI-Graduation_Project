@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "bootstrap/dist/js/bootstrap.bundle"
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle"
 import { Editor } from "@monaco-editor/react";
 // import LanguageSelector from "./LanguageSelector";
 import { LANGUAGE_VERSIONS, CODE_SNIPPETS } from "./constants";

@@ -9,7 +9,6 @@ import Exams from './components/Exams';
 import Exam from './components/Exam';
 import CodeEditor from './components/CodeEditor'
 
-
 function App() {
   return (
 
@@ -21,7 +20,6 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/exams" element={<Exams />} />
           <Route path="/exams/:subject" element={<Exam />} />
-          <Route path="/monaco" element={<CodeEditor />} />
           <Route path="/monaco/:subject" element={<CodeEditor />} />
         </Routes>
       </div>
