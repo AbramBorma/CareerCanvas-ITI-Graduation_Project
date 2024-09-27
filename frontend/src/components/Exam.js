@@ -47,6 +47,8 @@ useEffect(()=>{
     useEffect(() => {
         console.log("Selected Subject:", subject); // Log the selected subject
 
+        
+
         const getRandomQuestions = () => {
             const subjectKey = subject.toLowerCase();
             const subjectQuestions = examQuestions[subjectKey];

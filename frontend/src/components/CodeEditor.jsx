@@ -182,14 +182,15 @@ const CodeEditor = () => {
     })
       .then(res => {
         console.log(res);
-        setOutput(res.data.run.output.split("\n"));
+        const newOutput = res.data.run.output.split("\n");
+        setOutput(newOutput);
         console.log(res.data.run.output.split("\n"))
         setIsLoading(false);
         console.log(runexpect)
         // const outtest= output[0].replace(/\s/g, '');
-        console.log(output.length)
-        if(output.length >1){
-        if (eval(output[0]).toString() === runexpect.toString()) console.log("successsssssss")
+        console.log(newOutput.length)
+        if(newOutput.length >1){
+        if (eval(newOutput[0]).toString() === runexpect.toString()) console.log("successsssssss")
         }
       setRunstate(true)
         console.log("state",runstate)
