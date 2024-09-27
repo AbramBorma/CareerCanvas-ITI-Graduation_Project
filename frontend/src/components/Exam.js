@@ -1,34 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import '../static/styles/ExamStyles.css'
-import {getQuestions} from '../services/api';
+import '../static/styles/ExamStyles.css';
+import { getQuestions } from '../services/api';
 
-// Sample questions structure
-const examQuestions = {
-    html: {
-        easy: [
-            { id: 1, question_text: "What does HTML stand for?", options: ["Hyper Text Markup Language", "Hyperlinks and Text Markup Language"] },
-            // Add more easy questions...
-        ],
-        medium: [
-            { id: 2, question_text: "Which HTML element defines the title of a document?", options: ["<title>", "<head>", "<meta>"] },
-            // Add more medium questions...
-        ],
-        hard: [
-            { id: 3, question_text: "What is the purpose of the <head> tag?", options: ["Contains meta information", "Defines the body of the document"] },
-            // Add more hard questions...
-        ],
-    },
-    // Add other subjects with their questions...
-};
 
-// document.addEventListener('visibilitychange',()=>{
-//     console.log('submited')
-//     return()=>document.removeEventListener('visibilitychange')
-// })
-// if(window){
-//     window.onblur = ()=> console.log('submiteddddddddddd')
-// }
+
 
 
 const Exam = () => {
@@ -36,22 +12,18 @@ const Exam = () => {
     const [timeLeft, setTimeLeft] = useState(900); // 15 minutes = 900 seconds
     const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
-    const [loaded,setLoaded] = useState(false)
-
-useEffect(()=>{
-    if(window){
-     window.onblur = ()=> console.log('submiteddddddddddd')
-    }
-},[])
 
     useEffect(() => {
-        console.log("Selected Subject:", subject); // Log the selected subject
+        const getRandomQuestions = async () => {
+            const reseasy = await getQuestions(subject, "easy");
+            const resmed = await getQuestions(subject, "medium");
+            const reshard = await getQuestions(subject, "hard");
 
-        
-
-        const getRandomQuestions = () => {
-            const subjectKey = subject.toLowerCase();
-            const subjectQuestions = examQuestions[subjectKey];
+            const subjectQuestions = {
+                easy: reseasy.data,
+                medium: resmed.data,
+                hard: reshard.data,
+            };
 
             if (!subjectQuestions) {
                 console.error("No questions available for the selected subject");
@@ -59,8 +31,8 @@ useEffect(()=>{
             }
 
             const { easy, medium, hard } = subjectQuestions;
-
             const allQuestions = [];
+
             // Randomly select questions
             for (let i = 0; i < 10 && easy.length > 0; i++) {
                 const randomIndex = Math.floor(Math.random() * easy.length);
@@ -80,15 +52,16 @@ useEffect(()=>{
                 hard.splice(randomIndex, 1);
             }
 
-            
             console.log("Selected Questions:", allQuestions); // Log selected questions
             return allQuestions;
         };
 
-                
+        const fetchQuestions = async () => {
+            const allQuestions = await getRandomQuestions();
+            setQuestions(allQuestions);
+        };
 
-        const fetchedQuestions = getRandomQuestions();
-        setQuestions(fetchedQuestions);
+        fetchQuestions();
 
         const timer = setInterval(() => {
             setTimeLeft((prevTime) => {
@@ -102,32 +75,7 @@ useEffect(()=>{
         }, 1000);
 
         return () => clearInterval(timer);
-
-    }, []);
-
-
-    useEffect(()=>{
-        // axios.get(`http://127.0.0.1:8000/exams/fetchQuestions/html/easy`)
-        //     .then(res => {
-        //       console.log(res);
-        //     }).catch(error => {
-        //       console.log(error);
-        //     })
-        try{
-        const fetchedQuestion = async()=>{
-            const res=await getQuestions(subject,"easy")
-            console.log(res)
-        }
-        fetchedQuestion()
-    }catch (error) {
-            console.error('Error fetching exam:', error);
-        }
-    },[])
-
-
-
-
-
+    }, [subject]);
 
     const handleAnswerChange = (questionId, answerId) => {
         setSelectedAnswers((prev) => ({
@@ -143,7 +91,7 @@ useEffect(()=>{
         };
 
         try {
-            console.log(userAnswers)
+            console.log(userAnswers);
             const response = await fetch('http://127.0.0.1:8000/exams/api/exams/submit/', {
                 method: 'POST',
                 headers: {

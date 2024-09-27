@@ -2,18 +2,28 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 
+class Organization(models.TextChoices):
+    ITI = "ITI", "ITI"
+    SELF = "Self", "Self"
+
+class Role(models.TextChoices):
+    ADMIN = "admin", "Admin"
+    EMPLOYEE = "employee", "Employee"
+    USER = "user", "User"
 
 class User(AbstractUser):
     username = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
+    organization = models.CharField(max_length=10, choices=Organization.choices, default=Organization.SELF)
+    role = models.CharField(max_length=10, choices=Role.choices, default=Role.USER)
+    is_active = models.BooleanField(default=False)  
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
-    
+
     def __str__(self):
-        return self.username 
-
-
+        return self.username
+        
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=1000)

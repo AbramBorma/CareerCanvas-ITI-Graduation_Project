@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../static/styles/Exam.css'
 
-
 const Exams = () => {
     const [selectedSubject, setSelectedSubject] = useState('');
     const navigate = useNavigate();
@@ -16,6 +15,11 @@ const Exams = () => {
     return (
         <div className="exams-container">
             <h1 className="exams-title">Available Exams</h1>
+            <p className="exam-instructions">
+                Please choose an exam. 
+                <br />
+                Try not to cheat, as the exam will be submitted suddenly if you do!
+            </p>
             <div className="select-container">
                 <select
                     value={selectedSubject}

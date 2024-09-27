@@ -1,4 +1,4 @@
-from users.models import User
+from users.models import Organization, User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
@@ -58,4 +58,59 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
+        return user
+
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("No user is associated with this email address")
+        return value
+    
+
+
+class SetNewPasswordSerializer(serializers.Serializer):
+    new_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        password = data.get('new_password')
+        return data
+
+    def save(self, user):
+        password = self.validated_data['new_password']
+        user.set_password(password)
+        user.save()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'organization', 'role')
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password', 'password2', 'organization')
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        return attrs
+
+    def create(self, validated_data):
+        is_active = False
+        if validated_data['organization'] == Organization.SELF:
+            is_active = True
+
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            organization=validated_data['organization'],
+            is_active=is_active,  
+        )
+        user.set_password(validated_data['password'])
+        user.save()
         return user

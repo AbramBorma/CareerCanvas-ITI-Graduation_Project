@@ -2,35 +2,30 @@ import React, { useState } from 'react';
 import '../static/styles/EditProfile.css';
 
 const EditProfile = () => {
-  const [profileImageUrl, setProfileImageUrl] = useState('https://via.placeholder.com/150');
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImageUrl(imageUrl);
-    }
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleShowNewPassword = () => {
+    setShowNewPassword(!showNewPassword);
   };
 
   return (
     <div className="edit-profile">
-      <div className="user-info-box">
+      {/* User Profile Section */}
+      <div className="box user-info-box">
         <h3>User Profile</h3>
         <div className="profile-pic-container">
-          <img className="profile-pic" src={profileImageUrl} alt="Profile" />
+          <img
+            src="https://via.placeholder.com/150"
+            alt="Profile"
+            className="profile-pic"
+          />
           <div className="change-photo-overlay">
-            <label htmlFor="image-upload" className="change-photo-btn">
-              Change photo
-            </label>
-            <input 
-              id="image-upload" 
-              type="file" 
-              accept="image/*" 
-              style={{ display: 'none' }} 
-              onChange={handleImageUpload} 
-            />
+            <button className="change-photo-btn">Change photo</button>
           </div>
         </div>
         <input type="text" placeholder="Username" />
@@ -38,7 +33,8 @@ const EditProfile = () => {
         <input type="email" placeholder="Email" />
       </div>
 
-      <div className="dashboard-links-box">
+      {/* Dashboard Links Section */}
+      <div className="box dashboard-links-box">
         <h3>Dashboard Links</h3>
         <input type="url" placeholder="GitHub" />
         <input type="url" placeholder="LinkedIn" />
@@ -46,40 +42,40 @@ const EditProfile = () => {
         <input type="url" placeholder="HackerRank" />
       </div>
 
-      <div className="skills-box">
+      {/* Skills Section */}
+      <div className="box skills-box">
         <h3>Skills</h3>
         <select>
-          <option value="">Select skill</option>
-          {/* Add other skill options here */}
+          <option value="">Select Skill</option>
+          <option value="skill1">Skill 1</option>
+          <option value="skill2">Skill 2</option>
         </select>
       </div>
 
-      <div className="security-box">
+      {/* Security Section */}
+      <div className="box security-box">
         <h3>Security</h3>
         <div className="password-container">
-          <input 
-            type={showPassword ? 'text' : 'password'} 
-            placeholder="Current Password" 
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Current Password"
           />
-          <button 
-            className="show-hide-btn" 
-            onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? 'Hide' : 'Show'}
+          <button onClick={toggleShowPassword} className="show-hide-btn">
+            <i className={`fas fa-eye${showPassword ? "" : "-slash"}`}></i>
           </button>
         </div>
         <div className="password-container">
-          <input 
-            type={showNewPassword ? 'text' : 'password'} 
-            placeholder="New Password" 
+          <input
+            type={showNewPassword ? "text" : "password"}
+            placeholder="New Password"
           />
-          <button 
-            className="show-hide-btn" 
-            onClick={() => setShowNewPassword(!showNewPassword)}>
-            {showNewPassword ? 'Hide' : 'Show'}
+          <button onClick={toggleShowNewPassword} className="show-hide-btn">
+            <i className={`fas fa-eye${showNewPassword ? "" : "-slash"}`}></i>
           </button>
         </div>
       </div>
 
+      {/* Actions (Save & Cancel) */}
       <div className="actions">
         <button className="save-btn">Save</button>
         <button className="cancel-btn">Cancel</button>

@@ -111,8 +111,10 @@ const CodeEditor = () => {
         setIsLoading(true)
         const res = await getQuestions(subject, "coding")
         console.log(res)
-        setQuestion(res.data[0].question_text);
-        const fioption=res.data[0].options[0]
+        const data = res.data
+        const randomIndex = Math.floor(Math.random() * data.length);
+        setQuestion(data[randomIndex].question_text);
+        const fioption = data[randomIndex].options[0]
         setRunexpect(JSON.parse(fioption).expected)
         setRuncase(JSON.parse(fioption).input)
         setIsLoading(false)
@@ -156,21 +158,23 @@ const CodeEditor = () => {
     editor.focus();
   };
 
-  // const onSelect = (language) => {
-  //   setLanguage(language);
-  //   setValue(CODE_SNIPPETS[language]);
-  // };
-
-
 
   function run() {
     setIsLoading(true);
     let fvalue = value;
     // for (let index = 0; index < runcase.length; index++) {
-      fvalue = fvalue.replace("INPUT", "["+runcase+"]")
+
+    // fvalue = fvalue.replace("INPUT", runcase)
+    if (typeof (runcase) == "object")
+      fvalue = fvalue.replace("INPUT", "[" + runcase + "]")
+    else
+      fvalue = fvalue.replace("INPUT", runcase)
+
+
+
     // }
 
-    console.log(fvalue)
+    // console.log(fvalue)
     axios.post("https://emkc.org/api/v2/piston/execute", {
       language: language,
       version: LANGUAGE_VERSIONS[language],
@@ -184,23 +188,20 @@ const CodeEditor = () => {
         console.log(res);
         const newOutput = res.data.run.output.split("\n");
         setOutput(newOutput);
-        console.log(res.data.run.output.split("\n"))
+        console.log(eval(newOutput[0]))
         setIsLoading(false);
         console.log(runexpect)
         // const outtest= output[0].replace(/\s/g, '');
         console.log(newOutput.length)
-        if(newOutput.length >1){
-        if (eval(newOutput[0]).toString() === runexpect.toString()) console.log("successsssssss")
+        if (newOutput.length >= 1) {
+          if (eval(newOutput[0]).toString() === runexpect.toString()) console.log("successsssssss")
         }
-      setRunstate(true)
-        console.log("state",runstate)
-        console.log("eroor",runerror)
-        }).catch(error => {
-      console.log(error);
-      setRunerorr(true)
-      setIsLoading(false);
-      console.log("state",runstate)
-console.log("eroor",runerror)
+        setRunstate(true)
+      }).catch(error => {
+        console.log(error);
+        setRunerorr(true)
+        setIsLoading(false);
+
       })
 
   }
@@ -265,7 +266,7 @@ console.log("eroor",runerror)
           </div>
 
         </div>)}
-        {/* {runerror?
+      {/* {runerror?
           (<div className="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Holy guacamole!</strong> You should check in on some of those fields below.
             <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
