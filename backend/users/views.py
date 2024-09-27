@@ -197,15 +197,13 @@ def user_view(request):
     return Response({'response': data}, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
-@permission_classes([IsAdmin])  # السماح للمشرف فقط بتنفيذ هذه العملية
+@permission_classes([IsAdmin])  
 def approve_user(request, user_id):
     try:
-        # الحصول على المستخدم بناءً على ID والموافقة عليه إذا كان ضمن ITI
         user = User.objects.get(id=user_id, organization=Organization.ITI)
         user.is_active = True
         user.save()
 
-        # إرسال البريد الإلكتروني للمستخدم لإبلاغه بالتفعيل
         send_mail(
             'Account Approved',
             f'Congratulations {user.username}, your ITI account has been approved and your role is {user.role}.',

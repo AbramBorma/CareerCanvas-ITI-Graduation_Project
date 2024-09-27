@@ -95,7 +95,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        # هنا يتم التحكم في هل المستخدم مفعل أم لا بناءً على اختيار المنظمة
         is_active = False
         if validated_data['organization'] == Organization.SELF:
             is_active = True
@@ -104,7 +103,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             organization=validated_data['organization'],
-            is_active=is_active,  # سيتم تفعيل المستخدم تلقائياً إذا كان SELF
+            is_active=is_active,  
         )
         user.set_password(validated_data['password'])
         user.save()
