@@ -170,11 +170,10 @@ const CodeEditor = () => {
     else
       fvalue = fvalue.replace("INPUT", runcase)
 
-
-
     // }
 
     // console.log(fvalue)
+    
     axios.post("https://emkc.org/api/v2/piston/execute", {
       language: language,
       version: LANGUAGE_VERSIONS[language],
