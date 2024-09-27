@@ -51,3 +51,10 @@
     background-color: #ccc; /* Disabled button color */
     cursor: not-allowed; /* Not-allowed cursor */
 }
+
+.exam-instructions {
+    color: red; /* Change text color to red */
+    font-weight: bold; /* Make the text bold */
+    margin-bottom: 20px; /* Add some space below the instructions */
+    font-size: 1.2em; /* Increase font size for better visibility */
+}
