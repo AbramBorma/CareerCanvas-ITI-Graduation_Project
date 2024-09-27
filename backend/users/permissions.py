@@ -2,8 +2,15 @@ from rest_framework.permissions import BasePermission, IsAuthenticated
 
 from .models import Role
 
-class IsNormalUser(BasePermission):
+
+class IsAdmin(BasePermission):
     def has_permission(self, request, view):
-        if request.user.is_authenticated:
-            return request.user.role == Role.USER
-        return IsAuthenticated().has_permission(request, view)
+        return request.user and request.user.is_authenticated and request.user.role == 'admin'
+
+class IsEmployee(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.role == 'employee' and request.user.organization == 'ITI'
+
+class IsUser(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.role == 'user'

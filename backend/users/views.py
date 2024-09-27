@@ -22,7 +22,9 @@ from django.template.loader import render_to_string
 from rest_framework import status
 from django.contrib.auth.tokens import default_token_generator, PasswordResetTokenGenerator
 from .serializer import PasswordResetSerializer, SetNewPasswordSerializer
-
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
+from users.permissions import IsAdmin, IsEmployee, IsUser  
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -152,3 +154,40 @@ def reset_password_confirm(request, uidb64, token):
         return Response({'error': 'Invalid user'}, status=status.HTTP_404_NOT_FOUND)
 
 ######################################################################################################################################
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def testEndPoint(request):
+    if request.method == 'GET':
+        if request.user.role == 'admin':
+            data = "Admin access"
+        elif request.user.role == 'employee' and request.user.organization == 'ITI':
+            data = "Employee access"
+        elif request.user.role == 'user':
+            data = "User access"
+        else:
+            data = "No permissions"
+        return Response({'response': data}, status=status.HTTP_200_OK)
+    
+    elif request.method == 'POST':
+        text = "Hello "
+        data = f'Congratulations, your API just responded to a POST request with text: {text}'
+        return Response({'response': data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAdmin])
+def admin_view(request):
+    data = f"Hello Admin {request.user.username}, you have access to this view."
+    return Response({'response': data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsEmployee])
+def employee_view(request):
+    data = f"Hello Employee {request.user.username}, you have access to this view."
+    return Response({'response': data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsUser])
+def user_view(request):
+    data = f"Hello User {request.user.username}, you have access to this view."
+    return Response({'response': data}, status=status.HTTP_200_OK)
