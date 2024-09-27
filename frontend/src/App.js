@@ -16,6 +16,7 @@ function App() {
           <Routes>
             <Route path="" element={<Home />} />
             <Route path="/monaco" element={<CodeEditor />} />
+            <Route path="/monaco/:subject" element={<CodeEditor />} />
             <Route path="/exams" element={<Exams />} />
             <Route path="/exams/:subject" element={<Exam />} />
           </Routes>

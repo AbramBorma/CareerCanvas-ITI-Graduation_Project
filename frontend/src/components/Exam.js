@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../static/styles/ExamStyles.css'
+import {getQuestions} from '../services/api';
 
 // Sample questions structure
 const examQuestions = {
@@ -101,6 +102,30 @@ useEffect(()=>{
         return () => clearInterval(timer);
 
     }, []);
+
+
+    useEffect(()=>{
+        // axios.get(`http://127.0.0.1:8000/exams/fetchQuestions/html/easy`)
+        //     .then(res => {
+        //       console.log(res);
+        //     }).catch(error => {
+        //       console.log(error);
+        //     })
+        try{
+        const fetchedQuestion = async()=>{
+            const res=await getQuestions(subject,"easy")
+            console.log(res)
+        }
+        fetchedQuestion()
+    }catch (error) {
+            console.error('Error fetching exam:', error);
+        }
+    },[])
+
+
+
+
+
 
     const handleAnswerChange = (questionId, answerId) => {
         setSelectedAnswers((prev) => ({
