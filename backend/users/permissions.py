@@ -14,3 +14,14 @@ class IsEmployee(BasePermission):
 class IsUser(BasePermission):
     def has_permission(self, request, view):
         return request.user and request.user.is_authenticated and request.user.role == 'user'
+
+
+class IsAdminOrEmployee(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and (
+            request.user.role == 'admin' or (request.user.role == 'employee' and request.user.organization == 'ITI')
+        )
+
+class IsITIUser(BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.organization == 'ITI' and request.user.role == 'user'

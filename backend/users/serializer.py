@@ -1,4 +1,4 @@
-from users.models import User
+from users.models import Organization, User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
@@ -95,11 +95,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        is_active = False
+        if validated_data['organization'] == Organization.SELF:
+            is_active = True
+
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
             organization=validated_data['organization'],
-            role=validated_data['role']
+            role=validated_data['role'],
+            is_active=is_active
         )
         user.set_password(validated_data['password'])
         user.save()

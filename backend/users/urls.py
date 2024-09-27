@@ -18,6 +18,7 @@ urlpatterns = [
         path('admin/', views.admin_view, name='admin_view'),  # Admin route
     path('employee/', views.employee_view, name='employee_view'),  # Employee route
     path('user/', views.user_view, name='user_view'),  # User route
+        path('approve-user/<int:user_id>/', views.approve_user, name='approve_user'),
 
 
 ]

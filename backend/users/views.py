@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import render
 from django.http import JsonResponse
-from users.models import User  
+from users.models import Organization, User  
 
 from users.serializer import MyTokenObtainPairSerializer, RegisterSerializer  
 from rest_framework.decorators import api_view
@@ -158,6 +158,9 @@ def reset_password_confirm(request, uidb64, token):
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def testEndPoint(request):
+    if not request.user.is_active:
+        return Response({'error': 'Your account is under review.'}, status=status.HTTP_403_FORBIDDEN)
+
     if request.method == 'GET':
         if request.user.role == 'admin':
             data = "Admin access"
@@ -173,7 +176,8 @@ def testEndPoint(request):
         text = "Hello "
         data = f'Congratulations, your API just responded to a POST request with text: {text}'
         return Response({'response': data}, status=status.HTTP_200_OK)
-
+    
+    
 @api_view(['GET'])
 @permission_classes([IsAdmin])
 def admin_view(request):
@@ -191,3 +195,22 @@ def employee_view(request):
 def user_view(request):
     data = f"Hello User {request.user.username}, you have access to this view."
     return Response({'response': data}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAdmin])
+def approve_user(request, user_id):
+    try:
+        user = User.objects.get(id=user_id, organization=Organization.ITI)
+        user.is_active = True
+        user.save()
+
+        send_mail(
+            'Account Approved',
+            f'Congratulations {user.username}, your ITI account has been approved.',
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+        )
+        return Response({'message': 'User account approved and email sent.'}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found or not in ITI organization.'}, status=status.HTTP_404_NOT_FOUND)
