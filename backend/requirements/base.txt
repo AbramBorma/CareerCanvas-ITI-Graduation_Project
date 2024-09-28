@@ -11,3 +11,4 @@ django-jazzmin
 python-dotenv
 django-extensions
 drf-yasg
+django_rest_passwordreset
