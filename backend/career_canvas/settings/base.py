@@ -66,6 +66,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'career_canvas.urls'
 
 import os
+import sys
 
 # Templates
 TEMPLATES = [
@@ -86,6 +87,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'career_canvas.wsgi.application'
 
+sys.path.append(os.path.join(BASE_DIR, 'career_scraper'))
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -189,4 +191,18 @@ SIMPLE_JWT = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 AUTH_USER_MODEL = 'users.User'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Redis DB 1 for caching
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
