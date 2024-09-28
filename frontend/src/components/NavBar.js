@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from '@mui/icons-material/Menu'; 
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -13,11 +13,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import logo from '../static/imgs/careercanvas-high-resolution-logo-white-transparent.png';
 import { Link } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
 
 const pages = ['Home', 'Portfolio', 'Examine'];
 const settings = ['Profile', 'Portfolio', 'Logout'];
 
 function ResponsiveAppBar() {
+  const { user, logoutUser } = React.useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -37,13 +39,13 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: '#002346'}}>
+    <AppBar position="fixed" sx={{ backgroundColor: '#002346' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img
             src={logo}
             alt="Logo"
-            style={{width: '350px', height:'40px', marginRight: '16px'}}
+            style={{ width: '350px', height: '40px', marginRight: '16px' }}
           />
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -88,10 +90,10 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu}
                 component={Link}
                 to={
-                  page === 'Portfolio' 
-                    ? '/portfolio/form' 
-                    : page === 'Examine' 
-                    ? '/exams' 
+                  page === 'Portfolio'
+                    ? '/portfolio/form'
+                    : page === 'Examine'
+                    ? '/exams'
                     : '/'
                 }
                 sx={{ my: 2, color: 'white', display: 'block' }}
@@ -101,23 +103,30 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
-          {/* Add Register and Login Buttons */}
-          <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px' }}>
-            <Button 
-            sx={{ color: 'white' }}
-            LinkComponent={Link}
-            to="/register"
-            >
-              Register</Button>
-            <Button 
-            sx={{ color: 'white' }}
-            component={Link}
-            to="/login"
-            >
-              Login</Button>
+          <Box sx={{ flexGrow: 0 }}>
+            {user ? (
+              <Button sx={{ color: 'white' }} onClick={logoutUser}>
+                Logout
+              </Button>
+            ) : (
+              <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px' }}>
+                <Button
+                  sx={{ color: 'white' }}
+                  component={Link}
+                  to="/register"
+                >
+                  Register
+                </Button>
+                <Button
+                  sx={{ color: 'white' }}
+                  component={Link}
+                  to="/login"
+                >
+                  Login
+                </Button>
+              </Box>
+            )}
           </Box>
-
-          {/* Avatar and Settings */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -152,4 +161,5 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;
