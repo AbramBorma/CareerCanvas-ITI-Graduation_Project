@@ -270,20 +270,20 @@ def activate_user(request, user_id):
     
 @api_view(['GET'])
 def organizations_list(request):
-    organizations = Organization.objects.all()
-    data = [{'id': org.id, 'name': org.name} for org in organizations]
+    organizations = Organization.choices
+    data = [{'id': org[0], 'name': org[1]} for org in organizations]
     return Response(data)
 
 @api_view(['GET'])
 def branches_list(request):
-    branches = Branch.objects.all()
-    data = [{'id': branch.id, 'name': branch.name} for branch in branches]
+    branches = Branch.choices
+    data = [{'id': branch[0], 'name': branch[1]} for branch in branches]
     return Response(data)
 
 @api_view(['GET'])
 def courses_list(request):
-    courses = Course.objects.all()  
-    data = [{'id': course.id, 'label': course.name, 'value': course.id} for course in courses]
+    courses = Course.choices
+    data = [{'id': course[0], 'name': course[1]} for course in courses]
     return Response(data)
 
 
