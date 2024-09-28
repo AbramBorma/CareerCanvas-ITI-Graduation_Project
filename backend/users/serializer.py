@@ -8,9 +8,33 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'email')
+        fields = ('username', 'email', 'password', 'password2', 'organization', 'branch', 'course', 'linkedin', 'github', 'leetcode', 'hackerrank')
+
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError("Passwords do not match.")
+        return data
+
+    def create(self, validated_data):
+        user = User(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            organization=validated_data['organization'],
+            branch=validated_data['branch'],
+            course=validated_data['course'],
+            linkedin=validated_data['linkedin'],
+            github=validated_data['github'],
+            leetcode=validated_data['leetcode'],
+            hackerrank=validated_data['hackerrank']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod

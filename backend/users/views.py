@@ -16,7 +16,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 
 from users.models import Branch, Course, Organization, Profile, User
-from users.serializer import MyTokenObtainPairSerializer, OrganizationSerializer, RegisterSerializer, PasswordResetSerializer, SetNewPasswordSerializer
+from users.serializer import MyTokenObtainPairSerializer, OrganizationSerializer, RegisterSerializer, PasswordResetSerializer, SetNewPasswordSerializer, UserSerializer
 from users.permissions import IsAdmin, IsEmployee, IsUser
 
 
@@ -28,7 +28,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
         if user and not user.is_active:
             raise AuthenticationFailed("Your account is not activated yet. Please contact the admin.")
         return super().post(request, *args, **kwargs)
-
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -286,3 +285,12 @@ def courses_list(request):
     courses = Course.objects.all()  
     data = [{'id': course.id, 'label': course.name, 'value': course.id} for course in courses]
     return Response(data)
+
+
+@api_view(['POST'])
+def register_user(request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
