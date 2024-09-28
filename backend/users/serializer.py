@@ -1,8 +1,11 @@
-from users.models import Organization, User
+from users.models import Branch, Course, Organization, Profile, User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from users.models import Branch, Course, Organization, User
+from django.contrib.auth.password_validation import validate_password
+from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,40 +29,64 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['leetcode'] = user.profile.leetcode
         token['hackerrank'] = user.profile.hackerrank
         
-        token['linkedin'] = user.profile.linkedin
-        token['github'] = user.profile.github
-        token['leetcode'] = user.profile.leetcode
-        token['hackerrank'] = user.profile.hackerrank
         
         return token
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
-        write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    
+    github = serializers.URLField(required=False, allow_blank=True)
+    linkedin = serializers.URLField(required=False, allow_blank=True)
+    leetcode = serializers.URLField(required=False, allow_blank=True)
+    hackerrank = serializers.URLField(required=False, allow_blank=True)
+
+    branch = serializers.ChoiceField(choices=Branch.choices, required=False)
+    course = serializers.ChoiceField(choices=Course.choices, required=False)
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'password2')
+        fields = ('email', 'username', 'password', 'password2', 'organization', 'branch', 'course', 'github', 'linkedin', 'leetcode', 'hackerrank')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError(
-                {"password": "Password fields didn't match."})
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        
+        if attrs['organization'] == Organization.ITI:
+            if not attrs.get('branch'):
+                raise serializers.ValidationError({"branch": "Branch is required when organization is ITI."})
+            if not attrs.get('course'):
+                raise serializers.ValidationError({"course": "Course is required when organization is ITI."})
 
         return attrs
 
     def create(self, validated_data):
+        github = validated_data.pop('github', None)
+        linkedin = validated_data.pop('linkedin', None)
+        leetcode = validated_data.pop('leetcode', None)
+        hackerrank = validated_data.pop('hackerrank', None)
+
         user = User.objects.create(
             username=validated_data['username'],
-            email=validated_data['email']
+            email=validated_data['email'],
+            organization=validated_data['organization'],
+            branch=validated_data.get('branch'),
+            course=validated_data.get('course'),
+            is_active=False,
         )
-
         user.set_password(validated_data['password'])
         user.save()
 
-        return user
+        Profile.objects.create(
+            user=user,
+            github=github,
+            linkedin=linkedin,
+            leetcode=leetcode,
+            hackerrank=hackerrank,
+        )
 
+        return user
+    
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
@@ -90,27 +117,35 @@ class UserSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    branch = serializers.ChoiceField(choices=Branch.choices, required=False)
+    course = serializers.ChoiceField(choices=Course.choices, required=False)
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'password2', 'organization')
+        fields = ('email', 'username', 'password', 'password2', 'organization', 'branch', 'course')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
+        
+        if attrs['organization'] == Organization.ITI:
+            if not attrs.get('branch'):
+                raise serializers.ValidationError({"branch": "Branch is required when organization is ITI."})
+            if not attrs.get('course'):
+                raise serializers.ValidationError({"course": "Course is required when organization is ITI."})
+
         return attrs
 
     def create(self, validated_data):
-        is_active = False
-        if validated_data['organization'] == Organization.SELF:
-            is_active = True
-
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
             organization=validated_data['organization'],
-            is_active=is_active,  
+            branch=validated_data.get('branch'),
+            course=validated_data.get('course'),
+            is_active=False,
         )
         user.set_password(validated_data['password'])
         user.save()
+
         return user

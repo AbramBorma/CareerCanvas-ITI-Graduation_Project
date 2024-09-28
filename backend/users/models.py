@@ -11,19 +11,31 @@ class Role(models.TextChoices):
     EMPLOYEE = "employee", "Employee"
     USER = "user", "User"
 
+
+class Branch(models.TextChoices):
+    NEW_CAPITAL = "New Capital", "New Capital"
+    CAIRO = "Cairo", "Cairo"
+    MENOFIA = "Menofia", "Menofia"
+
+class Course(models.TextChoices):
+    PHP = "Open Source PHP", "Open Source PHP"
+    PYTHON = "Open Source Python", "Open Source Python"
+
 class User(AbstractUser):
     username = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     organization = models.CharField(max_length=10, choices=Organization.choices, default=Organization.SELF)
+    branch = models.CharField(max_length=20, choices=Branch.choices, blank=True, null=True)
+    course = models.CharField(max_length=30, choices=Course.choices, blank=True, null=True)
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.USER)
-    is_active = models.BooleanField(default=False)  
+    is_active = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
     def __str__(self):
-        return self.username
-        
+        return self.username        
+    
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=1000)

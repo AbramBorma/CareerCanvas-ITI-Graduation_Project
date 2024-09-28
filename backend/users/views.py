@@ -1,42 +1,66 @@
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
-
-
 from django.shortcuts import render
 from django.http import JsonResponse
-from users.models import Organization, User  
-
-from users.serializer import MyTokenObtainPairSerializer, RegisterSerializer  
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import generics
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework import status
-from rest_framework.views import APIView
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
-from rest_framework import status
 from django.contrib.auth.tokens import default_token_generator, PasswordResetTokenGenerator
-from .serializer import PasswordResetSerializer, SetNewPasswordSerializer
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
-from users.permissions import IsAdmin, IsEmployee, IsUser  
+
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
+
+from users.models import Organization, Profile, User
+from users.serializer import MyTokenObtainPairSerializer, RegisterSerializer, PasswordResetSerializer, SetNewPasswordSerializer
+from users.permissions import IsAdmin, IsEmployee, IsUser
+
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-######################################################################################################################################
+    def post(self, request, *args, **kwargs):
+        user = User.objects.filter(email=request.data['email']).first()
+        if user and not user.is_active:
+            raise AuthenticationFailed("Your account is not activated yet. Please contact the admin.")
+        return super().post(request, *args, **kwargs)
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
-######################################################################################################################################
+    def perform_create(self, serializer):
+        user = serializer.save()
+
+        if user.organization == 'ITI':
+            send_mail(
+                'New ITI User Registration',
+                f'A new ITI user {user.username} has registered. Please activate their account.',
+                'from@example.com',
+                ['admin@example.com'],  
+                fail_silently=False,
+            )
+
+        profile, created = Profile.objects.get_or_create(
+            user=user,
+            defaults={
+                'linkedin': serializer.validated_data.get('linkedin', ''),
+                'github': serializer.validated_data.get('github', ''),
+                'leetcode': serializer.validated_data.get('leetcode', ''),
+                'hackerrank': serializer.validated_data.get('hackerrank', '')
+            }
+        )
+
+        if not created:
+            print(f"Profile for user {user.username} already exists.")
+
+
 
 
 # Get All Routes
@@ -49,7 +73,8 @@ def getRoutes(request):
     ]
     return Response(routes)
 
-######################################################################################################################################
+
+
 
 
 @api_view(['GET', 'POST'])
@@ -64,7 +89,7 @@ def testEndPoint(request):
         return Response({'response': data}, status=status.HTTP_200_OK)
     return Response({}, status.HTTP_400_BAD_REQUEST)
 
-######################################################################################################################################
+
 
 
 class PasswordResetView(APIView):
@@ -88,7 +113,7 @@ class PasswordResetView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-######################################################################################################################################
+
 
 
 class PasswordResetConfirmView(APIView):
@@ -106,12 +131,12 @@ class PasswordResetConfirmView(APIView):
                 return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid link or expired.'}, status=status.HTTP_400_BAD_REQUEST)
 
-######################################################################################################################################
+
 
 
 token_generator = PasswordResetTokenGenerator()
 
-######################################################################################################################################
+
 
 @api_view(['POST'])
 def send_password_reset_email(request):
@@ -134,7 +159,7 @@ def send_password_reset_email(request):
     except User.DoesNotExist:
         return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-######################################################################################################################################
+
 
 @api_view(['POST'])
 def reset_password_confirm(request, uidb64, token):
@@ -153,7 +178,7 @@ def reset_password_confirm(request, uidb64, token):
     except User.DoesNotExist:
         return Response({'error': 'Invalid user'}, status=status.HTTP_404_NOT_FOUND)
 
-######################################################################################################################################
+
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -213,4 +238,17 @@ def approve_user(request, user_id):
         return Response({'message': 'User account approved and email sent.'}, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({'error': 'User not found or not in ITI organization.'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def activate_user(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        user.is_active = True
+        user.save()
+        return Response({'message': 'User activated successfully'}, status=200)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=404)
+    
     
