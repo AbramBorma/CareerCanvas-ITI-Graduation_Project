@@ -23,52 +23,65 @@ export const AuthProvider = ({ children }) => {
     }, [authTokens]);
 
     const registerUser = async (email, username, password, password2, organization, branch, track, linkedin, github, hackerrank, leetcode) => {
-        const response = await fetch('http://127.0.0.1:8000/users/register/', {  
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email,
-                username,
-                password,
-                password2,
-                organization,
-                branch,
-                track,  
-                linkedin,
-                github,
-                hackerrank,
-                leetcode,
-            }),
-        });
+        try {
+            const response = await fetch('http://127.0.0.1:8000/users/register/', {  
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    username,
+                    password,
+                    password2,
+                    organization,
+                    branch,
+                    track,  
+                    linkedin,
+                    github,
+                    hackerrank,
+                    leetcode,
+                }),
+            });
 
-        if (response.ok) {
-            navigate('/login'); 
-        } else {
+            if (response.ok) {
+                navigate('/login'); 
+            } else {
+                const data = await response.json();
+                alert('Error during registration: ' + (data.detail || 'Unknown error'));
+            }
+        } catch (error) {
             alert('Something went wrong during registration.');
+            console.error('Registration error:', error);
         }
     };
 
     const loginUser = async (email, password) => {
-        const response = await fetch('http://127.0.0.1:8000/users/token/', {  
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
-    
-        const data = await response.json();
-    
-        if (response.ok) {
-            setAuthTokens(data);
-            setUser(data.user);  
-            localStorage.setItem('authTokens', JSON.stringify(data));
-            return true;  
-        } else {
-            alert('Invalid credentials.');
-            return false;  
+        try {
+            const response = await fetch('http://127.0.0.1:8000/users/token/', {  
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+        
+            const data = await response.json();
+        
+            if (response.ok) {
+                setAuthTokens(data);
+                setUser(data.user);  
+                localStorage.setItem('authTokens', JSON.stringify(data));
+                navigate('/dashboard');  
+                return true;  
+            } else {
+                alert('Invalid credentials.');
+                return false;  
+            }
+        } catch (error) {
+            alert('Something went wrong during login.');
+            console.error('Login error:', error);
+            return false;
         }
     };
     

@@ -46,13 +46,16 @@ function RegisterPage() {
     fetchData();
   }, []);
 
+  // Handle form input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Call registerUser function from AuthContext
       await registerUser(
         formData.email,
         formData.username,
@@ -66,7 +69,7 @@ function RegisterPage() {
         formData.hackerrank,
         formData.leetcode
       );
-      navigate('/login');
+      navigate('/login');  // Navigate to login page after successful registration
     } catch (error) {
       console.error('Error registering user', error);
     }
