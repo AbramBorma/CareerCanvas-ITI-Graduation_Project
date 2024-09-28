@@ -1,10 +1,48 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import BaseUserManager
 
 class Organization(models.TextChoices):
     ITI = "ITI", "ITI"
     SELF = "Self", "Self"
+
+
+
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, username, password=None, **extra_fields):
+        """
+        Create and return a regular user.
+        """
+        if not email:
+            raise ValueError("The Email field must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, username=username, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, username, password=None, **extra_fields):
+        """
+        Create and return a superuser with admin rights.
+        """
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('role', Role.ADMIN)  # Set the role to admin
+        extra_fields.setdefault('is_active', True)   # Activate the user
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+        if extra_fields.get('role') != Role.ADMIN:
+            raise ValueError("Superuser must have role=Admin.")
+        if extra_fields.get('is_active') is not True:
+            raise ValueError("Superuser must be active.")
+
+        return self.create_user(email, username, password, **extra_fields)
+
 
 class Role(models.TextChoices):
     ADMIN = "admin", "Admin"
@@ -32,7 +70,8 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
-
+    objects = CustomUserManager()
+    
     def __str__(self):
         return self.username        
     
