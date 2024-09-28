@@ -283,6 +283,6 @@ def branches_list(request):
 
 @api_view(['GET'])
 def courses_list(request):
-    courses = Course.objects.all()  # استخدم Course بدلاً من Track
+    courses = Course.objects.all()  
     data = [{'id': course.id, 'label': course.name, 'value': course.id} for course in courses]
     return Response(data)

@@ -10,3 +10,4 @@ PyJWT
 django-jazzmin
 python-dotenv
 django-extensions
+drf-yasg

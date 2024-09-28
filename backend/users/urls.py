@@ -1,9 +1,23 @@
-from django.urls import include, path
+from django.urls import path
 from . import views
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 from .views import PasswordResetView, activate_user, reset_password_confirm, send_password_reset_email
 from .views import PasswordResetConfirmView
-from rest_framework_simplejwt.views import (
-    TokenRefreshView,
+from rest_framework_simplejwt.views import TokenRefreshView
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Your API Title",
+        default_version='v1',
+        description="API documentation",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@yourapi.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
@@ -22,8 +36,6 @@ urlpatterns = [
     path('organizations/', views.organizations_list, name='organizations'),
     path('branches/', views.branches_list, name='branches'),
     path('courses/', views.courses_list, name='courses'),
-
-
-
-
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  # إضافة هذا السطر
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),  # إضافة هذا السطر
 ]
