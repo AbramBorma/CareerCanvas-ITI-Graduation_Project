@@ -1,47 +1,122 @@
-import React from 'react';
-import './organizationdashboard.css'; 
+import React, { useState } from 'react';
+import './organizationdashboard.css';
 
 const OrganizationDashboard = () => {
+  // State for managing admins
+  const [admins, setAdmins] = useState([
+    { id: 1, branch: 'New Capital Branch', track: 'Open-Source', supervisor: 'Mina Nagy', status: 'Active' },
+    { id: 2, branch: 'Smart Village', track: 'Cybersecurity', supervisor: 'Ahmed', status: 'Inactive' }
+  ]);
+
+  // List of branches
+  const branches = [
+    'Smart Village', 'New Capital', 'Cairo University', 'Alexandria', 'Assiut', 'Aswan',
+    'Beni Suef', 'Fayoum', 'Ismailia', 'Mansoura', 'Menofia', 'Minya', 'Qena', 'Sohag'
+  ];
+
+  // List of tracks
+  const tracks = [
+    'Open Source Applications Development',
+    'Cloud Platform Development',
+    'Enterprise & Web Apps Development (Java)',
+    'Mobile Applications Development (Native)',
+    'Professional Development & BI-infused CRM',
+    'Web & User Interface Development',
+    'Telecom Applications Development',
+    'Mobile Applications Development (Cross Platform)',
+    'Integrated Software Development & Architecture'
+  ];
+
+  // State for form input
+  const [selectedBranch, setSelectedBranch] = useState('');
+  const [selectedTrack, setSelectedTrack] = useState('');
+  const [supervisorName, setSupervisorName] = useState(''); 
+
+  // Function to handle creating a new admin
+  const handleCreateAdmin = (e) => {
+    e.preventDefault();
+    if (!selectedBranch || !selectedTrack || !supervisorName) {
+      alert("Please select a branch, track, and supervisor.");
+      return;
+    }
+
+    // Add new admin to the list
+    const newAdmin = {
+      id: admins.length + 1,
+      branch: selectedBranch,
+      track: selectedTrack,
+      supervisor: supervisorName,
+      status: 'Active'
+    };
+
+    setAdmins([...admins, newAdmin]);
+
+    // Reset the form fields
+    setSelectedBranch('');
+    setSelectedTrack('');
+    setSupervisorName('');
+  };
+
+  // Remove admin by ID
+  const handleRemove = (id) => {
+    setAdmins(admins.filter(admin => admin.id !== id));
+  };
+
   return (
     <div className="dashboard">
       {/* Header Section */}
       <header>
         <input type="search" placeholder="Search..." className="search-bar" />
         <div className="profile">
-          <img src="profile.jpg" alt="Profile" />
+          <img src="admin.png" alt="Profile" />
         </div>
       </header>
 
       {/* Form Section */}
       <section className="add-pos-form">
         <h2>Add a New Admin</h2>
-        <form>
+        <form onSubmit={handleCreateAdmin}>
           <div className="form-group">
             <label htmlFor="branch">Select Branch:</label>
-            <select id="branch">
-              <option>Select Branch</option>
-              {/* Add options dynamically */}
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="supervisor">Select Supervisor:</label>
-            <select id="supervisor">
-              <option>Select Supervisor</option>
-              {/* Add options dynamically */}
+            <select
+              id="branch"
+              value={selectedBranch}
+              onChange={(e) => setSelectedBranch(e.target.value)}
+            >
+              <option value="">Select Branch</option>
+              {branches.map(branch => (
+                <option key={branch} value={branch}>{branch}</option>
+              ))}
             </select>
           </div>
           <div className="form-group">
             <label htmlFor="track">Select Track:</label>
-            <select id="track">
-              <option>Select Track</option>
-              {/* Add options dynamically */}
+            <select
+              id="track"
+              value={selectedTrack}
+              onChange={(e) => setSelectedTrack(e.target.value)}
+            >
+              <option value="">Select Track</option>
+              {tracks.map(track => (
+                <option key={track} value={track}>{track}</option>
+              ))}
             </select>
           </div>
-          <button type="submit" className="btn-submit">+ Create New POS</button>
+          <div className="form-group">
+            <label htmlFor="supervisor">Supervisor Name:</label>
+            <input
+              type="text"
+              id="supervisor"
+              value={supervisorName}
+              onChange={(e) => setSupervisorName(e.target.value)}
+              placeholder="Enter Supervisor Name"
+            />
+          </div>
+          <button type="submit" className="btn-submit">+ Create</button>
         </form>
       </section>
 
-      {/* Points of Sale Table */}
+      {/* Admins Table */}
       <section className="pos-table">
         <h2>Admins</h2>
         <table>
@@ -49,37 +124,27 @@ const OrganizationDashboard = () => {
             <tr>
               <th>ID</th>
               <th>Branch Name</th>
-              <th>POS Name</th>
-              <th>API Key</th>
+              <th>Track</th>
               <th>Supervisor Name</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {/* Static data for now, but can be dynamic later */}
-            <tr>
-              <td>1</td>
-              <td>New Capital Branch</td>
-              <td>POS1</td>
-              <td>fZOTlqvG26Y...</td>
-              <td>Mina Nagy</td>
-              <td>Active</td>
-              <td>
-                <button className="btn-delete">Delete POS</button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Second Branch</td>
-              <td>POS2</td>
-              <td>fJPO42KS52...</td>
-              <td>Ahmed</td>
-              <td>Inactive</td>
-              <td>
-                <button className="btn-delete">Delete POS</button>
-              </td>
-            </tr>
+            {admins.map(admin => (
+              <tr key={admin.id}>
+                <td>{admin.id}</td>
+                <td>{admin.branch}</td>
+                <td>{admin.track}</td>
+                <td>{admin.supervisor}</td>
+                <td>{admin.status}</td>
+                <td>
+                  <button className="btn-delete" onClick={() => handleRemove(admin.id)}>
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </section>
