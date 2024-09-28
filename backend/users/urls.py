@@ -19,6 +19,11 @@ urlpatterns = [
     path('user/', views.user_view, name='user_view'),  # User route
     path('approve-user/<int:user_id>/', views.approve_user, name='approve_user'),
     path('activate-user/<int:user_id>/', activate_user, name='activate-user'),
+    path('organizations/', views.organizations_list, name='organizations'),
+    path('branches/', views.branches_list, name='branches'),
+    path('courses/', views.courses_list, name='courses'),
+
+
 
 
 ]

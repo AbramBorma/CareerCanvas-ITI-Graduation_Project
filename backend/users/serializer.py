@@ -149,3 +149,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+class OrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = '__all__'  
+        
+class BranchSerializer(serializers.Serializer):
+    value = serializers.CharField()
+    label = serializers.CharField()
+
+class CourseSerializer(serializers.Serializer):
+    value = serializers.CharField()
+    label = serializers.CharField()

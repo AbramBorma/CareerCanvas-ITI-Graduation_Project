@@ -15,8 +15,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 
-from users.models import Organization, Profile, User
-from users.serializer import MyTokenObtainPairSerializer, RegisterSerializer, PasswordResetSerializer, SetNewPasswordSerializer
+from users.models import Branch, Course, Organization, Profile, User
+from users.serializer import MyTokenObtainPairSerializer, OrganizationSerializer, RegisterSerializer, PasswordResetSerializer, SetNewPasswordSerializer
 from users.permissions import IsAdmin, IsEmployee, IsUser
 
 
@@ -251,4 +251,38 @@ def activate_user(request, user_id):
     except User.DoesNotExist:
         return Response({'error': 'User not found'}, status=404)
     
+# class OrganizationListView(APIView):
+#     def get(self, request):
+#         organizations = Organization.objects.all()   
+#         serializer = OrganizationSerializer(organizations, many=True)  
+#         return Response(serializer.data)  
+
+# class BranchListView(APIView):
+#     def get(self, request):
+#         branches = Branch.choices 
+#         data = [{"value": branch[0], "label": branch[1]} for branch in branches]  
+#         return Response(data)
+
+# class CourseListView(APIView):
+#     def get(self, request):
+#         courses = Course.choices  
+#         data = [{"value": course[0], "label": course[1]} for course in courses]  
+#         return Response(data)
     
+@api_view(['GET'])
+def organizations_list(request):
+    organizations = Organization.objects.all()
+    data = [{'id': org.id, 'name': org.name} for org in organizations]
+    return Response(data)
+
+@api_view(['GET'])
+def branches_list(request):
+    branches = Branch.objects.all()
+    data = [{'id': branch.id, 'name': branch.name} for branch in branches]
+    return Response(data)
+
+@api_view(['GET'])
+def courses_list(request):
+    courses = Course.objects.all()  # استخدم Course بدلاً من Track
+    data = [{'id': course.id, 'label': course.name, 'value': course.id} for course in courses]
+    return Response(data)
