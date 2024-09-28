@@ -36,6 +36,5 @@ urlpatterns = [
     path('organizations/', views.organizations_list, name='organizations'),
     path('branches/', views.branches_list, name='branches'),
     path('courses/', views.courses_list, name='courses'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  # إضافة هذا السطر
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),  # إضافة هذا السطر
-]
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'), 
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),  ]
