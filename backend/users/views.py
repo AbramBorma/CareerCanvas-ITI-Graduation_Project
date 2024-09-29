@@ -60,8 +60,6 @@ class RegisterView(generics.CreateAPIView):
             print(f"Profile for user {user.username} already exists.")
 
 
-
-
 # Get All Routes
 @api_view(['GET'])
 def getRoutes(request):
@@ -71,9 +69,6 @@ def getRoutes(request):
         '/api/token/refresh/',
     ]
     return Response(routes)
-
-
-
 
 
 @api_view(['GET', 'POST'])
@@ -87,9 +82,6 @@ def testEndPoint(request):
         data = f'Congratulations, your API just responded to a POST request with text: {text}'
         return Response({'response': data}, status=status.HTTP_200_OK)
     return Response({}, status.HTTP_400_BAD_REQUEST)
-
-
-
 
 class PasswordResetView(APIView):
     def post(self, request, *args, **kwargs):
@@ -111,10 +103,6 @@ class PasswordResetView(APIView):
             return Response({'message': 'Password reset email sent.'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
-
 class PasswordResetConfirmView(APIView):
     def post(self, request, uidb64, token, *args, **kwargs):
         try:
@@ -130,12 +118,7 @@ class PasswordResetConfirmView(APIView):
                 return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid link or expired.'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
 token_generator = PasswordResetTokenGenerator()
-
-
 
 @api_view(['POST'])
 def send_password_reset_email(request):
@@ -158,8 +141,6 @@ def send_password_reset_email(request):
     except User.DoesNotExist:
         return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-
-
 @api_view(['POST'])
 def reset_password_confirm(request, uidb64, token):
     try:
@@ -176,8 +157,6 @@ def reset_password_confirm(request, uidb64, token):
 
     except User.DoesNotExist:
         return Response({'error': 'Invalid user'}, status=status.HTTP_404_NOT_FOUND)
-
-
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -200,8 +179,7 @@ def testEndPoint(request):
         text = "Hello "
         data = f'Congratulations, your API just responded to a POST request with text: {text}'
         return Response({'response': data}, status=status.HTTP_200_OK)
-    
-    
+       
 @api_view(['GET'])
 @permission_classes([IsAdmin])
 def admin_view(request):
@@ -249,25 +227,7 @@ def activate_user(request, user_id):
         return Response({'message': 'User activated successfully'}, status=200)
     except User.DoesNotExist:
         return Response({'error': 'User not found'}, status=404)
-    
-# class OrganizationListView(APIView):
-#     def get(self, request):
-#         organizations = Organization.objects.all()   
-#         serializer = OrganizationSerializer(organizations, many=True)  
-#         return Response(serializer.data)  
-
-# class BranchListView(APIView):
-#     def get(self, request):
-#         branches = Branch.choices 
-#         data = [{"value": branch[0], "label": branch[1]} for branch in branches]  
-#         return Response(data)
-
-# class CourseListView(APIView):
-#     def get(self, request):
-#         courses = Course.choices  
-#         data = [{"value": course[0], "label": course[1]} for course in courses]  
-#         return Response(data)
-    
+        
 @api_view(['GET'])
 def organizations_list(request):
     organizations = Organization.choices
