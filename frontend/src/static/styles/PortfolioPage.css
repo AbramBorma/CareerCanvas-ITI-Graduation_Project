@@ -43,8 +43,8 @@ h3 {
 
 .profile-pic {
     border-radius: 50%;
-    width: 160px;
-    height: 160px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
 }
 
@@ -74,11 +74,11 @@ h3 {
 }
 
 .user-name {
-    margin-top: 10px;
+    margin-top: 20px;
     font-size: 28px;
     font-weight: bold;
     text-align: center;
-    color: #002346;
+    color: #112b46;
 }
 
 .social-icon {
@@ -88,14 +88,24 @@ h3 {
     margin-right: 20px;
 }
 
+.enhanced-text p {
+    font-size: 18px;
+    color: #244464;
+    font-weight: 500;
+    margin: 8px 0;
+}
+
+.enhanced-text span {
+    color: #002346;
+    font-weight: bold;
+}
+
 .box-divider {
-    position: relative;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background-color: #ddd;
-    height: 80%;
-    margin: 0 50px;
+    width: 3px;
+    background-color: #000;
+    height: 100%;
+    margin: 0 30px;
+    opacity: 1;
 }
 
 .dummy-data {
@@ -104,19 +114,64 @@ h3 {
     color: #002346;
 }
 
+.github-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.github-stats-row {
+    display: flex;
+    gap: 150px;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.stat-box label {
+    font-size: 18px;
+    color: #244464;
+    margin-bottom: 10px;
+}
+
+img {
+    max-width: 100%;
+}
+
 .skill {
     margin-bottom: 10px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    color: #244464;
+    align-items: center;
+}
+
+.skill label {
+    width: 150px;
+    margin-right: 10px;
+    margin-left: -40px;
+    font-size: 16px;
+    text-align: right;
+    color: #002346;
 }
 
 .progress-bar {
-    width: 70%;
+    width: calc(100% - 190px);
     height: 8px;
     border-radius: 4px;
-    background-color: #03274b;
+    background-color: #e0e0e0;
+}
+
+.progress-bar::-webkit-progress-value {
+    background-color: #002346;
+}
+
+progress::-moz-progress-bar {
+    background-color: #002346;
 }
 
 @media screen and (max-width: 768px) {
