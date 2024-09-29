@@ -179,7 +179,7 @@ const RegisterPage = () => {
                             </select>
                         </div>
                         <div className="form-row">
-                            <label htmlFor="course">COURSE</label>
+                            <label htmlFor="course">Track</label>
                             <select
                                 name="course"
                                 id="course"

@@ -9,6 +9,7 @@ import CodeEditor from './components/CodeEditor';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 
+
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -30,3 +31,16 @@ function App() {
 }
 
 export default App;
+
+// import React from 'react';
+// import EditProfile from './components/EditProfile'; 
+
+// function App() {
+//   return (
+//     <div className="App">
+//       <EditProfile /> 
+//     </div>
+//   );
+// }
+
+// export default App;

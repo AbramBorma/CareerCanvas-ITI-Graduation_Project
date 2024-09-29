@@ -4,6 +4,7 @@ import '../static/styles/EditProfile.css';
 const EditProfile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null); // New state for image upload
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -13,24 +14,35 @@ const EditProfile = () => {
     setShowNewPassword(!showNewPassword);
   };
 
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
   return (
     <div className="edit-profile">
       {/* User Profile Section */}
       <div className="box user-info-box">
         <h3>User Profile</h3>
-        <div className="profile-pic-container">
-          <img
-            src="https://via.placeholder.com/150"
-            alt="Profile"
-            className="profile-pic"
-          />
-          <div className="change-photo-overlay">
-            <button className="change-photo-btn">Change photo</button>
+        <div className="profile-pic-section">
+          <div className="profile-pic-container">
+            <img
+              src={selectedFile ? URL.createObjectURL(selectedFile) : "https://via.placeholder.com/150"}
+              alt="Profile"
+              className="profile-pic"
+            />
+            <div className="change-photo-overlay">
+              <label className="change-photo-text">
+                <input type="file" onChange={handleFileChange} style={{ display: 'none' }} />
+                Change profile
+              </label>
+            </div>
+          </div>
+          <div className="user-info-fields">
+            <input type="text" placeholder="Username" />
+            <input type="text" placeholder="Full Name" />
+            <input type="email" placeholder="Email" />
           </div>
         </div>
-        <input type="text" placeholder="Username" />
-        <input type="text" placeholder="Full Name" />
-        <input type="email" placeholder="Email" />
       </div>
 
       {/* Dashboard Links Section */}
@@ -40,6 +52,7 @@ const EditProfile = () => {
         <input type="url" placeholder="LinkedIn" />
         <input type="url" placeholder="LeetCode" />
         <input type="url" placeholder="HackerRank" />
+        <button className="progress-btn">Progress</button> {/* New Progress button */}
       </div>
 
       {/* Skills Section */}

@@ -6,7 +6,11 @@
     justify-content: space-around;
     align-items: center;
 }
-.logo, .internal-links, .external-links, .subscribe {
+
+.logo,
+.internal-links,
+.external-links,
+.subscribe {
     height: 180px;
     padding: 0;
     margin: 0;
@@ -15,49 +19,69 @@
     justify-content: flex-start;
     align-items: flex-start;
 }
-.logo p, .internal-links p, .external-links p, .subscribe p {
+
+.logo p,
+.internal-links p,
+.external-links p,
+.subscribe p {
     text-transform: uppercase;
     font-size: 1rem;
     font-weight: bold;
 }
-.internal-links ul, .external-links ul {
+
+.internal-links ul,
+.external-links ul {
     text-align: left;
     padding: 0;
     list-style: none;
     margin: 0;
 }
+
 .external-links ul {
     text-align: center;
 }
-.internal-links ul .il-linl, .external-links ul .il-linl {
+
+.internal-links ul .il-linl,
+.external-links ul .il-linl {
     margin-bottom: 5px;
 }
-.internal-links ul .il-linl a, .external-links ul .il-linl a {
+
+.internal-links ul .il-linl a,
+.external-links ul .il-linl a {
     text-decoration: none;
     color: white;
 }
-.internal-links ul .il-linl a:hover, .external-links ul .il-linl a:hover {
+
+.internal-links ul .il-linl a:hover,
+.external-links ul .il-linl a:hover {
     text-decoration: none;
     color: #108ea1;
 }
+
 .subscribe form {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
+
 .subscribe form input {
-    width: 100%; /* Full width of the container */
+    width: 100%;
+    /* Full width of the container */
     padding: 15px 10px;
     border-radius: 8px;
-    margin-bottom: 10px; /* Space between input and button */
+    margin-bottom: 10px;
+    /* Space between input and button */
     box-sizing: border-box;
 }
+
 .subscribe form input::placeholder {
     font-style: italic;
     font-size: 0.75rem;
 }
+
 .subscribe form .cta-button-borma {
-    width: 50%; /* Full width of the container */
+    width: 50%;
+    /* Full width of the container */
     margin: 5px auto;
     padding: 10px;
     color: white;
@@ -67,6 +91,8 @@
     cursor: pointer;
     box-sizing: border-box;
 }
+
 .subscribe form .cta-button-borma:hover {
-    background-color: #4097e1; /* Darker on hover */
+    background-color: #4097e1;
+    /* Darker on hover */
 }
