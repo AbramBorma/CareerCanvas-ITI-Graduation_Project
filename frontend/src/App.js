@@ -10,6 +10,7 @@ import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import OrganizationDashboard from './components/organizationdashboard'; 
 
+
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
         <Route path="/register" element={<Registerpage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        <Route path="/ResetPassword" element={<ResetPassword />} />
+        <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
         <Route path="/exams" element={<Exams />} />
         <Route path="/exams/:subject" element={<Exam />} />
         <Route path="/monaco/:subject" element={<CodeEditor />} />
@@ -32,3 +33,16 @@ function App() {
 }
 
 export default App;
+
+// import React from 'react';
+// import PortfolioPage from './components/portfolioPage'; 
+
+// const App = () => {
+//   return (
+//     <div>
+//       <PortfolioPage />
+//     </div>
+//   );
+// };
+
+// export default App;

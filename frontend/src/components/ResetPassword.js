@@ -8,13 +8,16 @@ const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
 
+    console.log("UID:", uid);
+    console.log("Token:", token);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/users/reset-password-confirm/${uid}/${token}/`, {
+            const response = await axios.post(`http://127.0.0.1:8000/reset-password-confirm/${uid}/${token}/`, {
                 new_password: newPassword,
             });
-            setMessage(response.data.message);
+            setMessage(response.data.message || 'Password reset successful!');
         } catch (error) {
             setMessage('Error resetting password.');
         }
