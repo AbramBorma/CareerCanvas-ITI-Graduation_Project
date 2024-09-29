@@ -58,6 +58,34 @@ body {
     background-color: #00b359; 
 }
 
+/* Active Button */
+.btn-activate {
+    background-color: #007bff; /* Blue background for activate button */
+    color: #fff; 
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 5px; /* Add margin for spacing */
+}
+
+.btn-activate:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Deactivate Button */
+.btn-deactivate {
+    background-color: #ff7043; /* Soft orange background for deactivate button */
+    color: #fff; 
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 5px; /* Add margin for spacing */
+}
+
+.btn-deactivate:hover {
+    background-color: #ff5722; /* Darker orange on hover */
+}
+
 /* Table Section */
 .admin-table {
     background-color: #fff; /* White background */
@@ -94,7 +122,6 @@ tbody tr {
 tbody td {
     padding: 10px;
 }
-
 
 .btn-delete {
     background-color: #ff4c4c; 
