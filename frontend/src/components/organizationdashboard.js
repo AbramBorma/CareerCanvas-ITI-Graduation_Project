@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './organizationdashboard.css';
 
-
 const OrganizationDashboard = () => {
   // State for managing admins
   const [admins, setAdmins] = useState([
@@ -42,6 +41,20 @@ const OrganizationDashboard = () => {
     setAdmins(admins.filter(admin => admin.id !== id));
   };
 
+  // Activate admin by ID
+  const handleActivate = (id) => {
+    setAdmins(admins.map(admin => 
+      admin.id === id ? { ...admin, status: 'Active' } : admin
+    ));
+  };
+
+  // Deactivate admin by ID
+  const handleDeactivate = (id) => {
+    setAdmins(admins.map(admin => 
+      admin.id === id ? { ...admin, status: 'Inactive' } : admin
+    ));
+  };
+
   return (
     <div className="dashboard">
       {/* Form Section */}
@@ -62,7 +75,7 @@ const OrganizationDashboard = () => {
               ))}
             </select>
           </div>
-          <button type="submit" className="btn-submit">+ Create</button>
+          <button type="submit" className="btn-submit">+ Add</button>
         </form>
       </section>
 
@@ -90,6 +103,15 @@ const OrganizationDashboard = () => {
                   <button className="btn-delete" onClick={() => handleRemove(admin.id)}>
                     Remove
                   </button>
+                  {admin.status === 'Inactive' ? (
+                    <button className="btn-activate" onClick={() => handleActivate(admin.id)}>
+                      Activate
+                    </button>
+                  ) : (
+                    <button className="btn-deactivate" onClick={() => handleDeactivate(admin.id)}>
+                      Deactivate
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
