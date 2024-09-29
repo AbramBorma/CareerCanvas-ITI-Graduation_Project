@@ -21,69 +21,6 @@ const LANGUAGE_VERSIONS = {
 
 
 
-
-
-
-const template = `
-/*
-Complete the function solveMeFirst to compute the sum of two integers.
-
-Example
-a=7
-b=3
-Return 10
-
-Function Description
-Complete the solveMeFirst function in the editor below.
-solveMeFirst has the following parameters:
-int a: the first value
-int b: the second value
-Returns
-- int: the sum of  and 
-  useEffect(()=>{
-    if(window){
-     window.onblur = ()=> console.log('submiteddddddddddd')
-    }
-},[])
-Constraints
-1<=a,b<=1000
-
-Sample Input
-a = 2
-b = 3
-Sample Output
-5
-
-*/
-
-
-
-function solveMeFirst(a, b) {
-  // Hint: Type return a+b below   
-}
-
-
-function main() {
-    var a = INPUT
-    var b = INPUT
-
-    var res = solveMeFirst(a, b);
-    console.log(res);
-}
-
-main()
-
-`
-
-// let test =`{
-// "list":[1,2,3,5],
-// "num":5,
-// "textnum":"5",
-// "text":"adadd"
-// }
-// `
-
-
 const CodeEditor = () => {
   const editorRef = useRef();
   const { subject } = useParams();
@@ -132,27 +69,34 @@ const CodeEditor = () => {
     }
 
 
-    if (window) {
-      window.onblur = () => console.log('submiteddddddddddd')
-    }
+
     // const timer = setInterval(() => {
-    //   setTimeLeft((prevTime) => {
-    //     if (prevTime <= 0) {
-    //       clearInterval(timer);
-    //       // handleSubmit(); // Automatically submit when time is up
-    //       return 0;
-    //     }
-    //     return prevTime - 1;
-    //   });
-    // }, 1000);
+      //   setTimeLeft((prevTime) => {
+        //     if (prevTime <= 0) {
+          //       clearInterval(timer);
+          //       // handleSubmit(); // Automatically submit when time is up
+          //       return 0;
+          //     }
+          //     return prevTime - 1;
+          //   });
+          // }, 1000);
+          
+          // return () => clearInterval(timer);
+          
+          if (LANGUAGE_VERSIONS[subject] != undefined) {
+            setLanguage(subject)
+            
+          }
 
-    // return () => clearInterval(timer);
+        }, [])
 
-    if (LANGUAGE_VERSIONS[subject] != undefined) {
-      setLanguage(subject)
-
-    }
-  }, [])
+        useEffect(() => {
+          if (window) {
+              window.onblur = () => console.log('cheating')
+            }
+  
+            return () => {window.onblur = null;  };
+      }, []);
 
   // test=JSON.parse(test)
   // console.log(test)
@@ -192,20 +136,26 @@ const CodeEditor = () => {
         console.log(res);
         const newOutput = res.data.run.output.split("\n");
         setOutput(newOutput);
-        console.log(eval(newOutput[0]))
+        // console.log(eval(newOutput[0]))
         setIsLoading(false);
-        console.log(outp)
+        // console.log(outp)
         // const outtest= output[0].replace(/\s/g, '');
-        console.log(newOutput.length)
+        // console.log(newOutput.length)
         if (newOutput.length >= 1) {
-          if (eval(newOutput[0]).toString() === outp.toString()) return 1
-          else return 0
+          if(inp == runcase){
+          if (eval(newOutput[0]).toString() === outp.toString()){setRunstate(true); return 1}
+          else {setRunstate(false) ;return 0}
+          }else{
+            if (eval(newOutput[0]).toString() === outp.toString()) return 1
+            else return 0
+          }
         }
         return 0
-        setRunstate(true)
+        
       }).catch(error => {
         console.log(error);
-        setRunerorr(true)
+        // setRunerorr(true)
+        setRunstate(false)
         setIsLoading(false);
         return 0
 
@@ -268,6 +218,7 @@ const CodeEditor = () => {
     alert(`Exam submitted! Your score: ${result.score}`);
 } catch (error) {
     console.error('Error submitting exam:', error);
+    setIsLoadings(false);
 }
   
     setIsLoadings(false);
@@ -334,12 +285,12 @@ const CodeEditor = () => {
           (<div className="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Holy guacamole!</strong> You should check in on some of those fields below.
             <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>)
-      :(runstate? 
+          </div>): */}
+      {runstate? 
       (<div className="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>):<></>)} */}
+        <strong>Well done!</strong> You passed the fist test case.
+        {/* <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> */}
+      </div>):<></>}
     </div>
   );
 };

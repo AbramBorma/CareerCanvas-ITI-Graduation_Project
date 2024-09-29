@@ -75,6 +75,10 @@ const Exam = () => {
 
         fetchQuestions();
 
+
+
+
+
         const timer = setInterval(() => {
             setTimeLeft((prevTime) => {
                 if (prevTime <= 0) {
@@ -88,6 +92,16 @@ const Exam = () => {
 
         return () => clearInterval(timer);
     }, [subject]);
+
+
+    useEffect(() => {
+        if (window) {
+            window.onblur = () => alert('cheating')
+          }
+
+          return () => {window.onblur = null;  };
+    }, []);
+
 
     const handleAnswerChange = (questionId, answerId) => {
         setSelectedAnswers((prev) => ({
