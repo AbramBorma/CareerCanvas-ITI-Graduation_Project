@@ -18,37 +18,55 @@ const OrganizationDashboard = () => {
 
   // Function to approve admin request
   const handleApprove = (id) => {
-    setAdminRequests(adminRequests.map(admin =>
-      admin.id === id ? { ...admin, status: 'Active' } : admin
-    ));
+    const confirmApprove = window.confirm("Are you sure you want to approve this request?");
+    if (confirmApprove) {
+      setAdminRequests(adminRequests.map(admin =>
+        admin.id === id ? { ...admin, status: 'Active' } : admin
+      ));
+    }
   };
 
   // Function to decline admin request
   const handleDecline = (id) => {
-    setAdminRequests(adminRequests.filter(admin => admin.id !== id));
+    const confirmDecline = window.confirm("Are you sure you want to decline this request?");
+    if (confirmDecline) {
+      setAdminRequests(adminRequests.filter(admin => admin.id !== id));
+    }
   };
 
   // Function to remove admin
   const handleRemove = (id) => {
-    setAdminRequests(adminRequests.filter(admin => admin.id !== id));
+    const confirmRemove = window.confirm("Are you sure you want to remove this admin?");
+    if (confirmRemove) {
+      setAdminRequests(adminRequests.filter(admin => admin.id !== id));
+    }
   };
 
   // Function to deactivate admin
   const handleDeactivate = (id) => {
-    setAdminRequests(adminRequests.map(admin =>
-      admin.id === id ? { ...admin, status: 'Inactive' } : admin
-    ));
+    const confirmDeactivate = window.confirm("Are you sure you want to deactivate this admin?");
+    if (confirmDeactivate) {
+      setAdminRequests(adminRequests.map(admin =>
+        admin.id === id ? { ...admin, status: 'Inactive' } : admin
+      ));
+    }
   };
 
   // Function to activate admin
   const handleActivate = (id) => {
-    setAdminRequests(adminRequests.map(admin =>
-      admin.id === id ? { ...admin, status: 'Active' } : admin
-    ));
+    const confirmActivate = window.confirm("Are you sure you want to activate this admin?");
+    if (confirmActivate) {
+      setAdminRequests(adminRequests.map(admin =>
+        admin.id === id ? { ...admin, status: 'Active' } : admin
+      ));
+    }
   };
 
   return (
     <div className="dashboard">
+      {/* Welcome Message */}
+      <div className="welcome-message">Welcome, Admin!</div>
+
       {/* Search bar */}
       <section className="search-bar">
         <input
