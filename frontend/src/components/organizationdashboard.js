@@ -2,123 +2,122 @@ import React, { useState } from 'react';
 import './organizationdashboard.css';
 
 const OrganizationDashboard = () => {
-  // State for managing admins
-  const [admins, setAdmins] = useState([
-    { id: 1, track: 'Open-Source', supervisor: 'Mina Nagy', status: 'Active' },
-    { id: 2, track: 'Cybersecurity', supervisor: 'Ahmed', status: 'Inactive' }
+  // State for managing admin requests (Pending Approval)
+  const [adminRequests, setAdminRequests] = useState([
+    { id: 1, fullname: 'Mina Nagy', branch: 'Open Source', status: 'Pending' },
+    { id: 2, fullname: 'Ahmed', branch: 'Mobile App', status: 'Pending' }
   ]);
 
-  // Predefined list of supervisors
-  const supervisors = ['Mina Nagy', 'Ahmed', 'Omar Mosleh', 'Yahya Momtaz'];
+  // State for managing search
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // State for the selected supervisor
-  const [selectedSupervisor, setSelectedSupervisor] = useState('');
+  // Filter admins by search query
+  const filteredAdmins = adminRequests.filter((admin) =>
+    admin.fullname.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  // Function to handle creating a new admin
-  const handleCreateAdmin = (e) => {
-    e.preventDefault();
-    if (!selectedSupervisor) {
-      alert("Please select a supervisor.");
-      return;
-    }
-
-    // Add new admin to the list
-    const newAdmin = {
-      id: admins.length + 1,
-      track: 'N/A',   // As no track selection remains
-      supervisor: selectedSupervisor,
-      status: 'Active'
-    };
-
-    setAdmins([...admins, newAdmin]);
-
-    // Reset the supervisor dropdown
-    setSelectedSupervisor('');
-  };
-
-  // Remove admin by ID
-  const handleRemove = (id) => {
-    setAdmins(admins.filter(admin => admin.id !== id));
-  };
-
-  // Activate admin by ID
-  const handleActivate = (id) => {
-    setAdmins(admins.map(admin => 
+  // Function to approve admin request
+  const handleApprove = (id) => {
+    setAdminRequests(adminRequests.map(admin =>
       admin.id === id ? { ...admin, status: 'Active' } : admin
     ));
   };
 
-  // Deactivate admin by ID
+  // Function to decline admin request
+  const handleDecline = (id) => {
+    setAdminRequests(adminRequests.filter(admin => admin.id !== id));
+  };
+
+  // Function to remove admin
+  const handleRemove = (id) => {
+    setAdminRequests(adminRequests.filter(admin => admin.id !== id));
+  };
+
+  // Function to deactivate admin
   const handleDeactivate = (id) => {
-    setAdmins(admins.map(admin => 
+    setAdminRequests(adminRequests.map(admin =>
       admin.id === id ? { ...admin, status: 'Inactive' } : admin
+    ));
+  };
+
+  // Function to activate admin
+  const handleActivate = (id) => {
+    setAdminRequests(adminRequests.map(admin =>
+      admin.id === id ? { ...admin, status: 'Active' } : admin
     ));
   };
 
   return (
     <div className="dashboard">
-      {/* Form Section */}
-      <section className="add-admin-form">
-        <h2>Add a New Admin</h2>
-        <form onSubmit={handleCreateAdmin}>
-          <div className="form-group">
-            <label htmlFor="supervisor">Select Supervisor:</label>
-            <select
-              id="supervisor"
-              value={selectedSupervisor}
-              onChange={(e) => setSelectedSupervisor(e.target.value)}
-              className="input-field"
-            >
-              <option value="">-- Select Supervisor --</option>
-              {supervisors.map((supervisor, index) => (
-                <option key={index} value={supervisor}>{supervisor}</option>
-              ))}
-            </select>
-          </div>
-          <button type="submit" className="btn-submit">+ Add</button>
-        </form>
+      {/* Search bar */}
+      <section className="search-bar">
+        <input
+          type="text"
+          placeholder="Search Admin by Fullname..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="input-field"
+        />
       </section>
 
       {/* Admins Table */}
       <section className="admin-table">
-        <h2>Admins</h2>
+        <h2>Admin Requests</h2>
         <table>
           <thead>
             <tr>
               <th>ID</th>
-              <th>Track</th>
-              <th>Supervisor Name</th>
+              <th>Fullname</th>
+              <th>Branch</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {admins.map(admin => (
-              <tr key={admin.id}>
-                <td>{admin.id}</td>
-                <td>{admin.track}</td>
-                <td>{admin.supervisor}</td>
-                <td>{admin.status}</td>
-                <td>
-                  <button className="btn-delete" onClick={() => handleRemove(admin.id)}>
-                    Remove
-                  </button>
-                  {admin.status === 'Inactive' ? (
-                    <button className="btn-activate" onClick={() => handleActivate(admin.id)}>
-                      Activate
-                    </button>
-                  ) : (
-                    <button className="btn-deactivate" onClick={() => handleDeactivate(admin.id)}>
-                      Deactivate
-                    </button>
-                  )}
-                </td>
+            {filteredAdmins.length > 0 ? (
+              filteredAdmins.map((admin) => (
+                <tr key={admin.id}>
+                  <td>{admin.id}</td>
+                  <td>{admin.fullname}</td>
+                  <td>{admin.branch}</td>
+                  <td>{admin.status}</td>
+                  <td>
+                    {admin.status === 'Pending' ? (
+                      <>
+                        <button className="btn-approve" onClick={() => handleApprove(admin.id)}>
+                          Approve
+                        </button>
+                        <button className="btn-decline" onClick={() => handleDecline(admin.id)}>
+                          Decline
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button className="btn-delete" onClick={() => handleRemove(admin.id)}>
+                          Remove
+                        </button>
+                        {admin.status === 'Inactive' ? (
+                          <button className="btn-activate" onClick={() => handleActivate(admin.id)}>
+                            Activate
+                          </button>
+                        ) : (
+                          <button className="btn-deactivate" onClick={() => handleDeactivate(admin.id)}>
+                            Deactivate
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5">No admin requests found.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </section>
-
     </div>
   );
 };

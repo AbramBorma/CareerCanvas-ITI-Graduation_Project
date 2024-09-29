@@ -1,8 +1,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #fff; /* White background */
-    color: #000; /* Black text */
+    background-color: #f9f9f9; /* Light grey background for contrast */
+    color: #333; /* Dark grey text for better readability */
 }
 
 .dashboard {
@@ -11,92 +11,32 @@ body {
     padding: 20px;
 }
 
-/* Form Section */
-.add-admin-form {
-    background-color: #fff; /* White background */
-    padding: 20px;
-    border-radius: 10px;
+/* Search Bar */
+.search-bar {
     margin-bottom: 20px;
-    border: 2px solid #000; /* Black border */
-}
-
-.add-admin-form h2 {
-    margin-bottom: 15px;
-    color: #000; /* Black text */
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #000; /* Black text */
 }
 
 .input-field {
     width: 100%;
     padding: 10px;
     border-radius: 8px;
-    border: 2px solid #000; /* Black border */
-    background-color: #fff; /* White background */
-    color: #000; /* Black text */
+    border: 1px solid #333; /* Dark grey border */
+    background-color: #fff;
+    color: #333;
 }
 
-.btn-submit {
-    background-color: #00cc66; 
-    color: #fff; 
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.btn-submit:hover {
-    background-color: #00b359; 
-}
-
-/* Active Button */
-.btn-activate {
-    background-color: #007bff; /* Blue background for activate button */
-    color: #fff; 
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-left: 5px; /* Add margin for spacing */
-}
-
-.btn-activate:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-/* Deactivate Button */
-.btn-deactivate {
-    background-color: #ff7043; /* Soft orange background for deactivate button */
-    color: #fff; 
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-left: 5px; /* Add margin for spacing */
-}
-
-.btn-deactivate:hover {
-    background-color: #ff5722; /* Darker orange on hover */
-}
-
-/* Table Section */
+/* Admin Table Section */
 .admin-table {
-    background-color: #fff; /* White background */
+    background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    border: 2px solid #000; /* Black border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    margin-top: 20px;
 }
 
 .admin-table h2 {
     margin-bottom: 15px;
-    color: #000; /* Black text */
+    color: #333;
 }
 
 table {
@@ -105,32 +45,83 @@ table {
 }
 
 thead {
-    background-color: #000; /* Black background for table headers */
-    color: #fff; /* White text for table headers */
+    background-color: #333; /* Dark grey for header */
+    color: #fff;
 }
 
 thead th {
-    padding: 10px;
+    padding: 12px;
     text-align: left;
 }
 
 tbody tr {
-    background-color: #f2f2f2;
-    color: #000; 
+    background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #e9e9e9; /* Slightly darker for alternating rows */
 }
 
 tbody td {
-    padding: 10px;
+    padding: 12px;
+    color: #333;
 }
 
-.btn-delete {
-    background-color: #ff4c4c; 
-    color: #fff; 
+tbody tr:hover {
+    background-color: #ddd; /* Highlight row on hover */
+}
+
+/* Buttons */
+.btn-approve, .btn-decline, .btn-delete, .btn-activate, .btn-deactivate {
     padding: 8px 12px;
+    border: none;
     border-radius: 6px;
+    color: #fff;
     cursor: pointer;
+    margin-right: 5px; /* Space between buttons */
+}
+
+/* Approve Button */
+.btn-approve {
+    background-color: #00cc66; /* Green for approval */
+}
+
+.btn-approve:hover {
+    background-color: #00994d; /* Darker green on hover */
+}
+
+/* Decline Button */
+.btn-decline {
+    background-color: #ff7043; /* Orange for decline */
+}
+
+.btn-decline:hover {
+    background-color: #ff5722; /* Darker orange on hover */
+}
+
+/* Delete Button */
+.btn-delete {
+    background-color: #ff4c4c; /* Red for delete */
 }
 
 .btn-delete:hover {
-    background-color: #ff3333; 
+    background-color: #ff3333;
+}
+
+/* Activate Button */
+.btn-activate {
+    background-color: #007bff; /* Blue for activate */
+}
+
+.btn-activate:hover {
+    background-color: #0056b3;
+}
+
+/* Deactivate Button */
+.btn-deactivate {
+    background-color: #ff7043; /* Soft orange for deactivate */
+}
+
+.btn-deactivate:hover {
+    background-color: #ff5722;
 }
