@@ -391,3 +391,147 @@ body {
 .reset-password-box .form-row-last .register:hover {
     background: #87ceeb;
 }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #f4f6f9;
+}
+
+.page-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f4f6f9;
+}
+
+.form-v7-content {
+    width: 900px;
+    display: flex;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.form-left {
+    width: 40%;
+    background-image: url('../imgs/form-v7.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.form-left .text-1 {
+    font-size: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-detail {
+    width: 80%;
+    padding: 40px;
+    background-color: #fff;
+}
+
+.form-detail .form-row {
+    margin-bottom: 20px;
+}
+
+.form-detail label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-detail .input-text {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-detail .input-text:focus {
+    border-color: #87ceeb;
+}
+
+.form-detail select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-detail .password-container {
+    position: relative;
+}
+
+.form-detail .password-container i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+}
+
+.form-detail .register {
+    width: 100%;
+    padding: 12px;
+    background-color: #002346;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-detail .register:hover {
+    background-color: #87ceeb;
+}
+
+.form-row-last p {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+.form-row-last a {
+    color: #002346;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.form-row-last a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 991px) {
+    .form-v7-content {
+        flex-direction: column;
+        width: 100%;
+        margin: 20px;
+    }
+    .form-left,
+    .form-detail {
+        width: 100%;
+    }
+    .form-detail {
+        padding: 20px;
+    }
+}

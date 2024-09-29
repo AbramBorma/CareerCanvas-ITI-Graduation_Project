@@ -9,3 +9,7 @@ djangorestframework-simplejwt
 PyJWT
 django-jazzmin
 python-dotenv
+django-extensions
+drf-yasg
+beautifulsoup4
+requests

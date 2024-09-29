@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'jazzmin',
+        'django_extensions',
+            'drf_yasg',
     'django.contrib.admin',
     'django_rest_passwordreset',
     'django.contrib.auth',
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'exams.apps.ExamsConfig',
     'portfolio.apps.PortfolioConfig',
+
     
 ]
 

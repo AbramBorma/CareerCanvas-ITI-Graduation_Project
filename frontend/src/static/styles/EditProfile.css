@@ -17,13 +17,19 @@
 }
 
 h3 {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.profile-pic-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .profile-pic-container {
     position: relative;
     display: inline-block;
-    margin-bottom: 20px;
 }
 
 .profile-pic {
@@ -48,10 +54,9 @@ h3 {
     transition: opacity 0.3s;
 }
 
-.change-photo-btn {
-    background-color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
+.change-photo-text {
+    color: white;
+    font-size: 12px;
     cursor: pointer;
 }
 
@@ -59,11 +64,17 @@ h3 {
     opacity: 1;
 }
 
+.user-info-fields {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 input,
 select {
     margin-bottom: 10px;
     padding: 10px;
-    width: 100%;
+    width: 95%;
     border: 1px solid #ddd;
     border-radius: 4px;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -81,6 +92,12 @@ select:hover {
     width: 100%;
 }
 
+.password-container input {
+    width: 95%;
+    padding-right: 40px;
+    text-align: left;
+}
+
 .show-hide-btn {
     position: absolute;
     right: 10px;
@@ -90,10 +107,13 @@ select:hover {
     border: none;
     color: #002346;
     cursor: pointer;
+    padding: 0;
+    line-height: 1;
 }
 
 .show-hide-btn i {
     font-size: 16px;
+    vertical-align: middle;
 }
 
 .actions {
@@ -108,6 +128,7 @@ select:hover {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease
 }
 
 .save-btn {
@@ -115,6 +136,28 @@ select:hover {
     color: white;
 }
 
+.save-btn:hover {
+    background-color: #003366;
+}
+
 .cancel-btn {
     background-color: lightgray;
+}
+
+.cancel-btn:hover {
+    background-color: gray;
+}
+
+.progress-btn {
+    padding: 10px 20px;
+    background-color: #002346;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.progress-btn:hover {
+    background-color: #003366;
 }
