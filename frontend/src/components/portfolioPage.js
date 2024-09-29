@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import '../static/styles/PortfolioPage.css';
-import githubIcon from '../static/imgs/github.png';
 import hackerrankIcon from '../static/imgs/hackerrank.png';
-import leetcodeIcon from '../static/imgs/leetcode.png';
-import linkedinIcon from '../static/imgs/linkedin.png';
+import Navbar from "./NavBar"
+import Footer from "./Footer"
+
 
 const PortfolioPage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -30,51 +30,24 @@ const PortfolioPage = () => {
           </div>
         </div>
         <div className="user-name centered-text">
-          Mariam
+          Mariam Abdelmagied
         </div>
       </div>
 
-      {/* Social Links Section */}
+      {/* GitHub Section */}
       <div className="box github-box">
         <h3>GitHub</h3>
         <div className="box-content">
-          <img src={githubIcon} alt="GitHub Icon" className="social-icon" />
-          <div className="box-divider"></div>
-          <div className="dummy-data">
-            <p>Repositories: 14</p>
-            <p>Commits: 200</p>
-            <p>Followers: 120</p>
-            <p>Following: 80</p>
-          </div>
-        </div>
-      </div>
-      
-      <div className="box linkedin-box">
-        <h3>LinkedIn</h3>
-        <div className="box-content">
-          <img src={linkedinIcon} alt="LinkedIn Icon" className="social-icon" />
-          <div className="box-divider"></div>
-          <div className="dummy-data">
-            <p>Connections: 500+</p>
-            <p>Posts: 30</p>
-            <p>Profile Views: 150</p>
+          <div className="github-stats">
+            <img src="https://github-readme-stats.vercel.app/api?username=mariamabdk3m&show_icons=true&theme=radical" alt="GitHub Stats" />
+            <img src="https://github-readme-streak-stats.herokuapp.com/?user=mariamabdk3m&theme=radical" alt="GitHub Streak" />
+            <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=mariamabdk3m&layout=compact&theme=radical" alt="Most Used Languages" />
+            <img src="https://github-profile-trophy.vercel.app/?username=mariamabdk3m&theme=radical&no-frame=true&column=7" alt="GitHub Trophies" />
           </div>
         </div>
       </div>
 
-      <div className="box leetcode-box">
-        <h3>LeetCode</h3>
-        <div className="box-content">
-          <img src={leetcodeIcon} alt="LeetCode Icon" className="social-icon" />
-          <div className="box-divider"></div>
-          <div className="dummy-data">
-            <p>Problems Solved: 100</p>
-            <p>Rank: 1500</p>
-            <p>Contests Participated: 5</p>
-          </div>
-        </div>
-      </div>
-
+      {/* HackerRank Section */}
       <div className="box hackerrank-box">
         <h3>HackerRank</h3>
         <div className="box-content">
@@ -90,7 +63,7 @@ const PortfolioPage = () => {
 
       {/* Skills Progress Section */}
       <div className="box skills-progress-box">
-        <h3> Progress</h3>
+        <h3>Progress</h3>
         <div className="skill">
           <label>Javascript</label>
           <progress value="70" max="100" className="progress-bar"></progress>
@@ -103,7 +76,6 @@ const PortfolioPage = () => {
           <label>NodeJS</label>
           <progress value="30" max="100" className="progress-bar"></progress>
         </div>
-
       </div>
     </div>
   );

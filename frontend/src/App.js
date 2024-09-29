@@ -9,7 +9,7 @@ import CodeEditor from './components/CodeEditor';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import OrganizationDashboard from './components/organizationdashboard'; 
-
+import PortfolioPage from './components/portfolioPage'; 
 
 import { AuthProvider } from './context/AuthContext';
 
@@ -19,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/portfolio/form" element={<PortfolioForm />} />
+        <Route path="/portfolio" element={<PortfolioPage />} /> 
         <Route path="/register" element={<Registerpage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
@@ -35,12 +36,12 @@ function App() {
 export default App;
 
 // import React from 'react';
-// import GitHubStats from './components/GitHubStats'; 
+// import PortfolioPage from './components/portfolioPage';
 
 // const App = () => {
 //   return (
 //     <div>
-//       <GitHubStats />
+//       <PortfolioPage />
 //     </div>
 //   );
 // };
