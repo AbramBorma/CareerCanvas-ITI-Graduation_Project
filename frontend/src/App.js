@@ -33,14 +33,14 @@ function App() {
 export default App;
 
 // import React from 'react';
-// import EditProfile from './components/EditProfile'; 
+// import PortfolioPage from './components/portfolioPage'; 
 
-// function App() {
+// const App = () => {
 //   return (
-//     <div className="App">
-//       <EditProfile /> 
+//     <div>
+//       <PortfolioPage />
 //     </div>
 //   );
-// }
+// };
 
 // export default App;

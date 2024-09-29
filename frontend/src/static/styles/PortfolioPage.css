@@ -1,0 +1,133 @@
+.portfolio-page {
+    padding: 70px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 60%;
+    margin: 20px auto;
+}
+
+.box {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    position: relative;
+}
+
+.box-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+}
+
+h3 {
+    margin-bottom: 30px;
+    text-align: left;
+    color: #002346;
+}
+
+.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-pic-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+}
+
+.change-photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.change-photo-text {
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.profile-pic-container:hover .change-photo-overlay {
+    opacity: 1;
+}
+
+.user-name {
+    margin-top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #002346;
+}
+
+.social-icon {
+    width: 350px;
+    height: 250px;
+    object-fit: contain;
+    margin-right: 20px;
+}
+
+.box-divider {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ddd;
+    height: 80%;
+    margin: 0 50px;
+}
+
+.dummy-data {
+    margin-left: 20px;
+    font-size: 20px;
+    color: #002346;
+}
+
+.skill {
+    margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    color: #244464;
+}
+
+.progress-bar {
+    width: 70%;
+    height: 8px;
+    border-radius: 4px;
+    background-color: #03274b;
+}
+
+@media screen and (max-width: 768px) {
+    .portfolio-page {
+        width: 90%;
+    }
+    .social-icon {
+        width: 80px;
+        height: 80px;
+    }
+    .dummy-data {
+        font-size: 16px;
+    }
+}
