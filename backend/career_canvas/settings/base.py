@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'exams.apps.ExamsConfig',
     'portfolio.apps.PortfolioConfig',
+
     
 ]
 
