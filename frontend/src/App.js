@@ -33,12 +33,12 @@ function App() {
 export default App;
 
 // import React from 'react';
-// import PortfolioPage from './components/portfolioPage'; 
+// import GitHubStats from './components/GitHubStats'; 
 
 // const App = () => {
 //   return (
 //     <div>
-//       <PortfolioPage />
+//       <GitHubStats />
 //     </div>
 //   );
 // };
