@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams ,useNavigate} from 'react-router-dom';
 import '../static/styles/ExamStyles.css';
-import { getQuestions } from '../services/api';
+import { getQuestions,submitExam } from '../services/api';
 
 
-
+const coding = {
+    javascript: "javascript",
+    reactjs: "javascript",
+    nodejs: "javascript",
+    python: "python",
+    django: "python",
+    flask: "python",
+    java: "java",
+    php: "php",
+    laravel: "php",
+    linux: "bash",
+  };
 
 
 const Exam = () => {
@@ -12,12 +23,13 @@ const Exam = () => {
     const [timeLeft, setTimeLeft] = useState(900); // 15 minutes = 900 seconds
     const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getRandomQuestions = async () => {
             const reseasy = await getQuestions(subject, "easy");
-            const resmed = await getQuestions(subject, "medium");
-            const reshard = await getQuestions(subject, "hard");
+            const resmed = await getQuestions(subject, "intermediate");
+            const reshard = await getQuestions(subject, "advanced");
 
             const subjectQuestions = {
                 easy: reseasy.data,
@@ -88,23 +100,30 @@ const Exam = () => {
         const userAnswers = {
             subject_id: subject,
             answers: selectedAnswers,
+            user_email:"mahmoud@gmail.com"
         };
-
+        
+        const code=coding[subject]
+        if(code){
+            navigate(`/monaco/${code}`, { state: { userAnswers } });
+        }else{
         try {
             console.log(userAnswers);
-            const response = await fetch('http://127.0.0.1:8000/exams/api/exams/submit/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userAnswers),
-            });
-
-            const result = await response.json();
+            // const response = await fetch('http://127.0.0.1:8000/exams/submit/', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(userAnswers),
+            // });
+            const response=await submitExam(JSON.stringify(userAnswers))
+            console.log(response)
+            const result = await response.data;
             alert(`Exam submitted! Your score: ${result.score}`);
         } catch (error) {
             console.error('Error submitting exam:', error);
         }
+    }
     };
 
     return (

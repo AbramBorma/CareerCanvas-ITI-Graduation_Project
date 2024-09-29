@@ -1,21 +1,21 @@
 from rest_framework import serializers
-from .models import Exam, Question, ExamResult
+from .models import Subject, Question, Exam
 
-class AnswerSerializer(serializers.ModelSerializer):
+class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ExamResult
-        fields = '__all__'
+        model = Subject
+        fields = ['id', 'name']
 
 class QuestionSerializer(serializers.ModelSerializer):
-    answers = AnswerSerializer(many=True)
+    subject = SubjectSerializer()
 
     class Meta:
         model = Question
-        fields = ['id', 'text', 'answers']
+        fields = ['id', 'subject', 'question_text', 'level', 'option1', 'option2', 'option3', 'option4', 'correct_answer']
 
 class ExamSerializer(serializers.ModelSerializer):
-    questions = QuestionSerializer(many=True)
-
+    subject = SubjectSerializer()
+    
     class Meta:
         model = Exam
-        fields = ['id', 'subject', 'level', 'time_limit', 'questions']
+        fields = ['id', 'user', 'subject', 'date_taken', 'score']

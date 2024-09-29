@@ -29,14 +29,23 @@ class Question(models.Model):
 class Exam(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    level = models.CharField(max_length=20, choices=Question.LEVEL_CHOICES)
+    # level = models.CharField(max_length=20, choices=Question.LEVEL_CHOICES)
     date_taken = models.DateTimeField(auto_now_add=True)
-
-class ExamResult(models.Model):
-    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name="results")
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    user_answer = models.CharField(max_length=200)
-    is_correct = models.BooleanField()
-
+    score = models.DecimalField(max_digits=5, decimal_places=2 ,default=0)  
+        
     def __str__(self):
-        return f"Exam: {self.exam.id} - Question: {self.question.id} - Correct: {self.is_correct}"
+        return f"{self.subject} exam for {self.user.username} on {self.date_taken}"
+
+    class Meta:
+        ordering = ['-date_taken']  
+
+
+
+# class ExamResult(models.Model):
+#     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name="results")
+#     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+#     user_answer = models.CharField(max_length=200)
+#     is_correct = models.BooleanField()
+
+#     def __str__(self):
+#         return f"Exam: {self.exam.id} - Question: {self.question.id} - Correct: {self.is_correct}"

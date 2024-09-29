@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams,useLocation } from 'react-router-dom';
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle"
 import Spinner from './Spinner.js';
 import { Editor } from "@monaco-editor/react";
-import { getQuestions } from '../services/api';
+import { getQuestions,submitExam } from '../services/api';
 // import { LANGUAGE_VERSIONS, CODE_SNIPPETS } from "./constants";
 
 const LANGUAGE_VERSIONS = {
@@ -92,6 +92,7 @@ const CodeEditor = () => {
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadings, setIsLoadings] = useState(false);
+  const [questiondata,setQuestiondata]=useState();
   const [question, setQuestion] = useState("");
   const [timeLeft, setTimeLeft] = useState(900); // 15 minutes = 900 seconds
   const [rerender, setRerender] = useState(false)
@@ -99,6 +100,8 @@ const CodeEditor = () => {
   const [runexpect, setRunexpect] = useState([]);
   const [runstate, setRunstate] = useState();
   const [runerror, setRunerorr] = useState(false);
+  const location = useLocation();
+  const { userAnswers } = location.state || {};
 
 
 
@@ -113,12 +116,14 @@ const CodeEditor = () => {
         console.log(res)
         const data = res.data
         const randomIndex = Math.floor(Math.random() * data.length);
+        setQuestiondata(data[randomIndex])
         setQuestion(data[randomIndex].question_text);
         const fioption = data[randomIndex].options[0]
         setRunexpect(JSON.parse(fioption).expected)
         setRuncase(JSON.parse(fioption).input)
         setIsLoading(false)
         // setTimeout(()=>console.log("["+runcase+"]"),1)
+        console.log(userAnswers)
 
       }
       fetchedQuestion()
@@ -159,22 +164,22 @@ const CodeEditor = () => {
   };
 
 
-  function run() {
+  function run(inp,outp) {
     setIsLoading(true);
     let fvalue = value;
     // for (let index = 0; index < runcase.length; index++) {
 
     // fvalue = fvalue.replace("INPUT", runcase)
-    if (typeof (runcase) == "object")
-      fvalue = fvalue.replace("INPUT", "[" + runcase + "]")
+    if (typeof (inp) == "object")
+      fvalue = fvalue.replace("INPUT", "[" + inp + "]")
     else
-      fvalue = fvalue.replace("INPUT", runcase)
+      fvalue = fvalue.replace("INPUT", inp)
 
     // }
 
     // console.log(fvalue)
     
-    axios.post("https://emkc.org/api/v2/piston/execute", {
+    return axios.post("https://emkc.org/api/v2/piston/execute", {
       language: language,
       version: LANGUAGE_VERSIONS[language],
       files: [
@@ -189,24 +194,84 @@ const CodeEditor = () => {
         setOutput(newOutput);
         console.log(eval(newOutput[0]))
         setIsLoading(false);
-        console.log(runexpect)
+        console.log(outp)
         // const outtest= output[0].replace(/\s/g, '');
         console.log(newOutput.length)
         if (newOutput.length >= 1) {
-          if (eval(newOutput[0]).toString() === runexpect.toString()) console.log("successsssssss")
+          if (eval(newOutput[0]).toString() === outp.toString()) return 1
+          else return 0
         }
+        return 0
         setRunstate(true)
       }).catch(error => {
         console.log(error);
         setRunerorr(true)
         setIsLoading(false);
+        return 0
 
       })
 
   }
 
 
+  
 
+
+
+
+
+
+
+
+
+
+ async function submit() {
+    setIsLoadings(true);
+  
+    const options = questiondata.options;
+    let score=0
+    run(runcase,runexpect).then(result => score+=result)
+    console.log(score)
+    
+    for (let i = 1; i <= 3; i++) {
+      const expected = JSON.parse(options[i]).expected;
+      const input = JSON.parse(options[i]).input;
+      await new Promise(resolve => {
+        // setRunexpect(prev => expected);
+        // setRuncase(prev => input);
+        setTimeout(() => {
+          run(input,expected).then(result => score+=result) 
+          resolve();
+        }, 1000);
+      });
+    }
+    await new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+
+    console.log(score)
+
+
+    const newanswers = {
+      ...userAnswers.answers,
+      [questiondata.id]: score,
+  };
+  userAnswers.answers=newanswers
+
+  try {
+    console.log(userAnswers);
+    const response=await submitExam(JSON.stringify(userAnswers))
+    console.log(response)
+    const result = await response.data;
+    alert(`Exam submitted! Your score: ${result.score}`);
+} catch (error) {
+    console.error('Error submitting exam:', error);
+}
+  
+    setIsLoadings(false);
+  }
 
 
 
@@ -227,12 +292,12 @@ const CodeEditor = () => {
     <div className="bg-dark vh-100">
       <div className="d-flex justify-content-center vh-10 pt-2">
         {/* <h5 className="text-danger te">Time Left: {Math.floor(timeLeft / 60)}:{('0' + (timeLeft % 60)).slice(-2)}</h5> */}
-        <button onClick={run} className="btn btn-success px-5 mx-2">
+        <button onClick={()=>run(runcase,runexpect)} className="btn btn-success px-5 mx-2">
           {isLoading ?
             <div className="spinner-border" role="status"><span className="sr-only"></span></div>
             : <span>RUN</span>}
         </button>
-        <button onClick={run} className="btn btn-outline-success px-5 mx-2">
+        <button onClick={submit} className="btn btn-outline-success px-5 mx-2">
           {isLoadings ?
             <div className="spinner-border" role="status"><span className="sr-only"></span></div>
             : <span>Submit</span>}
