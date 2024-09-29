@@ -1,0 +1,109 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* White background */
+    color: #000; /* Black text */
+}
+
+.dashboard {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Form Section */
+.add-admin-form {
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #000; /* Black border */
+}
+
+.add-admin-form h2 {
+    margin-bottom: 15px;
+    color: #000; /* Black text */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #000; /* Black text */
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #000; /* Black border */
+    background-color: #fff; /* White background */
+    color: #000; /* Black text */
+}
+
+.btn-submit {
+    background-color: #00cc66; 
+    color: #fff; 
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-submit:hover {
+    background-color: #00b359; 
+}
+
+/* Table Section */
+.admin-table {
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #000; /* Black border */
+}
+
+.admin-table h2 {
+    margin-bottom: 15px;
+    color: #000; /* Black text */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #000; /* Black background for table headers */
+    color: #fff; /* White text for table headers */
+}
+
+thead th {
+    padding: 10px;
+    text-align: left;
+}
+
+tbody tr {
+    background-color: #f2f2f2;
+    color: #000; 
+}
+
+tbody td {
+    padding: 10px;
+}
+
+
+.btn-delete {
+    background-color: #ff4c4c; 
+    color: #fff; 
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #ff3333; 
+}
