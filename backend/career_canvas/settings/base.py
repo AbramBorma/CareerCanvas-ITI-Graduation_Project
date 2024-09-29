@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'jazzmin',
-        'django_extensions',
-            'drf_yasg',
+    'django_extensions',
+    'drf_yasg',
     'django.contrib.admin',
     'django_rest_passwordreset',
     'django.contrib.auth',
@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -189,6 +189,13 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',  # Trust requests from your frontend running on localhost
+# ]
+
+CORS_ALLOW_CREDENTIALS = True
+
 
 AUTH_USER_MODEL = 'users.User'
 

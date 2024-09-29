@@ -1,8 +1,8 @@
-// import api from '../utils/api';
+import api from '../utils/api';
 
 import useAxios from "../utils/useAxios";
 
-// const API_URL = "http://127.0.0.1:8000";
+const API_URL = "http://127.0.0.1:8000";
 
 const  useApi = async (username) => {
 

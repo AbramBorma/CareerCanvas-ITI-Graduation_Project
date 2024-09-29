@@ -1,8 +1,9 @@
 import axios from "axios";
-import jwtDecode from "jwt-decode"; // Corrected import name
+import { jwtDecode } from "jwt-decode"; // Corrected import name
 import dayjs from "dayjs";
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext"; // Assuming this is your AuthContext file
+
 
 const baseURL = "http://127.0.0.1:8000"; // Your Django API base URL
 

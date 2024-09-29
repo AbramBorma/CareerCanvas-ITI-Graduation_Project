@@ -1,101 +1,94 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 
-class Organization(models.TextChoices):
-    ITI = "ITI", "ITI"
-    SELF = "Self", "Self"
+# Define Role Model (for choices in User model)
+class Role(models.TextChoices):
+    ADMIN = "admin", "Admin"
+    SUPERVISOR = "supervisor", "Supervisor"
+    STUDENT = "student", "Student"
 
+# Define Organization Model
+class Organization(models.Model):
+    name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
 
+# Define Branch Model
+class Branch(models.Model):
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    admin = models.OneToOneField('User', null=True, blank=True, on_delete=models.SET_NULL, related_name="branch_admin")
 
+    def __str__(self):
+        return f"{self.name} - {self.organization.name}"
+
+# Define Track Model
+class Track(models.Model):
+    name = models.CharField(max_length=100)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name} - {self.branch.name}"
+
+# Custom User Manager
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
-        """
-        Create and return a regular user.
-        """
         if not email:
             raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
         user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
+        user.is_active = False  # Ensure that the user isn't active until approved
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, username, password=None, **extra_fields):
-        """
-        Create and return a superuser with admin rights.
-        """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('role', Role.ADMIN)  # Set the role to admin
-        extra_fields.setdefault('is_active', True)   # Activate the user
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
-        if extra_fields.get('role') != Role.ADMIN:
-            raise ValueError("Superuser must have role=Admin.")
-        if extra_fields.get('is_active') is not True:
-            raise ValueError("Superuser must be active.")
-
+        extra_fields.setdefault('role', 'superuser')  # Assign superuser role
         return self.create_user(email, username, password, **extra_fields)
 
 
-class Role(models.TextChoices):
-    ADMIN = "admin", "Admin"
-    EMPLOYEE = "employee", "Employee"
-    USER = "user", "User"
 
-
-class Branch(models.TextChoices):
-    NEW_CAPITAL = "New Capital", "New Capital"
-    CAIRO = "Cairo", "Cairo"
-    MENOFIA = "Menofia", "Menofia"
-
-class Course(models.TextChoices):
-    PHP = "Open Source PHP", "Open Source PHP"
-    PYTHON = "Open Source Python", "Open Source Python"
-
+# Define User Model
 class User(AbstractUser):
-    username = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    organization = models.CharField(max_length=10, choices=Organization.choices, default=Organization.SELF)
-    branch = models.CharField(max_length=20, choices=Branch.choices, blank=True, null=True)
-    course = models.CharField(max_length=30, choices=Course.choices, blank=True, null=True)
-    role = models.CharField(max_length=10, choices=Role.choices, default=Role.USER)
-    is_active = models.BooleanField(default=False)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    role = models.CharField(
+        max_length=20,
+        choices=Role.choices
+    )
+    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
+    branch = models.ForeignKey(Branch, null=True, blank=True, on_delete=models.SET_NULL)
+    tracks = models.ManyToManyField(Track, blank=True)  # Supervisors can be responsible for multiple tracks
+    is_active = models.BooleanField(default=False)  # User account must be approved before activation
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
+    # Links that are required for students
+    github = models.URLField(blank=True, null=True)
+    hackerrank = models.URLField(blank=True, null=True)
+    linkedin = models.URLField(blank=True, null=True)
+    leetcode = models.URLField(blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
     objects = CustomUserManager()
-    
+
+    def save(self, *args, **kwargs):
+        # Enforce that URLs are required only if the role is student and user is not superuser
+        if self.role == Role.STUDENT and not self.is_superuser:
+            required_fields = ['github', 'hackerrank', 'linkedin', 'leetcode']
+            for field in required_fields:
+                if not getattr(self, field):
+                    raise ValueError(f"{field.capitalize()} URL is required for students.")
+        super(User, self).save(*args, **kwargs)
+
     def __str__(self):
-        return self.username        
-    
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=1000)
-    bio = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="user_images", default="default.jpg")
-    
-    linkedin = models.URLField(blank=True, null=True)
-    github = models.URLField(blank=True, null=True)
-    leetcode = models.URLField(blank=True, null=True)
-    hackerrank = models.URLField(blank=True, null=True)
-    
-    def __str__(self):
-        return self.full_name
+        return self.username
 
 
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
 
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
-
-post_save.connect(create_user_profile, sender=User)
-post_save.connect(save_user_profile, sender=User)
