@@ -5,8 +5,33 @@ import '../static/styles/SupervisorDashboard.css';
 const SupervisorDashboard = () => {
 
   
-    const [searchResults, setSearchResults] = useState([]);
+      // Initialize searchResults with two dummy records
+  const [searchResults, setSearchResults] = useState([
+    {
+      id: "S12345",
+      name: "John Doe",
+      email: "johndoe@example.com",
+      track: "Full-Stack Development",
+      examStatus: "Passed",
+    },
+    {
+      id: "S67890",
+      name: "Jane Smith",
+      email: "janesmith@example.com",
+      track: "Data Science",
+      examStatus: "Pending",
+    },
+  ]);
 
+
+    // Function to delete a student
+    const deleteStudent = (studentId) => {
+      // Filter out the student by ID
+      const updatedStudents = searchResults.filter(
+        (student) => student.id !== studentId
+      );
+      setSearchResults(updatedStudents); // Update state with filtered results
+    };
     
    
 
@@ -23,10 +48,16 @@ const SupervisorDashboard = () => {
 
       {/* Main Section */}
       <div className="main-section">
-      {/* Search and Filter Section */}
+  {/* Welcome Message for Supervisors */}
+  <div className="welcome-message">
+    <h2>Welcome, Supervisor!</h2>
+    <p>Manage student records and set exams with ease.</p>
+  </div>
+
+  {/* Search and Filter Section */}
   <div className="search-filter-section">
     <h3>Search Students and Set Exams</h3>
-    
+
     {/* Search Bar for Students */}
     <div className="student-search">
       <label>Search Student by Name:</label>
@@ -35,7 +66,6 @@ const SupervisorDashboard = () => {
 
     {/* Track Selection Dropdown */}
     <div className="track-filter">
-     
       <select>
         <option>Select Track</option>
         {/* Track options will be populated here */}
@@ -47,7 +77,6 @@ const SupervisorDashboard = () => {
 
     {/* Exam Selection Dropdown */}
     <div className="exam-selection">
-    
       <select>
         <option>Select Exam</option>
         {/* Exam options will be populated here */}
@@ -55,7 +84,7 @@ const SupervisorDashboard = () => {
     </div>
 
     {/* Button to Set Exam */}
-    <button className="set-exam-btn">Set Exam for Selected Student</button>
+    <button className="set-exam-btn">Set Exam for Selected Track</button>
   </div>
 
       {/* Student Records Table */}
@@ -68,9 +97,9 @@ const SupervisorDashboard = () => {
           <th>Student Name</th>
           <th>Email</th>
           <th>Track</th>
-          <th>Phone Number</th>
           <th>Exam Status</th>
           <th>Actions</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -84,8 +113,13 @@ const SupervisorDashboard = () => {
             <td>{student.phone}</td>
             <td>{student.examStatus}</td>
             <td>
-              <button className="delete-btn">Delete Student</button>
-            </td>
+                <button
+                  className="delete-btn"
+                  onClick={() => deleteStudent(student.id)} // Call delete function
+                >
+                  Delete Student
+                </button>
+              </td>
           </tr>
         ))}
       </tbody>
