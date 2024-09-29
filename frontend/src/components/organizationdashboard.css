@@ -1,8 +1,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #1e2a38;
-    color: white;
+    background-color: #fff; /* White background */
+    color: #000; /* Black text */
 }
 
 .dashboard {
@@ -11,37 +11,18 @@ body {
     padding: 20px;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-}
-
-.search-bar {
-    width: 300px;
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-}
-
-.profile img {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-}
-
 /* Form Section */
-.add-pos-form {
-    background-color: #2b3e50;
+.add-admin-form {
+    background-color: #fff; /* White background */
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
+    border: 2px solid #000; /* Black border */
 }
 
-.add-pos-form h2 {
+.add-admin-form h2 {
     margin-bottom: 15px;
+    color: #000; /* Black text */
 }
 
 .form-group {
@@ -51,41 +32,43 @@ header {
 .form-group label {
     display: block;
     margin-bottom: 5px;
+    color: #000; /* Black text */
 }
 
-.form-group select {
+.input-field {
     width: 100%;
     padding: 10px;
     border-radius: 8px;
-    border: none;
-    outline: none;
-    background-color: #374d64;
-    color: white;
+    border: 2px solid #000; /* Black border */
+    background-color: #fff; /* White background */
+    color: #000; /* Black text */
 }
 
 .btn-submit {
-    background-color: #00cc66;
+    background-color: #00cc66; 
+    color: #fff; 
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
-    color: white;
     cursor: pointer;
     font-size: 16px;
 }
 
 .btn-submit:hover {
-    background-color: #00b359;
+    background-color: #00b359; 
 }
 
 /* Table Section */
-.pos-table {
-    background-color: #2b3e50;
+.admin-table {
+    background-color: #fff; /* White background */
     padding: 20px;
     border-radius: 10px;
+    border: 2px solid #000; /* Black border */
 }
 
-.pos-table h2 {
+.admin-table h2 {
     margin-bottom: 15px;
+    color: #000; /* Black text */
 }
 
 table {
@@ -94,7 +77,8 @@ table {
 }
 
 thead {
-    background-color: #374d64;
+    background-color: #000; /* Black background for table headers */
+    color: #fff; /* White text for table headers */
 }
 
 thead th {
@@ -103,22 +87,23 @@ thead th {
 }
 
 tbody tr {
-    background-color: #3e536d;
+    background-color: #f2f2f2;
+    color: #000; 
 }
 
 tbody td {
     padding: 10px;
 }
 
+
 .btn-delete {
-    background-color: #ff4c4c;
-    border: none;
-    color: white;
+    background-color: #ff4c4c; 
+    color: #fff; 
     padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
 }
 
 .btn-delete:hover {
-    background-color: #ff3333;
+    background-color: #ff3333; 
 }
