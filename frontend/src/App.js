@@ -20,7 +20,7 @@ function App() {
         <Route path="/register" element={<Registerpage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        <Route path="/ResetPassword" element={<ResetPassword />} />
+        <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
         <Route path="/exams" element={<Exams />} />
         <Route path="/exams/:subject" element={<Exam />} />
         <Route path="/monaco/:subject" element={<CodeEditor />} />
