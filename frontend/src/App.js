@@ -11,7 +11,6 @@ import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import OrganizationDashboard from './components/organizationdashboard'; 
 import PortfolioPage from './components/portfolioPage'; 
-
 import { AuthProvider } from './context/AuthContext';
 import SupervisorDashboard from './components/SupervisorDashboard';
 
@@ -30,6 +29,7 @@ function App() {
         <Route path="/exams/:subject" element={<Exam />} />
         <Route path="/monaco/:subject" element={<CodeEditor />} />
         <Route path="/SDashboard" element={<SupervisorDashboard />} />
+        <Route path="/organization-dashboard" element={<OrganizationDashboard />} /> 
         
       </Routes>
     </div>
