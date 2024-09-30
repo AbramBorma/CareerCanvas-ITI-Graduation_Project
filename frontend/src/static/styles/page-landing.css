@@ -2,138 +2,195 @@
 
 /* Container for the entire page */
 .page-landing-with-editor {
-    width: 1200px; /* Fixed width for the entire container */
-    margin: 5rem auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem; /* Space between the page landing and code editor */
-  }
-  
-  /* Page Landing styles */
-  .page-landing {
-    width: 100%;
-    min-height: 80vh;
-    margin-top: 68.5px;
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  .intro {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 100%;
-    text-align: center;
-    margin: 0 auto;
-    padding: 40px 20px;
-    background-color: #f4f7f8;
-    border-radius: 15px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .intro h1 {
-    font-size: 2.5rem;
-    color: #00468B;
-    margin-bottom: 20px;
-  }
-  
-  .intro-paragraph, .code-paragraph {
-    font-size: 1.5rem;
-    line-height: 2;
-    letter-spacing: 2px;
-    color: #555555;
-    text-transform: capitalize;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    font-weight: 500;
-    font-style: italic;
-    font-family: fantasy;
-  }
-  .code-paragraph {
-    font-size: 2.5rem;
-    color: #108ea1; /* Pale blue color */
-    text-align: center;
-    margin-bottom: 20px;
-    font-style: italic;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    font-weight: 600;
-    letter-spacing: 2px;
-  }
-  
-  .cta-button {
-    margin-top: 30px;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    color: white;
-    background-color: #00468B;
-    border-radius: 10px;
-    text-decoration: none;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-  }
-  
-  .cta-button:hover {
-    background-color: #003366;
-  }
-  
-  /* Code Editor styles */
-  .editor-output {
-    display: flex;
-    justify-content: space-between;
-    height: 300px;
-    margin-top: 1.5rem;
-    margin-bottom: 3rem;
+  max-width: 1200px; /* Use max-width for responsiveness */
+  width: 100%; /* Allow full width on smaller screens */
+  margin: 5rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Space between the page landing and code editor */
+}
 
+/* Page Landing styles */
+.page-landing {
+  width: 100%;
+  min-height: 80vh;
+  margin-top: 68.5px;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: #f4f7f8;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.intro h1 {
+  font-size: 2.5rem;
+  color: #00468B;
+  margin-bottom: 20px;
+}
+
+.intro-paragraph,
+.code-paragraph {
+  font-size: 1.5rem;
+  line-height: 2;
+  letter-spacing: 2px;
+  color: #555555;
+  text-transform: capitalize;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  font-style: italic;
+  font-family: fantasy;
+}
+
+.code-paragraph {
+  font-size: 2.5rem;
+  color: #108ea1; /* Pale blue color */
+  text-align: center;
+  margin-bottom: 20px;
+  font-style: italic;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.cta-button {
+  margin-top: 30px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #00468B;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #003366;
+}
+
+/* Code Editor styles */
+.editor-output {
+  display: flex;
+  justify-content: space-between;
+  height: 300px;
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.editor-container {
+  width: 48%;
+  height: 100%;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.run-code-btn {
+  background-color: #4CAF50;
+  margin-top: 30px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.run-code-btn:hover {
+  background-color: #45a049;
+}
+
+.output-container {
+  background-color: #f4f4f4;
+  height: 100%; /* Adjust as necessary */
+  width: 48%;
+  overflow-y: auto;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  padding-left: 10px;
+}
+
+.output-container h3 {
+  margin: 10px;
+  text-align: left;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .editor-output {
+      flex-direction: column; /* Stack the editor output on smaller screens */
   }
-  
-  .editor-container {
-    width: 48%;
-    height: 100%;
-    border-radius: 15px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .run-code-btn {
-    background-color: #4CAF50;
-    margin-top: 30px;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .run-code-btn:hover {
-    background-color: #45a049;
-  }
-  
+
+  .editor-container,
   .output-container {
-    background-color: #f4f4f4;
-    height: 100%; /* Adjust as necessary */
-    width: 48%;
-    overflow-y: auto;
-    border-radius: 15px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    padding-left: 10px;
+      width: 100%; /* Full width on smaller screens */
+      margin-bottom: 1rem; /* Add some space between stacked elements */
   }
-  
-  .output-container h3 {
-    margin: 10px;
-    text-align: left;
+}
+
+@media (max-width: 768px) {
+  .intro h1 {
+      font-size: 2rem; /* Smaller heading size */
   }
-  
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
+
+  .intro-paragraph,
+  .code-paragraph {
+      font-size: 1.2rem; /* Smaller paragraph size */
   }
-  
+
+  .cta-button,
+  .run-code-btn {
+      font-size: 1rem; /* Smaller button size */
+      padding: 10px 20px; /* Smaller padding */
+  }
+
+  /* Additional responsive adjustments */
+  .intro {
+      padding: 30px 15px; /* Adjust padding for smaller screens */
+  }
+
+  .editor-output {
+      height: auto; /* Adjust height to allow for more flexibility on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .intro h1 {
+      font-size: 1.5rem; /* Further reduce heading size */
+  }
+
+  .intro-paragraph,
+  .code-paragraph {
+      font-size: 1rem; /* Further reduce paragraph size */
+  }
+
+  .cta-button,
+  .run-code-btn {
+      font-size: 0.9rem; /* Smaller button size */
+      padding: 8px 15px; /* Smaller padding */
+  }
+}

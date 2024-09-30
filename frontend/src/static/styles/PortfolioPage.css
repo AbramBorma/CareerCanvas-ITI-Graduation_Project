@@ -176,13 +176,30 @@ progress::-moz-progress-bar {
 
 @media screen and (max-width: 768px) {
     .portfolio-page {
-        width: 90%;
+        width: 90%; /* Full width on smaller screens */
     }
     .social-icon {
-        width: 80px;
-        height: 80px;
+        width: 80px; /* Smaller icons for better fit */
+        height: 80px; /* Maintain aspect ratio */
     }
     .dummy-data {
-        font-size: 16px;
+        font-size: 16px; /* Adjust font size for better readability */
+    }
+
+    .box {
+        margin-bottom: 15px; /* Reduce margin between boxes */
+    }
+
+    h3 {
+        font-size: 24px; /* Adjust heading size for smaller screens */
+    }
+
+    .user-name {
+        font-size: 24px; /* Adjust user name size */
+    }
+
+    .profile-pic {
+        width: 150px; /* Smaller profile picture */
+        height: 150px; /* Maintain aspect ratio */
     }
 }
