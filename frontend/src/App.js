@@ -9,14 +9,19 @@ import Exam from './components/Exam';
 import CodeEditor from './components/CodeEditor';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
-import OrganizationDashboard from './components/organizationdashboard'; 
+import BranchAdminDashboard from './components/BranchAdminDashboard'; 
+import TrackSupervisorDashboard from './components/TrackSupervisorDashboard'; // Assuming this component exists
 import PortfolioPage from './components/portfolioPage'; 
 import { AuthProvider } from './context/AuthContext';
-import SupervisorDashboard from './components/SupervisorDashboard';
+import { useContext } from 'react';
+import AuthContext from './context/AuthContext';
 
 function App() {
+  const { user } = useContext(AuthContext); // Get the user context
+
   return (
     <div className="App">
+      <NavBar /> {/* Render the NavBar */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/portfolio/form" element={<PortfolioForm />} />
@@ -28,25 +33,17 @@ function App() {
         <Route path="/exams" element={<Exams />} />
         <Route path="/exams/:subject" element={<Exam />} />
         <Route path="/monaco/:subject" element={<CodeEditor />} />
-        <Route path="/SDashboard" element={<SupervisorDashboard />} />
-        <Route path="/organization-dashboard" element={<OrganizationDashboard />} /> 
         
+        {/* Conditional rendering of dashboard routes based on user role */}
+        {user && user.role === 'admin' && (
+          <Route path="/branch-admin-dashboard" element={<BranchAdminDashboard />} />
+        )}
+        {user && user.role === 'supervisor' && (
+          <Route path="/track-supervisor-dashboard" element={<TrackSupervisorDashboard />} />
+        )}
       </Routes>
     </div>
   );
 }
 
 export default App;
-
-// import React from 'react';
-// import PortfolioPage from './components/portfolioPage';
-
-// const App = () => {
-//   return (
-//     <div>
-//       <PortfolioPage />
-//     </div>
-//   );
-// };
-
-// export default App;

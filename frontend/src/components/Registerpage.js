@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './NavBar';
 import Footer from './Footer';
 import AuthContext from '../context/AuthContext';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
   const { registerUser } = useContext(AuthContext);
@@ -31,41 +29,65 @@ function RegisterPage() {
   const [branches, setBranches] = useState([]);
   const [tracks, setTracks] = useState([]);
 
-  // Fetching roles, organizations, branches, and tracks from the backend
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       try {
         const roleResponse = await axios.get('http://127.0.0.1:8000/users/roles/');
         const orgResponse = await axios.get('http://127.0.0.1:8000/users/organizations/');
-        const branchResponse = await axios.get('http://127.0.0.1:8000/users/branches/');
-        const trackResponse = await axios.get('http://127.0.0.1:8000/users/tracks/');
-
         setRoles(roleResponse.data);
         setOrganizations(orgResponse.data);
-        setBranches(branchResponse.data);
-        setTracks(trackResponse.data);
       } catch (error) {
-        console.error('Error fetching data', error);
+        console.error('Error fetching roles and organizations', error);
       }
     };
-    fetchData();
+    fetchInitialData();
   }, []);
 
-  // Handle form input changes
+  useEffect(() => {
+    if (formData.organization) {
+      const fetchBranches = async () => {
+        try {
+          const branchResponse = await axios.get(`http://127.0.0.1:8000/users/branches/?organization=${formData.organization}`);
+          setBranches(branchResponse.data);
+        } catch (error) {
+          console.error('Error fetching branches', error);
+        }
+      };
+      fetchBranches();
+    } else {
+      setBranches([]); // Clear branches if no organization is selected
+      setTracks([]); // Clear tracks as well since branches are cleared
+    }
+  }, [formData.organization]);
+
+  useEffect(() => {
+    if (formData.branch) {
+      const fetchTracks = async () => {
+        try {
+          const trackResponse = await axios.get(`http://127.0.0.1:8000/users/tracks/?branch=${formData.branch}`);
+          setTracks(trackResponse.data);
+        } catch (error) {
+          console.error('Error fetching tracks', error);
+        }
+      };
+      fetchTracks();
+    } else {
+      setTracks([]); // Clear tracks if no branch is selected
+    }
+  }, [formData.branch]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Log formData to ensure it is properly populated
-    console.log(formData);
-
     try {
       await registerUser(
         formData.email,
         formData.username,
+        formData.first_name,
+        formData.last_name,
         formData.password,
         formData.password2,
         formData.role,
@@ -77,7 +99,7 @@ function RegisterPage() {
         formData.hackerrank,
         formData.leetcode
       );
-      navigate('/login'); // Navigate to login after successful registration
+      navigate('/login');
     } catch (error) {
       console.error('Error registering user', error);
     }
@@ -95,6 +117,16 @@ function RegisterPage() {
             <div className="form-row">
               <label htmlFor="username">USERNAME</label>
               <input type="text" name="username" id="username" className="input-text" onChange={handleChange} required />
+            </div>
+
+            <div className="form-row">
+              <label htmlFor="first_name">FIRST NAME</label>
+              <input type="text" name="first_name" id="first_name" className="input-text" onChange={handleChange} required />
+            </div>
+
+            <div className="form-row">
+              <label htmlFor="last_name">LAST NAME</label>
+              <input type="text" name="last_name" id="last_name" className="input-text" onChange={handleChange} required />
             </div>
 
             <div className="form-row">
@@ -128,7 +160,7 @@ function RegisterPage() {
 
             <div className="form-row">
               <label htmlFor="branch">BRANCH</label>
-              <select name="branch" id="branch" className="input-text" value={formData.branch} onChange={handleChange}>
+              <select name="branch" id="branch" className="input-text" value={formData.branch} onChange={handleChange} disabled={!formData.organization}>
                 <option value="">Select Branch</option>
                 {branches.map((branch) => (
                   <option key={branch.id} value={branch.id}>
@@ -140,7 +172,7 @@ function RegisterPage() {
 
             <div className="form-row">
               <label htmlFor="track">TRACK</label>
-              <select name="track" id="track" className="input-text" value={formData.track} onChange={handleChange}>
+              <select name="track" id="track" className="input-text" value={formData.track} onChange={handleChange} disabled={!formData.branch}>
                 <option value="">Select Track</option>
                 {tracks.map((track) => (
                   <option key={track.id} value={track.id}>

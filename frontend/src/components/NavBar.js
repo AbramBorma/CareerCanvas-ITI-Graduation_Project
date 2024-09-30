@@ -15,17 +15,17 @@ import logo from '../static/imgs/careercanvas-high-resolution-logo-white-transpa
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
-const pages = ['Home', 'Portfolio', 'Examine'];
-const settings = ['Profile', 'Portfolio', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
-  const { user, logoutUser } = React.useContext(AuthContext);
+  const { user, logoutUser } = React.useContext(AuthContext); // Access user data from context
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -38,45 +38,22 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  console.log(user);
+
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#002346' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* Logo */}
-          <Box sx={{ display: { xs: 'flex', md: 'flex' }, flexGrow: 0 }}>
-            <img
-              src={logo}
-              alt="Logo"
-              style={{ width: '250px', height: '40px', marginRight: '16px' }}
-            />
-          </Box>
+          <img
+            src={logo}
+            alt="Logo"
+            style={{ width: '350px', height: '40px', marginRight: '16px' }}
+          />
 
-          {/* Desktop Menu (Left-aligned) */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                component={Link}
-                to={
-                  page === 'Portfolio'
-                    ? '/portfolio/form'
-                    : page === 'Examine'
-                    ? '/exams'
-                    : '/'
-                }
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
-          {/* Mobile Menu Icon */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
-              aria-label="open menu"
+              aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
@@ -87,65 +64,105 @@ function ResponsiveAppBar() {
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
               keepMounted
-              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }} // Visible on small screens
+              sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography component={Link} to="/" sx={{ textAlign: 'center' }}>Home</Typography>
+              </MenuItem>
+              {user && user.role === 'admin' && (
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography component={Link} to="/branch-admin-dashboard" sx={{ textAlign: 'center' }}>Dashboard</Typography>
                 </MenuItem>
-              ))}
+              )}
+              {user && user.role === 'supervisor' && (
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography component={Link} to="/track-supervisor-dashboard" sx={{ textAlign: 'center' }}>Track Supervisor Dashboard</Typography>
+                </MenuItem>
+              )}
+              {!user && (
+                <>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/portfolio/form" sx={{ textAlign: 'center' }}>Portfolio</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/exams" sx={{ textAlign: 'center' }}>Examine</Typography>
+                  </MenuItem>
+                </>
+              )}
             </Menu>
           </Box>
 
-          {/* Auth Buttons (Right-aligned) */}
-          <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginLeft: 'auto' }}>
+          {/* Desktop Menu (Left-aligned) */}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Button onClick={handleCloseNavMenu} component={Link} to="/" sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button>
             {user ? (
-              <Button sx={{ color: 'white' }} onClick={logoutUser}>
-                Logout
-              </Button>
+              <>
+                {user.role === 'admin' && (
+                  <Button onClick={handleCloseNavMenu} component={Link} to="/branch-admin-dashboard" sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
+                )}
+                {user.role === 'supervisor' && (
+                  <Button onClick={handleCloseNavMenu} component={Link} to="/track-supervisor-dashboard" sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
+                )}
+              </>
             ) : (
               <>
-                <Button sx={{ color: 'white' }} component={Link} to="/register">
-                  Register
-                </Button>
-                <Button sx={{ color: 'white' }} component={Link} to="/login">
-                  Login
-                </Button>
+                <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio/form" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
+                <Button onClick={handleCloseNavMenu} component={Link} to="/exams" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
               </>
             )}
           </Box>
 
-          {/* User Avatar Menu */}
-          {user && (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                keepMounted
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          )}
+          <Box sx={{ flexGrow: 0 }}>
+            {user ? (
+              <Button sx={{ color: 'white' }} onClick={logoutUser}>Logout</Button>
+            ) : (
+              <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px' }}>
+                <Button sx={{ color: 'white' }} component={Link} to="/register">Register</Button>
+                <Button sx={{ color: 'white' }} component={Link} to="/login">Login</Button>
+              </Box>
+            )}
+          </Box>
+
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="User Avatar" src="/static/images/avatar/placeholder.jpg" /> {/* Use a valid avatar image path */}
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
