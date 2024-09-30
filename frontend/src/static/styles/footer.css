@@ -1,98 +1,142 @@
-.container {
-    background-color: #002346;
-    height: 200px;
-    color: white;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
+    /* Main Footer Container */
+    .footer-container {
+        background-color: #002346;
+        color: white;
+        padding: 30px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        box-sizing: border-box;
+    }
 
-.logo,
-.internal-links,
-.external-links,
-.subscribe {
-    height: 180px;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
+    /* Individual sections inside the footer */
+    .footer-section {
+        flex: 1 1 250px;
+        margin: 0 10px;
+        max-width: 280px;
+    }
 
-.logo p,
-.internal-links p,
-.external-links p,
-.subscribe p {
-    text-transform: uppercase;
-    font-size: 1rem;
-    font-weight: bold;
-}
+    .footer-logo {
+        width: 180px;
+        height: auto;
+        margin-bottom: 15px;
+    }
 
-.internal-links ul,
-.external-links ul {
-    text-align: left;
-    padding: 0;
-    list-style: none;
-    margin: 0;
-}
+    .footer-section p {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #ddd;
+        margin-bottom: 8px;
+    }
 
-.external-links ul {
-    text-align: center;
-}
+    /* Internal Links List Styling */
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
 
-.internal-links ul .il-linl,
-.external-links ul .il-linl {
-    margin-bottom: 5px;
-}
+    .footer-section ul li {
+        margin-bottom: 8px;
+    }
 
-.internal-links ul .il-linl a,
-.external-links ul .il-linl a {
-    text-decoration: none;
-    color: white;
-}
+    .footer-section ul li a {
+        color: #ccc;
+        text-decoration: none;
+        font-size: 0.95rem;
+    }
 
-.internal-links ul .il-linl a:hover,
-.external-links ul .il-linl a:hover {
-    text-decoration: none;
-    color: #108ea1;
-}
+    .footer-section ul li a:hover {
+        color: #51a6fc;
+        font-weight: bold;
+        transition: color 0.3s ease-in-out;
+    }
 
-.subscribe form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
+    /* Social Media Icons Styling */
+    .external-links ul {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0;
+        margin-top: 10px;
+    }
 
-.subscribe form input {
-    width: 100%;
-    /* Full width of the container */
-    padding: 15px 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    /* Space between input and button */
-    box-sizing: border-box;
-}
+    .external-links ul li {
+        list-style: none;
+    }
 
-.subscribe form input::placeholder {
-    font-style: italic;
-    font-size: 0.75rem;
-}
+    .external-links ul li a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-color: #51a6fc;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        font-size: 1.5rem;  
+    }
 
-.subscribe form .cta-button-borma {
-    width: 50%;
-    /* Full width of the container */
-    margin: 5px auto;
-    padding: 10px;
-    color: white;
-    background-color: #51a6fc;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-sizing: border-box;
-}
+    .external-links ul li a:hover {
+        background-color: #4097e1;
+        transition: background-color 0.3s ease-in-out;
+        color: white;
+    }
 
-.subscribe form .cta-button-borma:hover {
-    background-color: #4097e1;
-    /* Darker on hover */
-}
+    /* Subscription Form */
+    .subscribe form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .subscribe form input {
+        padding: 8px;
+        border-radius: 6px;
+        border: none;
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .subscribe form input::placeholder {
+        color: #aaa;
+        font-size: 0.85rem;
+    }
+
+    .cta-button {
+        padding: 10px;  
+        background-color: #51a6fc;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1rem; 
+    }
+
+    .cta-button:hover {
+        background-color: #4097e1;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    /* Responsive Design for smaller screens */
+    @media (max-width: 768px) {
+        .footer-container {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .footer-section {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .external-links ul {
+            justify-content: center;
+        }
+    }
