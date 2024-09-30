@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './organizationdashboard.css';
+import '../static/styles/organizationdashboard.css'; 
 
 const OrganizationDashboard = () => {
   // State for managing admin requests (Pending Approval)
