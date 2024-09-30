@@ -19,7 +19,7 @@
 }
 
 .footer-logo {
-    width: 150px; /* Reduced logo size */
+    width: 350px; /* Reduced logo size */
     height: auto;
     margin-bottom: 0; /* Removed bottom margin to reduce height */
 }
@@ -28,6 +28,8 @@
 .footer-section.internal-links h4 {
     margin-bottom: 5px; /* Reduced margin */
     color: white;
+    font-size: 1.2rem;
+
 }
 
 .footer-section ul {
@@ -57,6 +59,11 @@
 /* Social Media Icons */
 .external-links {
     margin-top: 0; /* Removed margin */
+}
+
+.external-links h4 {
+    font-size: 1.2rem;
+
 }
 
 .external-links ul {
@@ -100,6 +107,8 @@
     margin-bottom: 5px;
     color: white;
     width: 100%; /* Ensure h4 takes the full width */
+    font-size: 1.2rem;
+
 }
 
 .subscribe form {

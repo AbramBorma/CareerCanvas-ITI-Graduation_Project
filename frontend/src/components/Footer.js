@@ -11,7 +11,6 @@ const Footer = () => {
         <footer className="footer-container">
             {/* Branding */}
             <div className="footer-section logo">
-                <h4>CAREERCANVAS</h4>
                 <img
                     src={logo}
                     alt="CareerCanvas Logo"
