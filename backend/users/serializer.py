@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'username', 'email', 'password', 'password2', 'organization', 
+            'username', 'first_name', 'last_name', 'email', 'password', 'password2', 'organization', 
             'branch', 'tracks', 'linkedin', 'github', 'leetcode', 'hackerrank', 'role'  # Added 'role' field
         )
 
@@ -35,6 +35,8 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User(
             username=validated_data['username'],
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
             email=validated_data['email'],
             organization=validated_data.get('organization'),
             branch=validated_data.get('branch'),
@@ -53,10 +55,19 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         
-        token['username'] = user.username
+        token['first_name'] = user.first_name
+        token['last_name'] = user.last_name
         token['email'] = user.email
         token['role'] = user.role
-
+        
+        # Add organization ID or name
+        token['organization'] = str(user.organization) if user.organization else None
+        # Add branch ID or name
+        token['branch'] = str(user.branch) if user.branch else None
+        
+        # For tracks, serialize as a list of track names or IDs
+        token['tracks'] = [str(track) for track in user.tracks.all()]
+        
         # Add custom fields only if they're set (optional fields for students)
         if user.github:
             token['github'] = user.github
@@ -67,7 +78,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         if user.hackerrank:
             token['hackerrank'] = user.hackerrank
         
+        print(token)
         return token
+    
+
 
 # Register Serializer for handling user registration
 class RegisterSerializer(serializers.ModelSerializer):

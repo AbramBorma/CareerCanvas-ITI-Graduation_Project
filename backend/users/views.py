@@ -101,30 +101,56 @@ def approve_supervisor(request, user_id):
         return Response({'error': 'Supervisor not found.'}, status=status.HTTP_404_NOT_FOUND)
     
 @api_view(['GET'])
-@permission_classes([IsAdmin])
+@permission_classes([IsAdmin])  # Use your custom permission to ensure the user is an admin
 def get_supervisors(request):
     # Get the logged-in admin
-    admin_user = request.user
+    print(f"Incoming request from user: {request.user}")
     
+    admin_user = request.user
+    print(admin_user)
+
+    # Check if the user has the admin role (in case IsAdmin permission isn't used)
     if admin_user.role == Role.ADMIN:
         # Filter supervisors in the same branch as the admin
         supervisors = User.objects.filter(role=Role.SUPERVISOR, branch=admin_user.branch)
 
-        if supervisors.exists():
-            supervisors_list = [
-                {
-                    "id": supervisor.id,
-                    "username": supervisor.username,
-                    "email": supervisor.email,
-                    "is_active": supervisor.is_active  # whether the supervisor is approved or not
-                }
-                for supervisor in supervisors
-            ]
-            return Response({"supervisors": supervisors_list}, status=status.HTTP_200_OK)
-        else:
-            return Response({"message": "No supervisors in this branch."}, status=status.HTTP_404_NOT_FOUND)
+        supervisors_list = [
+            {
+                "id": supervisor.id,
+                "first_name": supervisor.first_name,  # Add first name
+                "last_name": supervisor.last_name,    # Add last name
+                "branch": supervisor.branch.name if supervisor.branch else "N/A",  # Add branch name, handle case if branch is None
+                "is_active": supervisor.is_active  # whether the supervisor is approved or not
+            }
+            for supervisor in supervisors
+        ]
+
+        # Return supervisors list
+        return Response({"supervisors": supervisors_list}, status=status.HTTP_200_OK)
     else:
         return Response({"error": "You do not have permission to view this."}, status=status.HTTP_403_FORBIDDEN)
+
+@csrf_exempt
+@api_view(['DELETE'])
+@permission_classes([IsAdmin])  # Ensure only admins can delete supervisors
+def delete_supervisor(request, user_id):
+    print(f"Attempting to delete user with ID: {user_id}")  # Debugging line
+
+    try:
+        admin_user = request.user
+        print(admin_user)
+        # Try to fetch the supervisor by ID
+        user = User.objects.get(id=user_id, role=Role.SUPERVISOR)
+        
+        if user.branch == admin_user.branch:
+
+            # Perform deletion
+            user.delete()
+
+            return Response({'message': 'Supervisor account deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+    except User.DoesNotExist:
+        return Response({'error': 'Supervisor not found.'}, status=status.HTTP_404_NOT_FOUND)
+    
 
 @api_view(['POST'])
 @permission_classes([IsSupervisor])  
@@ -340,14 +366,22 @@ def activate_user(request, user_id):
 
 # List All Tracks
 @api_view(['GET'])
+@permission_classes([AllowAny])  # Ensure this allows unauthenticated access
 def tracks_list(request):
-    tracks = Track.objects.all()
-    serializer = TrackSerializer(tracks, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    branch_id = request.query_params.get('branch')  # Get the branch ID from the query parameters
+    if branch_id:
+        tracks = Track.objects.filter(branch_id=branch_id)
+        serializer = TrackSerializer(tracks, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Branch ID not provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 # List All Organizations
 @api_view(['GET'])
+@permission_classes([AllowAny])  # Ensure this allows unauthenticated access
 def organizations_list(request):
     organizations = Organization.objects.all()
     data = [{'id': org.id, 'name': org.name} for org in organizations]
@@ -356,15 +390,21 @@ def organizations_list(request):
 
 # List All Branches
 @api_view(['GET'])
+@permission_classes([AllowAny])  # Ensure this allows unauthenticated access
 def branches_list(request):
-    branches = Branch.objects.all()
-    data = [{'id': branch.id, 'name': branch.name} for branch in branches]
-    return Response(data)
+    organization_id = request.query_params.get('organization')  # Get the organization ID from the query parameters
+    if organization_id:
+        branches = Branch.objects.filter(organization_id=organization_id)
+        data = [{'id': branch.id, 'name': branch.name} for branch in branches]
+        return Response(data, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Organization ID not provided'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Register User Endpoint
 @csrf_exempt
 @api_view(['POST'])
+@permission_classes([AllowAny])  # Ensure this allows unauthenticated access
 def register_user(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():

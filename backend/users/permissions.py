@@ -10,10 +10,11 @@ class IsSuperuser(BasePermission):
 
 class IsAdmin(BasePermission):
     """
-    Allows access only to admins (Branch Admin).
+    Allows access only to active admin users (Branch Admin).
     """
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.role == Role.ADMIN and request.user.is_active
+        # Check if the user is authenticated, active, and has the admin role
+        return request.user.is_authenticated and request.user.is_active and request.user.role == Role.ADMIN
 
 class IsSupervisor(BasePermission):
     """

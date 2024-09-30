@@ -45,6 +45,7 @@ urlpatterns = [
     # Approve supervisors and get list of supervisors in the branch
     path('approve-supervisor/<int:user_id>/', views.approve_supervisor, name='approve_supervisor'),
     path('supervisors/', views.get_supervisors, name='get_supervisors'),
+    path('delete_supervisor/<int:user_id>/', views.delete_supervisor, name='delete_supervisor'),
 
     # View and approve students for a supervisor
     path('students/', views.get_students, name='get_students'),
