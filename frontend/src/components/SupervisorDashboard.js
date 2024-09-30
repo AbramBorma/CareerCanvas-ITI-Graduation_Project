@@ -23,14 +23,19 @@ const SupervisorDashboard = () => {
     },
   ]);
 
-  const approveStudent = (index) => {
-    // Update the student's status to 'Active'
-    const updatedResults = [...searchResults];
-    updatedResults[index].status = 'Active';
-  
-    // Update the state with the new results
-    setSearchResults(updatedResults);
-  };
+ // Function to approve student (set status to 'Active')
+const approveStudent = (index) => {
+  const updatedResults = [...searchResults];
+  updatedResults[index].status = 'Active';
+  setSearchResults(updatedResults);
+};
+
+// Function to deactivate student (set status to 'Inactive')
+const deactivateStudent = (index) => {
+  const updatedResults = [...searchResults];
+  updatedResults[index].status = 'Inactive';
+  setSearchResults(updatedResults);
+};
   
 
 
@@ -107,11 +112,11 @@ const SupervisorDashboard = () => {
         <th>Student Name</th>
         <th>Email</th>
         <th>Track</th>
-   
+        <th>Phone</th>
         <th>Exam Status</th>
-      
-        <th>Status</th> {/* New column for status */}
-        <th>Approval</th> {/* New column for approval */}
+       
+        <th>Status</th> {/* Status column */}
+        <th>Approval</th> {/* Approval column */}
         <th>Actions</th>
       </tr>
     </thead>
@@ -123,20 +128,26 @@ const SupervisorDashboard = () => {
           <td>{student.name}</td>
           <td>{student.email}</td>
           <td>{student.track}</td>
-        
+          <td>{student.phone}</td>
           <td>{student.examStatus}</td>
-        
-          <td>
-            {/* Show Active/Inactive based on student status */}
+       
+          <td className={student.status === 'Active' ? 'status-active' : 'status-inactive'}>
+            {/* Show Active/Inactive status */}
             {student.status ? student.status : 'Inactive'}
           </td>
           <td>
-            {/* Approval Button */}
+            {/* Approval and Deactivation buttons */}
             <button
               className="approve-btn"
               onClick={() => approveStudent(index)} // Call approve function
             >
               Approve
+            </button>
+            <button
+              className="deactivate-btn"
+              onClick={() => deactivateStudent(index)} // Call deactivate function
+            >
+              Deactivate
             </button>
           </td>
           <td>
@@ -152,6 +163,7 @@ const SupervisorDashboard = () => {
     </tbody>
   </table>
 </div>
+
 
 
       </div>
