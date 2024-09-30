@@ -85,7 +85,7 @@ const OrganizationDashboard = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Fullname</th>
+              <th>Full Name</th>
               <th>Branch</th>
               <th>Status</th>
               <th>Actions</th>
