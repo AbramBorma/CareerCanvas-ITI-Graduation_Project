@@ -13,6 +13,7 @@ import OrganizationDashboard from './components/organizationdashboard';
 import PortfolioPage from './components/portfolioPage'; 
 
 import { AuthProvider } from './context/AuthContext';
+import SupervisorDashboard from './components/SupervisorDashboard';
 
 function App() {
   return (
@@ -28,7 +29,8 @@ function App() {
         <Route path="/exams" element={<Exams />} />
         <Route path="/exams/:subject" element={<Exam />} />
         <Route path="/monaco/:subject" element={<CodeEditor />} />
-        <Route path="/organization-dashboard" element={<OrganizationDashboard />} />
+        <Route path="/SDashboard" element={<SupervisorDashboard />} />
+        
       </Routes>
     </div>
   );
