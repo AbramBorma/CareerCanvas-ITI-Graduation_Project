@@ -9,19 +9,19 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 const Footer = () => {
     return (
         <footer className="footer-container">
-            {/* Logo and Branding */}
+            {/* Branding */}
             <div className="footer-section logo">
+                <h4>CAREERCANVAS</h4>
                 <img
                     src={logo}
                     alt="CareerCanvas Logo"
                     className="footer-logo"
                 />
-                <p>CareerCanvas</p>
             </div>
 
             {/* Internal Links */}
             <div className="footer-section internal-links">
-                <p>CareerCanvas Features</p>
+                <h4>CAREERCANVAS FEATURES</h4>
                 <ul>
                     <li><a href="register.html">Register</a></li>
                     <li><a href="login.html">Login</a></li>
@@ -32,7 +32,7 @@ const Footer = () => {
 
             {/* Social Media Links */}
             <div className="footer-section external-links">
-                <p>Follow Us</p>
+                <h4>FOLLOW US</h4>
                 <ul>
                     <li>
                         <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
@@ -54,7 +54,7 @@ const Footer = () => {
 
             {/* Newsletter Subscription */}
             <div className="footer-section subscribe">
-                <p>Subscribe to our Newsletter</p>
+                <h4>SUBSCRIBE TO OUR NEWSLETTER</h4>
                 <form action="">
                     <input
                         type="email"

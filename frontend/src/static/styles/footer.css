@@ -1,142 +1,160 @@
-    /* Main Footer Container */
+/* Main Footer Container */
+.footer-container {
+    background-color: #002346;
+    color: white;
+    padding: 20px 20px; /* Reduced padding */
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start; /* Align items to the start */
+    flex-wrap: nowrap; /* Ensure no wrapping to next line */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Branding Section */
+.footer-section.logo h4 {
+    font-size: 1.2rem;
+    margin-bottom: 5px; /* Reduced margin */
+    color: white;
+}
+
+.footer-logo {
+    width: 150px; /* Reduced logo size */
+    height: auto;
+    margin-bottom: 0; /* Removed bottom margin to reduce height */
+}
+
+/* Internal Links Styling */
+.footer-section.internal-links h4 {
+    margin-bottom: 5px; /* Reduced margin */
+    color: white;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0; /* Removed padding and margin */
+}
+
+.footer-section ul li {
+    margin-bottom: 4px; /* Reduced space between list items */
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.footer-section ul li a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem; /* Slightly smaller text */
+}
+
+.footer-section ul li a:hover {
+    color: #51a6fc;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Social Media Icons */
+.external-links {
+    margin-top: 0; /* Removed margin */
+}
+
+.external-links ul {
+    display: flex;
+    justify-content: flex-start; /* Align to the start */
+    align-items: center;
+    flex-direction: row; /* Set icons in a row */
+    flex-direction: column;
+}
+
+.external-links ul li {
+    list-style: none;
+}
+
+.external-links ul li a {
+    display: inline-block;
+    width: 35px; /* Reduced size of icons */
+    height: 35px;
+    background-color: #51a6fc;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.external-links ul li a:hover {
+    background-color: #4097e1;
+    transition: background-color 0.3s ease-in-out;
+    color: white;
+}
+
+/* Newsletter Subscription Styling */
+.subscribe {
+    margin-bottom: 0;
+}
+
+.subscribe h4 {
+    margin-bottom: 5px;
+    color: white;
+    width: 100%; /* Ensure h4 takes the full width */
+}
+
+.subscribe form {
+    display: flex;
+    flex-direction: column; /* Align input and button vertically */
+    gap: 10px; /* Add gap between input and button */
+    width: 100%; /* Ensure form takes the full width */
+}
+
+.subscribe form input {
+    padding: 5px;
+    border-radius: 6px;
+    border: none;
+    width: 100%; /* Input will now match the width of h4 */
+    font-size: 0.9rem;
+}
+
+.subscribe form input::placeholder {
+    color: #aaa;
+    font-size: 0.85rem;
+}
+
+.cta-button {
+    padding: 8px;
+    background-color: #51a6fc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    width: 100%; /* Button now takes the full width */
+}
+
+.cta-button:hover {
+    background-color: #4097e1;
+    transition: background-color 0.3s ease-in-out;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
     .footer-container {
-        background-color: #002346;
-        color: white;
-        padding: 30px 20px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: flex-start;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* Individual sections inside the footer */
-    .footer-section {
-        flex: 1 1 250px;
-        margin: 0 10px;
-        max-width: 280px;
-    }
-
-    .footer-logo {
-        width: 180px;
-        height: auto;
-        margin-bottom: 15px;
-    }
-
-    .footer-section p {
-        font-size: 1.1rem;
-        font-weight: bold;
-        color: #ddd;
-        margin-bottom: 8px;
-    }
-
-    /* Internal Links List Styling */
-    .footer-section ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .footer-section ul li {
-        margin-bottom: 8px;
-    }
-
-    .footer-section ul li a {
-        color: #ccc;
-        text-decoration: none;
-        font-size: 0.95rem;
-    }
-
-    .footer-section ul li a:hover {
-        color: #51a6fc;
-        font-weight: bold;
-        transition: color 0.3s ease-in-out;
-    }
-
-    /* Social Media Icons Styling */
-    .external-links ul {
-        display: flex;
-        gap: 12px;
-        justify-content: flex-start;
-        align-items: center;
-        padding: 0;
-        margin-top: 10px;
-    }
-
-    .external-links ul li {
-        list-style: none;
-    }
-
-    .external-links ul li a {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        background-color: #51a6fc;
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        font-size: 1.5rem;  
-    }
-
-    .external-links ul li a:hover {
-        background-color: #4097e1;
-        transition: background-color 0.3s ease-in-out;
-        color: white;
-    }
-
-    /* Subscription Form */
-    .subscribe form {
-        display: flex;
         flex-direction: column;
-        gap: 8px;
+        align-items: center;
+        text-align: center;
     }
 
-    .subscribe form input {
-        padding: 8px;
-        border-radius: 6px;
-        border: none;
+    .footer-section {
         width: 100%;
-        font-size: 0.9rem;
+        max-width: 100%;
+        margin-bottom: 10px; /* Slightly reduced space between sections */
     }
 
-    .subscribe form input::placeholder {
-        color: #aaa;
-        font-size: 0.85rem;
+    .external-links ul {
+        justify-content: center;
+        flex-direction: row; /* Ensure icons stay in a row */
     }
-
-    .cta-button {
-        padding: 10px;  
-        background-color: #51a6fc;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 1rem; 
-    }
-
-    .cta-button:hover {
-        background-color: #4097e1;
-        transition: background-color 0.3s ease-in-out;
-    }
-
-    /* Responsive Design for smaller screens */
-    @media (max-width: 768px) {
-        .footer-container {
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .footer-section {
-            width: 100%;
-            max-width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .external-links ul {
-            justify-content: center;
-        }
-    }
+}
