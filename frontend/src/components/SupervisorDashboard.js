@@ -23,6 +23,16 @@ const SupervisorDashboard = () => {
     },
   ]);
 
+  const approveStudent = (index) => {
+    // Update the student's status to 'Active'
+    const updatedResults = [...searchResults];
+    updatedResults[index].status = 'Active';
+  
+    // Update the state with the new results
+    setSearchResults(updatedResults);
+  };
+  
+
 
     // Function to delete a student
     const deleteStudent = (studentId) => {
@@ -56,7 +66,7 @@ const SupervisorDashboard = () => {
 
   {/* Search and Filter Section */}
   <div className="search-filter-section">
-    <h3>Search Students and Set Exams</h3>
+    <h3>Approve Students and Set Exams</h3>
 
     {/* Search Bar for Students */}
     <div className="student-search">
@@ -88,43 +98,62 @@ const SupervisorDashboard = () => {
   </div>
 
       {/* Student Records Table */}
-  <div className="student-list">
-    <h3>Student Records</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Student Name</th>
-          <th>Email</th>
-          <th>Track</th>
-          <th>Exam Status</th>
-          <th>Actions</th>
-          <th></th>
+      <div className="student-list">
+  <h3>Student Records</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Student Name</th>
+        <th>Email</th>
+        <th>Track</th>
+   
+        <th>Exam Status</th>
+      
+        <th>Status</th> {/* New column for status */}
+        <th>Approval</th> {/* New column for approval */}
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {/* Dynamically render students from search results */}
+      {searchResults.map((student, index) => (
+        <tr key={index}>
+          <td>{student.id}</td>
+          <td>{student.name}</td>
+          <td>{student.email}</td>
+          <td>{student.track}</td>
+        
+          <td>{student.examStatus}</td>
+        
+          <td>
+            {/* Show Active/Inactive based on student status */}
+            {student.status ? student.status : 'Inactive'}
+          </td>
+          <td>
+            {/* Approval Button */}
+            <button
+              className="approve-btn"
+              onClick={() => approveStudent(index)} // Call approve function
+            >
+              Approve
+            </button>
+          </td>
+          <td>
+            <button
+              className="delete-btn"
+              onClick={() => deleteStudent(student.id)} // Call delete function
+            >
+              Delete Student
+            </button>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        {/* Dynamically render students from search results */}
-        {searchResults.map((student, index) => (
-          <tr key={index}>
-            <td>{student.id}</td>
-            <td>{student.name}</td>
-            <td>{student.email}</td>
-            <td>{student.track}</td>
-            <td>{student.phone}</td>
-            <td>{student.examStatus}</td>
-            <td>
-                <button
-                  className="delete-btn"
-                  onClick={() => deleteStudent(student.id)} // Call delete function
-                >
-                  Delete Student
-                </button>
-              </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+
       </div>
     </div>
   );
