@@ -10,11 +10,10 @@ import CodeEditor from './components/CodeEditor';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import BranchAdminDashboard from './components/BranchAdminDashboard'; 
-import TrackSupervisorDashboard from './components/TrackSupervisorDashboard'; // Assuming this component exists
 import PortfolioPage from './components/portfolioPage'; 
-import { AuthProvider } from './context/AuthContext';
 import { useContext } from 'react';
 import AuthContext from './context/AuthContext';
+import SupervisorDashboard from './components/SupervisorDashboard';
 
 function App() {
   const { user } = useContext(AuthContext); // Get the user context
@@ -39,7 +38,7 @@ function App() {
           <Route path="/branch-admin-dashboard" element={<BranchAdminDashboard />} />
         )}
         {user && user.role === 'supervisor' && (
-          <Route path="/track-supervisor-dashboard" element={<TrackSupervisorDashboard />} />
+          <Route path="/SDashboard" element={<SupervisorDashboard />} />
         )}
       </Routes>
     </div>

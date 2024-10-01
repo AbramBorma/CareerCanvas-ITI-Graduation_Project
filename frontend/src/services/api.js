@@ -137,3 +137,50 @@ export const deleteSupervisor = async (id) => {
         throw error;
     }
 };
+
+export const getStudents = async () => {
+    const token = getAuthToken();  // Ensure this retrieves the correct token
+    console.log("Using Access Token for Supervisors Request:", token); // Log token to verify
+
+    try {
+        const response = await axios.get(`${API_URL}/users/students/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Include the token correctly
+            }
+        });
+        return response.data;  // Handle the response data as needed
+    } catch (error) {
+        console.error("Error fetching students:", error);
+        throw error;
+    }
+};
+
+export const approveStudent = async (id) => {
+    const token = getAuthToken();  // Retrieve the token
+    try {
+        const response = await axios.post(`${API_URL}/users/approve-student/${id}/`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Include the token in the header
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error approving student", error);
+        throw error;
+    }
+};
+
+export const deleteStudent = async (id) => {
+    const token = getAuthToken();  // Retrieve the token
+    try {
+        const response = await axios.delete(`${API_URL}/users/delete-student/${id}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Include the token in the header
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting student", error);
+        throw error;
+    }
+};

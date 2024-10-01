@@ -160,7 +160,7 @@ def approve_student(request, student_id):
         supervisor_user = request.user
 
         # Try to fetch the student by ID and ensure they are in the same branch and track
-        student = User.objects.get(id=student_id, role=Role.STUDENT, branch=supervisor_user.branch, tracks__in=supervisor_user.tracks.all())
+        student = User.objects.get(id=student_id, role=Role.STUDENT, branch=supervisor_user.branch, track_id=supervisor_user.track_id)
 
         # Approve the student
         student.is_active = True
@@ -179,35 +179,62 @@ def approve_student(request, student_id):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
+# @csrf_exempt
 @api_view(['GET'])
-@permission_classes([IsSupervisor])
+@permission_classes([IsSupervisor])  # Ensure only supervisors can access this
 def get_students(request):
     supervisor_user = request.user
+    print(f"Incoming request from user: {supervisor_user}")
 
     if supervisor_user.role == Role.SUPERVISOR:
         # Filter students by the same branch and track as the supervisor
-        students = User.objects.filter(role=Role.STUDENT, branch=supervisor_user.branch, tracks__in=supervisor_user.tracks.all())
+        students = User.objects.filter(
+            role=Role.STUDENT,
+            branch=supervisor_user.branch,
+            track_id=supervisor_user.track_id  # Only get students for tracks assigned to this supervisor
+        )
+        
+        print(students)
         
         if students.exists():
             students_list = [
                 {
                     "id": student.id,
-                    "Full Name": f"{student.first_name} {student.last_name}",
+                    "full_name": f"{student.first_name} {student.last_name}",
                     "username": student.username,
                     "email": student.email,
-                    "track": [track.name for track in student.tracks.all()],
+                    "track": student.track.name if student.track else None,  # Get track name
                     "is_active": student.is_active,
                 }
                 for student in students
             ]
             return Response({"students": students_list}, status=status.HTTP_200_OK)
         else:
-            return Response({"message": "No students in this track."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "No students found."}, status=status.HTTP_404_NOT_FOUND)
     else:
         return Response({"error": "You do not have permission to view this."}, status=status.HTTP_403_FORBIDDEN)
 
 
+@csrf_exempt
+@api_view(['DELETE'])
+@permission_classes([IsSupervisor])  # Ensure only admins can delete supervisors
+def delete_student(request, student_id):
+    print(f"Attempting to delete user with ID: {student_id}")  # Debugging line
+
+    try:
+        supervisor_user = request.user
+
+        # Try to fetch the supervisor by ID
+        student = User.objects.get(id=student_id, role=Role.STUDENT, branch=supervisor_user.branch, track_id=supervisor_user.track_id)
+        
+        if student.track_id == supervisor_user.track_id :
+
+            # Perform deletion
+            student.delete()
+
+            return Response({'message': 'Student account deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+    except User.DoesNotExist:
+        return Response({'error': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 # Get All API Routes
 @api_view(['GET'])
@@ -410,4 +437,5 @@ def register_user(request):
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
+    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -21,7 +21,7 @@ class IsSupervisor(BasePermission):
     Allows access only to supervisors.
     """
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.role == Role.SUPERVISOR and request.user.is_active
+        return request.user.is_authenticated and request.user.role == Role.SUPERVISOR and request.user.is_active
 
 class IsStudent(BasePermission):
     """

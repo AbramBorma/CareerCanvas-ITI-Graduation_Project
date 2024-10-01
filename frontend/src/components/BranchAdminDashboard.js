@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import './organizationdashboard.css';
+import '../static/styles/organizationdashboard.css';
 import Navbar from "./NavBar";
 import Footer from './Footer';
 import { getSupervisors as fetchSupervisorsFromApi, approveSupervisor as approveSupervisorFromApi, deleteSupervisor as deleteSupervisorFromApi } from "../services/api"; 

@@ -27,6 +27,7 @@ class Branch(models.Model):
 class Track(models.Model):
     name = models.CharField(max_length=100)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    supervisor = models.ForeignKey('User', null=True, blank=True, on_delete=models.CASCADE, related_name='tracks')  # Each track belongs to one supervisor
 
     def __str__(self):
         return f"{self.name} - {self.branch.name}"
@@ -46,10 +47,8 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, username, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('role', 'superuser')  # Assign superuser role
+        extra_fields.setdefault('role', Role.ADMIN)  # Assign admin role
         return self.create_user(email, username, password, **extra_fields)
-
-
 
 # Define User Model
 class User(AbstractUser):
@@ -62,7 +61,7 @@ class User(AbstractUser):
     )
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
     branch = models.ForeignKey(Branch, null=True, blank=True, on_delete=models.SET_NULL)
-    tracks = models.ManyToManyField(Track, blank=True)  # Supervisors can be responsible for multiple tracks
+    track = models.ForeignKey(Track, null=True, blank=True, on_delete=models.SET_NULL)  # Each student has one track
     is_active = models.BooleanField(default=False)  # User account must be approved before activation
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -89,6 +88,3 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
-
-

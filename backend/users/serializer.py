@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'username', 'first_name', 'last_name', 'email', 'password', 'password2', 'organization', 
-            'branch', 'tracks', 'linkedin', 'github', 'leetcode', 'hackerrank', 'role'  # Added 'role' field
+            'branch', 'track', 'linkedin', 'github', 'leetcode', 'hackerrank', 'role'  # Include track field
         )
 
     def validate(self, data):
@@ -40,12 +40,16 @@ class UserSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             organization=validated_data.get('organization'),
             branch=validated_data.get('branch'),
+            track=validated_data.get('track'),  # Ensure track is saved
             role=validated_data['role'],  # Ensure role is saved
+            github=validated_data.get('github'),
+            linkedin=validated_data.get('linkedin'),
+            leetcode=validated_data.get('leetcode'),
+            hackerrank=validated_data.get('hackerrank'),
         )
         user.set_password(validated_data['password'])
         user.is_active = False  # User needs approval by an admin or superuser
-        user.save()
-        user.tracks.set(validated_data.get('tracks', []))  # Set the ManyToManyField tracks
+        user.save()  # Save the user with the track
         return user
 
 

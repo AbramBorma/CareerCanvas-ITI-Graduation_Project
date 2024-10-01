@@ -50,6 +50,8 @@ urlpatterns = [
     # View and approve students for a supervisor
     path('students/', views.get_students, name='get_students'),
     path('approve-student/<int:student_id>/', views.approve_student, name='approve_student'),
+    path('delete-student/<int:student_id>/', views.delete_student, name='delete_student'),
+
 
     # Organization, branch, and track routes
     path('organizations/', views.organizations_list, name='organizations'),
