@@ -1,27 +1,40 @@
-from rest_framework.permissions import BasePermission, IsAuthenticated
-
+from rest_framework.permissions import BasePermission
 from .models import Role
 
+class IsSuperuser(BasePermission):
+    """
+    Allows access only to superusers.
+    """
+    def has_permission(self, request, view):
+        return request.user and request.user.is_authenticated and request.user.is_superuser
 
 class IsAdmin(BasePermission):
+    """
+    Allows access only to active admin users (Branch Admin).
+    """
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.role == 'admin'
+        # Check if the user is authenticated, active, and has the admin role
+        return request.user.is_authenticated and request.user.is_active and request.user.role == Role.ADMIN
 
-class IsEmployee(BasePermission):
+class IsSupervisor(BasePermission):
+    """
+    Allows access only to supervisors.
+    """
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.role == 'employee' and request.user.organization == 'ITI'
+        return request.user.is_authenticated and request.user.role == Role.SUPERVISOR and request.user.is_active
 
-class IsUser(BasePermission):
+class IsStudent(BasePermission):
+    """
+    Allows access only to students.
+    """
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.role == 'user'
+        return request.user and request.user.is_authenticated and request.user.role == Role.STUDENT and request.user.is_active
 
-
-class IsAdminOrEmployee(BasePermission):
+class IsAdminOrSupervisor(BasePermission):
+    """
+    Allows access to both admins and supervisors.
+    """
     def has_permission(self, request, view):
         return request.user and request.user.is_authenticated and (
-            request.user.role == 'admin' or (request.user.role == 'employee' and request.user.organization == 'ITI')
+            request.user.role in [Role.ADMIN, Role.SUPERVISOR] and request.user.is_active
         )
-
-class IsITIUser(BasePermission):
-    def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.organization == 'ITI' and request.user.role == 'user'

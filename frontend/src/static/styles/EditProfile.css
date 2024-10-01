@@ -161,3 +161,14 @@ select:hover {
 .progress-btn:hover {
     background-color: #003366;
 }
+
+@media (max-width: 768px) {
+    .edit-profile {
+        width: 90%; /* Adjust width for smaller screens */
+    }
+    
+    .profile-pic {
+        width: 120px; /* Smaller profile picture on small screens */
+        height: 120px;
+    }
+}

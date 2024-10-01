@@ -6,22 +6,28 @@ import Navbar from './NavBar';
 import Footer from './Footer';
 
 function LoginPage() {
+  // Extract loginUser from AuthContext
   const { loginUser } = useContext(AuthContext);
+  
+  // Form input states
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordShown, setPasswordShown] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  
   const navigate = useNavigate(); 
 
+  // Toggle password visibility
   const togglePasswordVisibility = () => {
     setPasswordShown(!passwordShown);
   };
 
+  // Handle form submission for login
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await loginUser(email, password);
+    const success = await loginUser(email, password);  // Use loginUser from AuthContext
     if (success) {
-      navigate('/');  
+      navigate('/');  // Redirect to home page on successful login
     } else {
       setErrorMessage('Invalid email or password. Please try again.');
     }
@@ -65,6 +71,7 @@ function LoginPage() {
               ></i>
             </div>
 
+            {/* Display error message if login fails */}
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
 
             <div className="form-row-forgotten">

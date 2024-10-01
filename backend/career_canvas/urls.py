@@ -18,13 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+# from portfolio.views import GitHubDataView, HackerRankDataView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include("users.urls")),
     path('exams/', include("exams.urls")),
-    # path('api/', include('portfolio.urls')),  
-
+    # path('api/github/<str:username>/', GitHubDataView.as_view(), name='github_data'),
+    # path('api/hackerrank/<str:username>/', HackerRankDataView.as_view(), name='hackerrank_data'),
+    path('portfolio/', include('portfolio.urls')),
 ]
 
 # if settings.DEBUG:

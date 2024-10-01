@@ -30,8 +30,8 @@ const PageLandingWithEditor = () => {
         <div className="intro">
           <h1>Welcome to CareerCanvas</h1>
           <p className="intro-paragraph">
-            CAREER CANVAS? This is the place where your software journey becomes a visual masterpiece! Take skill-based exams, track your progress, and showcase achievements with dynamic stats from Hackerrank, GitHub, and LinkedIn. Ready to bring your career to life? Let’s create your canvas today!
-          </p>
+              Welcome to Career Canvas!
+              This platform empowers organizations to streamline student management through supervisors, who guide and oversee their progress. Supervisors can manage students, track their performance, and assign exams. Students can build personalized portfolios, take skill-based exams, and showcase their achievements. Ready to elevate your organization’s academic journey? Let’s get started and create your canvas today!          </p>
           <a href="#get-started" className="cta-button">Get Started</a>
         </div>
       </div>

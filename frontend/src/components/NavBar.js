@@ -15,17 +15,17 @@ import logo from '../static/imgs/careercanvas-high-resolution-logo-white-transpa
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
-const pages = ['Home', 'Portfolio', 'Examine'];
-const settings = ['Profile', 'Portfolio', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
-  const { user, logoutUser } = React.useContext(AuthContext);
+  const { user, logoutUser } = React.useContext(AuthContext); // Access user data from context
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -37,6 +37,8 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  console.log(user);
 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#002346' }}>
@@ -75,62 +77,73 @@ function ResponsiveAppBar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography component={Link} to="/" sx={{ textAlign: 'center' }}>Home</Typography>
+              </MenuItem>
+              {user && user.role === 'admin' && (
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography component={Link} to="/branch-admin-dashboard" sx={{ textAlign: 'center' }}>Dashboard</Typography>
                 </MenuItem>
-              ))}
+              )}
+              {user && user.role === 'supervisor' && (
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography component={Link} to="/SDashboard" sx={{ textAlign: 'center' }}>Track Supervisor Dashboard</Typography>
+                </MenuItem>
+              )}
+              {(!user || user.role === 'student') && (
+                <>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/portfolio/form" sx={{ textAlign: 'center' }}>Portfolio</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/exams" sx={{ textAlign: 'center' }}>Examine</Typography>
+                  </MenuItem>
+                </>
+              )}
             </Menu>
           </Box>
 
+          {/* Desktop Menu (Left-aligned) */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                component={Link}
-                to={
-                  page === 'Portfolio'
-                    ? '/portfolio/form'
-                    : page === 'Examine'
-                    ? '/exams'
-                    : '/'
-                }
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button onClick={handleCloseNavMenu} component={Link} to="/" sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button>
+            {user ? (
+              <>
+                {user.role === 'admin' && (
+                  <Button onClick={handleCloseNavMenu} component={Link} to="/branch-admin-dashboard" sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
+                )}
+                {user.role === 'supervisor' && (
+                  <Button onClick={handleCloseNavMenu} component={Link} to="/SDashboard" sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
+                )}
+                {user.role === 'student' && (
+                  <>
+                    <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio/form" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
+                    <Button onClick={handleCloseNavMenu} component={Link} to="/exams" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio/form" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
+                <Button onClick={handleCloseNavMenu} component={Link} to="/exams" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
+              </>
+            )}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             {user ? (
-              <Button sx={{ color: 'white' }} onClick={logoutUser}>
-                Logout
-              </Button>
+              <Button sx={{ color: 'white' }} onClick={logoutUser}>Logout</Button>
             ) : (
               <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px' }}>
-                <Button
-                  sx={{ color: 'white' }}
-                  component={Link}
-                  to="/register"
-                >
-                  Register
-                </Button>
-                <Button
-                  sx={{ color: 'white' }}
-                  component={Link}
-                  to="/login"
-                >
-                  Login
-                </Button>
+                <Button sx={{ color: 'white' }} component={Link} to="/register">Register</Button>
+                <Button sx={{ color: 'white' }} component={Link} to="/login">Login</Button>
               </Box>
             )}
           </Box>
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="User Avatar" src="/static/images/avatar/placeholder.jpg" /> {/* Use a valid avatar image path */}
               </IconButton>
             </Tooltip>
             <Menu
