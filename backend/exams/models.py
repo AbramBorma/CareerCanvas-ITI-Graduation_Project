@@ -49,3 +49,11 @@ class Exam(models.Model):
 
 #     def __str__(self):
 #         return f"Exam: {self.exam.id} - Question: {self.question.id} - Correct: {self.is_correct}"
+
+class AssignedExams(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    
+        
+    def __str__(self):
+        return f"{self.subject} exam for {self.user.username}"
