@@ -1,4 +1,3 @@
-// frontend/src/components/portfolioPage.js
 import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../context/AuthContext'; // Import AuthContext
 import '../static/styles/PortfolioPage.css';
