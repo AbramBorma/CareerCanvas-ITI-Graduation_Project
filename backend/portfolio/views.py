@@ -26,21 +26,21 @@ class GitHubStatsView(APIView):
             return Response({'github_username': github_username})
         return Response({'error': 'GitHub link not found or invalid'}, status=400)
 
-class GitHubDataView(APIView):
-    def get(self, request, username):
-        # Cache key for GitHub data
-        cache_key = f'github_data_{username}'
-        cached_data = cache.get(cache_key)
+# class GitHubDataView(APIView):
+#     def get(self, request, username):
+#         # Cache key for GitHub data
+#         cache_key = f'github_data_{username}'
+#         cached_data = cache.get(cache_key)
 
-        if cached_data:
-            # Return cached data if available
-            return Response(cached_data)
-        else:
-            # Trigger Celery task to scrape GitHub data
-            run_github_scraping.delay(username)
+#         if cached_data:
+#             # Return cached data if available
+#             return Response(cached_data)
+#         else:
+#             # Trigger Celery task to scrape GitHub data
+#             run_github_scraping.delay(username)
             
-            # Inform the client that the scraping has started
-            return Response({'message': 'GitHub scraping started, try again later.'})
+#             # Inform the client that the scraping has started
+#             return Response({'message': 'GitHub scraping started, try again later.'})
 
 
 class HackerRankDataView(APIView):
