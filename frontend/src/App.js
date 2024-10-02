@@ -16,6 +16,8 @@ import Footer from './components/Footer';
 import SupervisorStudentPortfolio from './components/SupervisorStudentPortfolio'
 import { useContext } from 'react';
 import AuthContext from './context/AuthContext';
+import GitHubStats from './components/GitHubStats';
+
 
 function App() {
   const { user } = useContext(AuthContext); // Get the user context
@@ -50,6 +52,7 @@ function App() {
         {user && user.role === 'supervisor' && (
           <Route path="/SDashboard" element={<SupervisorDashboard />} />
         )}
+                <Route path="/github-stats" element={<GitHubStats />} />
       </Routes>
       <Footer />
     </div>

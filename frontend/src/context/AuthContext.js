@@ -134,3 +134,55 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
+
+const refreshToken = async () => {
+    const refresh = localStorage.getItem('refresh_token');
+    if (!refresh) {
+      console.error('Refresh token is missing');
+      return;
+    }
+    try {
+      const response = await fetch('/auth/refresh/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refresh }),
+      });
+  
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('access_token', data.access);
+        return true;
+      } else {
+        console.error('Failed to refresh token');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      return false;
+    }
+  };
+  
+  const refreshAccessToken = async () => {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (!refreshToken) {
+      console.error('Refresh token is missing');
+      return;
+    }
+  
+    const response = await fetch('/auth/refresh-token/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refresh: refreshToken }),
+    });
+  
+    const data = await response.json();
+    if (response.ok) {
+      localStorage.setItem('access_token', data.access);
+    } else {
+      console.error('Failed to refresh token:', data.error);
+    }
+  };
