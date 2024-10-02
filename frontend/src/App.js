@@ -26,8 +26,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/portfolio/form" element={<PortfolioForm />} />
-        <Route path="/portfolio/" element={<PortfolioPage />} /> 
-        <Route path="/portfolio/:studentId" element={<SupervisorStudentPortfolio />} /> 
+        <Route path="/portfolio" 
+               element={
+                 user && user.role === 'student' ? (
+                   <PortfolioPage />
+                 ) : (
+                   <LoginPage />
+                 )
+               } 
+        />        <Route path="/portfolio/:studentId" element={<SupervisorStudentPortfolio />} /> 
         <Route path="/register" element={<Registerpage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />

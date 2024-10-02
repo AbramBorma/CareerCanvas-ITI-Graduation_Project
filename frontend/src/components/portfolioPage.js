@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import AuthContext from '../context/AuthContext'; // Import AuthContext
-import React, { useContext, useEffect, useState } from 'react';
 import '../static/styles/PortfolioPage.css';
 import AuthContext from '../context/AuthContext';
 import { leetCode } from '../services/api';
