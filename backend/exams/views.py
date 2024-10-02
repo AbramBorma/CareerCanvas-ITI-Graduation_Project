@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Subject, Question, Exam,AssignedExams
 from .serializers import SubjectSerializer,ExamSerializer
-from users.models import User
+from users.models import User, Track
 import json
 
 class FetchQuestions(APIView):
@@ -123,11 +123,7 @@ class AssignedSubjectsForUserView(APIView):
 
 
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import AssignedExams, Subject
-from users.models import User, Track
+
 
 class AssignUsersToSubjectByTrackView(APIView):
     def post(self, request ,user_id):

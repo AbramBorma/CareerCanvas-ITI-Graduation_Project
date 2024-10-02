@@ -12,9 +12,11 @@ import ResetPassword from './components/ResetPassword';
 import BranchAdminDashboard from './components/BranchAdminDashboard';
 import PortfolioPage from './components/portfolioPage';
 import SupervisorDashboard from './components/SupervisorDashboard';
-import AuthContext from './context/AuthContext';
+import Footer from './components/Footer';
+import SupervisorStudentPortfolio from './components/SupervisorStudentPortfolio'
 import { useContext } from 'react';
 import'./App.css';
+import AuthContext from './context/AuthContext';
 
 function App() {
   const { user } = useContext(AuthContext); // Get the user context
@@ -26,15 +28,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/portfolio/form" element={<PortfolioForm />} />
-        <Route path="/portfolio" 
-               element={
-                 user && user.role === 'student' ? (
-                   <PortfolioPage />
-                 ) : (
-                   <LoginPage />
-                 )
-               } 
-        />
+        <Route path="/portfolio/" element={<PortfolioPage />} /> 
+        <Route path="/portfolio/:studentId" element={<SupervisorStudentPortfolio />} /> 
         <Route path="/register" element={<Registerpage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
@@ -51,6 +46,7 @@ function App() {
           <Route path="/SDashboard" element={<SupervisorDashboard />} />
         )}
       </Routes>
+      <Footer />
     </div>
     </>
   );

@@ -93,7 +93,7 @@ function ResponsiveAppBar() {
               {(!user || user.role === 'student') && (
                 <>
                   <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography component={Link} to="/portfolio/form" sx={{ textAlign: 'center' }}>Portfolio</Typography>
+                    <Typography component={Link} to="/portfolio" sx={{ textAlign: 'center' }}>Portfolio</Typography>
                   </MenuItem>
                   <MenuItem onClick={handleCloseNavMenu}>
                     <Typography component={Link} to="/exams" sx={{ textAlign: 'center' }}>Examine</Typography>
@@ -116,14 +116,14 @@ function ResponsiveAppBar() {
                 )}
                 {user.role === 'student' && (
                   <>
-                    <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio/form" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
+                    <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
                     <Button onClick={handleCloseNavMenu} component={Link} to="/exams" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
                   </>
                 )}
               </>
             ) : (
               <>
-                <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio/form" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
+                <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
                 <Button onClick={handleCloseNavMenu} component={Link} to="/exams" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
               </>
             )}

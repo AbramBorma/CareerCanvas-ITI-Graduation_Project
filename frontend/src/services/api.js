@@ -224,3 +224,48 @@ export const deleteStudent = async (id) => {
         throw error;
     }
 };
+
+export const leetCode = async (id) => {
+    const token = getAuthToken();  // Retrieve the token
+    try {
+        const response = await axios.get(`${API_URL}/portfolio/student-leetcode/${id}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Include the token in the header
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching student LeetCode Statistics", error);
+        throw error;
+    }
+};
+
+export const hackerrank = async (id) => {
+    const token = getAuthToken();  // Retrieve the token
+    try {
+        const response = await axios.get(`${API_URL}/portfolio/student-hackerrank/${id}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Include the token in the header
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching student HackerRank Statistics", error);
+        throw error;
+    }
+};
+
+export const studentPortfolio = async (id) => {
+    const token = getAuthToken();  // Retrieve the token
+    try {
+        const response = await axios.get(`${API_URL}/portfolio/student-portfolio/${id}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Include the token in the header
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching student portfolio", error);
+        throw error;
+    }
+};
