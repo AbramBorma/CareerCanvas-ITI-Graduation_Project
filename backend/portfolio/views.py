@@ -1,4 +1,5 @@
 # backend/portfolio/views.py
+import re
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.core.cache import cache
@@ -15,41 +16,35 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 User = get_user_model()
+ 
+ 
+# Function to extract the github username from the provided URL
+def extract_github_username(url):
+    parts = url.rstrip('/').split('/')
+    if len(parts) > 2 and parts[-2] == 'u':
+        return parts[-1]
+    return None
 
-
-class GitHubStatsView(APIView):
-    authentication_classes = [JWTAuthentication]  # Using JWT authentication
-    permission_classes = [IsAuthenticated]  # User must be authenticated
-
-    def get(self, request):
-        user = request.user  # Get the currently logged-in user from the JWT token
-        
-        # Debug print for user info (remove in production)
-        print(f"Authenticated User: {user}")
-
-        # Check if the user has a GitHub link
-        if user.github and 'github.com/' in user.github:
-            github_username = user.github.split('github.com/')[-1]  # Extract the GitHub username
-            return Response({'github_username': github_username})
-        
-        # Return error response if GitHub link is not found or invalid
-        return Response({'error': 'GitHub link not found or invalid'}, status=400)
-
-# class GitHubDataView(APIView):
-#     def get(self, request, username):
-#         # Cache key for GitHub data
-#         cache_key = f'github_data_{username}'
-#         cached_data = cache.get(cache_key)
-
-#         if cached_data:
-#             # Return cached data if available
-#             return Response(cached_data)
-#         else:
-#             # Trigger Celery task to scrape GitHub data
-#             run_github_scraping.delay(username)
-            
-#             # Inform the client that the scraping has started
-#             return Response({'message': 'GitHub scraping started, try again later.'})
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_github_username(request, student_id):
+    try:
+        user = User.objects.get(id=student_id, role=Role.STUDENT)
+    except User.DoesNotExist:
+        raise NotFound("User doesn't exist")
+    
+    github_url = getattr(user, 'github', None)
+    
+    if not github_url:
+        return Response({"error": "GitHub URL not found for this student"}, status=404)
+    
+    github_username = extract_github_username(github_url)
+    if not github_username:
+        return Response({"error": "Invalid GitHub URL"}, status=400)
+    
+    return Response({"github_username": github_username})  # Corrected response key to "github_username"
+   
+    
 
 
 class HackerRankDataView(APIView):
