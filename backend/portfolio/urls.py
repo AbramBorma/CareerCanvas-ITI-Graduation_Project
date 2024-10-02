@@ -3,6 +3,7 @@ from . import views
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from .views import GitHubStatsView
 
 # OpenAPI/Swagger configuration for API documentation
 schema_view = get_schema_view(

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../static/styles/PortfolioPage.css';
 import { leetCode } from '../services/api';
 
-const PortfolioPage = () => {
+const SupervisorStudentPortfolio = () => {
   const [leetcodeUsername, setLeetCodeUsername] = useState(''); // State to hold LeetCode username
   const [loadingLeetCode, setLoadingLeetCode] = useState(true);
   const [error, setError] = useState(null);
@@ -109,4 +109,4 @@ const PortfolioPage = () => {
   );
 };
 
-export default PortfolioPage;
+export default SupervisorStudentPortfolio;

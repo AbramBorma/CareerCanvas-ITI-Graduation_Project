@@ -3,17 +3,14 @@ import '../static/styles/PortfolioPage.css';
 import AuthContext from '../context/AuthContext';
 import { leetCode } from '../services/api';
 
-const SupervisorStudentPortfolio = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
+const PortfolioPage = () => {
   const { user } = useContext(AuthContext);
-  const [leetcodeUsername, setLeetCodeUsername] = useState(''); // State to hold LeetCode username
+  const [leetcodeUsername, setLeetCodeUsername] = useState(''); // LeetCode username state
+  const [githubUsername, setGithubUsername] = useState(null); // GitHub username state
   const [loadingLeetCode, setLoadingLeetCode] = useState(true);
   const [error, setError] = useState(null);
   const leetcodeBaseURL = 'https://leetcard.jacoblin.cool/';
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
 
   useEffect(() => {
     const fetchLeetCodeStats = async () => {
@@ -22,13 +19,13 @@ const SupervisorStudentPortfolio = () => {
           setLoadingLeetCode(true);
           const data = await leetCode(user.user_id); // Fetch data using the leetCode function
           if (data.username) {
-            setLeetCodeUsername(data.username); // Set the username
+            setLeetCodeUsername(data.username); // Set the LeetCode username
           } else {
             setError('No LeetCode statistics available.');
           }
         } catch (error) {
-          setError('Failed to fetch LeetCode Statistics');
-          console.error("Error fetching LeetCode Statistics", error);
+          setError('Failed to fetch LeetCode statistics.');
+          console.error("Error fetching LeetCode statistics", error);
         } finally {
           setLoadingLeetCode(false);
         }
@@ -38,6 +35,31 @@ const SupervisorStudentPortfolio = () => {
     };
 
     fetchLeetCodeStats();
+  }, [user]);
+
+  useEffect(() => {
+    const fetchGitHubUsername = async () => {
+      try {
+        const response = await fetch('/portfolio/github-stats/', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setGithubUsername(data.github_username);
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching GitHub username:", error);
+      }
+    };
+
+    if (user && user.role === 'student') {
+      fetchGitHubUsername(); // Fetch the GitHub username for students
+    }
   }, [user]);
 
   return (
@@ -81,44 +103,28 @@ const SupervisorStudentPortfolio = () => {
       {/* GitHub Section */}
       <div className="box github-box">
         <h3>GitHub</h3>
-        <div className="github-section">
-          <div className="github-stats-row">
-            <div className="stat-box">
-              <label>GitHub Stats</label>
-              <img src="https://github-readme-stats.vercel.app/api?username=mariamabdk3m&show_icons=true&theme=radical" alt="GitHub Stats" />
+        {githubUsername ? (
+          <div className="github-section">
+            <div className="github-stats-row">
+              <div className="stat-box">
+                <label>GitHub Stats</label>
+                <img src={`https://github-readme-stats.vercel.app/api?username=${githubUsername}&show_icons=true&theme=radical`} alt="GitHub Stats" />
+              </div>
+              <div className="stat-box">
+                <label>GitHub Streak</label>
+                <img src={`https://github-readme-streak-stats.herokuapp.com/?user=${githubUsername}&theme=radical`} alt="GitHub Streak" />
+              </div>
             </div>
             <div className="stat-box">
-              <label>GitHub Streak</label>
-              <img src="https://github-readme-streak-stats.herokuapp.com/?user=mariamabdk3m&theme=radical" alt="GitHub Streak" />
+              <label>Most Used Languages</label>
+              <img src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${githubUsername}&layout=compact&theme=radical`} alt="Most Used Languages" />
             </div>
           </div>
-          <div className="stat-box">
-            <label>Most Used Languages</label>
-            <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=mariamabdk3m&layout=compact&theme=radical" alt="Most Used Languages" />
-          </div>
-          <div className="stat-box">
-            <label>Trophies</label>
-            <img src="https://github-profile-trophy.vercel.app/?username=mariamabdk3m&theme=radical&no-frame=true&column=7" alt="GitHub Trophies" />
-          </div>
-        </div>
+        ) : (
+          <p>Loading GitHub data...</p>
+        )}
       </div>
 
-      {/* Skills Progress Section */}
-      <div className="box skills-progress-box">
-        <h3>Progress</h3>
-        <div className="skill">
-          <label>Javascript</label>
-          <progress value="70" max="100" className="progress-bar"></progress>
-        </div>
-        <div className="skill">
-          <label>Python</label>
-          <progress value="50" max="100" className="progress-bar"></progress>
-        </div>
-        <div className="skill">
-          <label>NodeJS</label>
-          <progress value="30" max="100" className="progress-bar"></progress>
-        </div>
-      </div>
       {/* Skills Progress Section */}
       <div className="box skills-progress-box">
         <h3>Progress</h3>
@@ -139,4 +145,4 @@ const SupervisorStudentPortfolio = () => {
   );
 };
 
-export default SupervisorStudentPortfolio;
+export default PortfolioPage;

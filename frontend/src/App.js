@@ -14,8 +14,11 @@ import PortfolioPage from './components/portfolioPage';
 import SupervisorDashboard from './components/SupervisorDashboard';
 import Footer from './components/Footer';
 import SupervisorStudentPortfolio from './components/SupervisorStudentPortfolio'
+import { useContext } from 'react';
+import AuthContext from './context/AuthContext';
 
 function App() {
+  const { user } = useContext(AuthContext); // Get the user context
 
   return (
     <div className="App">

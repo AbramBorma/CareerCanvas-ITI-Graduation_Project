@@ -20,6 +20,7 @@ class GitHubStatsView(APIView):
 
     def get(self, request):
         user = request.user  # Get the currently logged-in user
+        print(user)
         if user.github and 'github.com/' in user.github:
             github_username = user.github.split('github.com/')[-1]
             return Response({'github_username': github_username})
