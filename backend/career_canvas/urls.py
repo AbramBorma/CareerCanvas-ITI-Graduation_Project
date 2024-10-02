@@ -26,8 +26,6 @@ urlpatterns = [
     path('users/', include("users.urls")),
     path('exams/', include("exams.urls")),
     path('portfolio/', include("portfolio.urls")),
-    # path('api/github/<str:username>/', GitHubDataView.as_view(), name='github_data'),
-    # path('api/hackerrank/<str:username>/', HackerRankDataView.as_view(), name='hackerrank_data'),
 
 ]
 

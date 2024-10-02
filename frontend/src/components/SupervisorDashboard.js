@@ -71,7 +71,8 @@ const SupervisorDashboard = () => {
       const portfolioData = await studentPortfolio(studentId);
       if (portfolioData) {
         // Redirect to the student's portfolio page
-        navigate(`/portfolio/${portfolioData.id}`); // Assuming the API returns the student ID
+        alert(portfolioData.full_name);
+        navigate(`/portfolio/${portfolioData.full_name}/${portfolioData.id}`); // Assuming the API returns the student ID
       }
     } catch (error) {
       console.error("Error fetching student portfolio:", error);
@@ -134,9 +135,9 @@ const SupervisorDashboard = () => {
               <tr>
                 <th>ID</th>
                 <th>Student Name</th>
-                <th>Email</th>
+                <th>Branch</th>
                 <th>Track</th>
-                <th>Exam Status</th>
+                <th>Assigned Exam</th>
                 <th>Status</th>
                 <th>Actions</th>
                 <th>Portfolio</th>
@@ -156,9 +157,9 @@ const SupervisorDashboard = () => {
                   <tr key={index}>
                     <td>{student.id}</td>
                     <td>{student.full_name}</td>
-                    <td>{student.email}</td>
+                    <td>{student.branch}</td>
                     <td>{student.track}</td>
-                    <td>{student.examStatus}</td>
+                    <td>{student.exam}</td>
                     <td>{student.is_active ? 'Active' : 'Inactive'}</td>
                     <td>
                       {!student.is_active ? (
@@ -187,7 +188,7 @@ const SupervisorDashboard = () => {
                     </td>
                     <td>
                       {student.is_active ? (
-                        <button onClick={() => handleVisit(student.id)}>Visit</button>
+                        <button className="visit-btn"onClick={() => handleVisit(student.id)}>Visit</button>
                       ) : null}
                     </td>
                   </tr>

@@ -29,7 +29,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/portfolio/form" element={<PortfolioForm />} />
         <Route path="/portfolio/" element={<PortfolioPage />} /> 
-        <Route path="/portfolio/:studentId" element={<SupervisorStudentPortfolio />} /> 
+        <Route path="/portfolio/:fullName/:studentId/" element={<SupervisorStudentPortfolio />} /> 
         <Route path="/register" element={<Registerpage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />

@@ -1,5 +1,3 @@
-from django.shortcuts import render
-from django.http import JsonResponse
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
@@ -13,7 +11,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework.views import APIView  # <-- Add this import
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib import messages
 
 
 
@@ -203,6 +200,7 @@ def get_students(request):
                     "email": student.email,
                     "track": student.track.name if student.track else None,  # Get track name
                     "is_active": student.is_active,
+                    "branch": student.branch.name if student.branch else None
                 }
                 for student in students
             ]
@@ -300,6 +298,7 @@ class PasswordResetConfirmView(APIView):
 
 # Send Password Reset Email
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def send_password_reset_email(request):
     email = request.data.get('email')
     try:
@@ -323,6 +322,7 @@ def send_password_reset_email(request):
 
 # Confirm Password Reset 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def reset_password_confirm(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
