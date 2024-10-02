@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../static/styles/PortfolioPage.css';
 import AuthContext from '../context/AuthContext';
 import { leetCode } from '../services/api';
@@ -45,7 +45,7 @@ const PortfolioPage = () => {
             'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
           },
         });
-  
+
         const data = await response.json();
         if (response.ok) {
           setGithubUsername(data.github_username);
@@ -56,12 +56,12 @@ const PortfolioPage = () => {
         console.error("Error fetching GitHub username:", error);
       }
     };
-  
+
     if (user && user.role === 'student') {
-      fetchGitHubUsername();
+      fetchGitHubUsername(); // Fetch the GitHub username for students
     }
   }, [user]);
-  
+
   return (
     <div className="portfolio-page">
       {/* User Profile Section */}
@@ -104,25 +104,25 @@ const PortfolioPage = () => {
       <div className="box github-box">
         <h3>GitHub</h3>
         {githubUsername ? (
-  <div className="github-section">
-    <div className="github-stats-row">
-      <div className="stat-box">
-        <label>GitHub Stats</label>
-        <img src={`https://github-readme-stats.vercel.app/api?username=${githubUsername}&show_icons=true&theme=radical`} alt="GitHub Stats" />
-      </div>
-      <div className="stat-box">
-        <label>GitHub Streak</label>
-        <img src={`https://github-readme-streak-stats.herokuapp.com/?user=${githubUsername}&theme=radical`} alt="GitHub Streak" />
-      </div>
-    </div>
-    <div className="stat-box">
-      <label>Most Used Languages</label>
-      <img src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${githubUsername}&layout=compact&theme=radical`} alt="Most Used Languages" />
-    </div>
-  </div>
-) : (
-  <p>Loading GitHub data...</p>
-)}
+          <div className="github-section">
+            <div className="github-stats-row">
+              <div className="stat-box">
+                <label>GitHub Stats</label>
+                <img src={`https://github-readme-stats.vercel.app/api?username=${githubUsername}&show_icons=true&theme=radical`} alt="GitHub Stats" />
+              </div>
+              <div className="stat-box">
+                <label>GitHub Streak</label>
+                <img src={`https://github-readme-streak-stats.herokuapp.com/?user=${githubUsername}&theme=radical`} alt="GitHub Streak" />
+              </div>
+            </div>
+            <div className="stat-box">
+              <label>Most Used Languages</label>
+              <img src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${githubUsername}&layout=compact&theme=radical`} alt="Most Used Languages" />
+            </div>
+          </div>
+        ) : (
+          <p>Loading GitHub data...</p>
+        )}
       </div>
 
       {/* Skills Progress Section */}
