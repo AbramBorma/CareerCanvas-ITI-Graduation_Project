@@ -1,26 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../static/styles/PortfolioPage.css';
-import AuthContext from '../context/AuthContext';
 import { leetCode } from '../services/api';
 
-const SupervisorStudentPortfolio = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const { user } = useContext(AuthContext);
+const PortfolioPage = () => {
   const [leetcodeUsername, setLeetCodeUsername] = useState(''); // State to hold LeetCode username
   const [loadingLeetCode, setLoadingLeetCode] = useState(true);
   const [error, setError] = useState(null);
   const leetcodeBaseURL = 'https://leetcard.jacoblin.cool/';
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  function getPathParam() {
+    const urlParts = window.location.pathname.split('/'); // Split the URL by '/'
+    return urlParts[urlParts.length - 1]; // Return the last part of the path
+  }
+  
+  // Usage
+  const studentId = getPathParam(); // This will return '15' from '/page/15'
+  console.log(studentId);
 
   useEffect(() => {
     const fetchLeetCodeStats = async () => {
-      if (user && user.user_id) {
         try {
           setLoadingLeetCode(true);
-          const data = await leetCode(user.user_id); // Fetch data using the leetCode function
+          const data = await leetCode(studentId); // Fetch data using the leetCode function
           if (data.username) {
             setLeetCodeUsername(data.username); // Set the username
           } else {
@@ -32,29 +33,14 @@ const SupervisorStudentPortfolio = () => {
         } finally {
           setLoadingLeetCode(false);
         }
-      } else {
-        setError('User ID is missing');
-      }
+
     };
 
     fetchLeetCodeStats();
-  }, [user]);
+  }, [studentId]);
 
   return (
     <div className="portfolio-page">
-      {/* User Profile Section */}
-      <div className="box user-info-box centered">
-        <div className="profile-pic-container">
-          <img
-            src="https://via.placeholder.com/150"
-            alt="Profile"
-            className="profile-pic"
-          />
-        </div>
-        <div className="user-name centered-text">
-          Welcome, {user ? `${user.first_name} ${user.last_name}` : "Student"}
-        </div>
-      </div>
 
       {/* LeetCode Section */}
       <div className="leetcode-box">
@@ -119,24 +105,8 @@ const SupervisorStudentPortfolio = () => {
           <progress value="30" max="100" className="progress-bar"></progress>
         </div>
       </div>
-      {/* Skills Progress Section */}
-      <div className="box skills-progress-box">
-        <h3>Progress</h3>
-        <div className="skill">
-          <label>Javascript</label>
-          <progress value="70" max="100" className="progress-bar"></progress>
-        </div>
-        <div className="skill">
-          <label>Python</label>
-          <progress value="50" max="100" className="progress-bar"></progress>
-        </div>
-        <div className="skill">
-          <label>NodeJS</label>
-          <progress value="30" max="100" className="progress-bar"></progress>
-        </div>
-      </div>
     </div>
   );
 };
 
-export default SupervisorStudentPortfolio;
+export default PortfolioPage;
