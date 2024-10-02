@@ -15,6 +15,7 @@ import SupervisorDashboard from './components/SupervisorDashboard';
 import Footer from './components/Footer';
 import SupervisorStudentPortfolio from './components/SupervisorStudentPortfolio'
 import { useContext } from 'react';
+import'./App.css';
 import AuthContext from './context/AuthContext';
 import GitHubStats from './components/GitHubStats';
 
@@ -23,8 +24,9 @@ function App() {
   const { user } = useContext(AuthContext); // Get the user context
 
   return (
+  <>
+    <NavBar /> {/* Render the NavBar */}
     <div className="App">
-      <NavBar /> {/* Render the NavBar */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/portfolio/form" element={<PortfolioForm />} />
@@ -56,6 +58,7 @@ function App() {
       </Routes>
       <Footer />
     </div>
+    </>
   );
 }
 

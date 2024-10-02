@@ -78,13 +78,53 @@ const  useApi = async (username) => {
 export default useApi;
 
 
-export const getQuestions = async (subject,level) => {
-    return await api.get(`${API_URL}/exams/fetchQuestions/${subject}/${level}`);
-  };
+// export const getQuestions = async (subject,level) => {
+//     return await api.get(`${API_URL}/exams/fetchQuestions/${subject}/${level}`);
+//   };
 
-  export const submitExam = async (answers) => {
-    return await api.post(`${API_URL}/exams/submit/`,answers);
-  };
+//   export const submitExam = async (answers) => {
+//     return await api.post(`${API_URL}/exams/submit/`,answers);
+//   };
+
+
+
+export const getQuestions = async (subject, level) => {
+  const token = getAuthToken();  // Ensure this retrieves the correct token
+  console.log("Using Access Token for Questions Request:", token);  // Log token to verify
+
+  try {
+      const response = await axios.get(`${API_URL}/exams/fetchQuestions/${subject}/${level}`, {
+          headers: {
+              Authorization: `Bearer ${token}`,  // Include the token correctly
+          },
+      });
+      return response.data;  // Handle the response data as needed
+  } catch (error) {
+      console.error("Error fetching questions:", error);
+      throw error;
+  }
+};
+
+export const submitExam = async (answers) => {
+  const token = getAuthToken();  // Ensure this retrieves the correct token
+  console.log("Using Access Token for Submit Exam Request:", token);  // Log token to verify
+
+  try {
+      const response = await axios.post(`${API_URL}/exams/submit/`, answers, {
+          headers: {
+              Authorization: `Bearer ${token}`,  // Include the token correctly
+          },
+      });
+      return response.data;  // Handle the response data as needed
+  } catch (error) {
+      console.error("Error submitting exam:", error);
+      throw error;
+  }
+};
+
+
+
+
 
   // Users APIs:
 
