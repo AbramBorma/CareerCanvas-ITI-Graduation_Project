@@ -1,7 +1,6 @@
 # backend/portfolio/views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from django.core.cache import cache
 from career_canvas.tasks import run_github_scraping, run_hackerrank_scraping
 from rest_framework.decorators import api_view, permission_classes
@@ -12,18 +11,28 @@ from rest_framework.exceptions import NotFound
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 User = get_user_model()
 
+
 class GitHubStatsView(APIView):
-    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+    authentication_classes = [JWTAuthentication]  # Using JWT authentication
+    permission_classes = [IsAuthenticated]  # User must be authenticated
 
     def get(self, request):
-        user = request.user  # Get the currently logged-in user
-        print(user)
+        user = request.user  # Get the currently logged-in user from the JWT token
+        
+        # Debug print for user info (remove in production)
+        print(f"Authenticated User: {user}")
+
+        # Check if the user has a GitHub link
         if user.github and 'github.com/' in user.github:
-            github_username = user.github.split('github.com/')[-1]
+            github_username = user.github.split('github.com/')[-1]  # Extract the GitHub username
             return Response({'github_username': github_username})
+        
+        # Return error response if GitHub link is not found or invalid
         return Response({'error': 'GitHub link not found or invalid'}, status=400)
 
 # class GitHubDataView(APIView):
