@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'; // Ensure this line is present
 import '../static/styles/SupervisorDashboard.css'; 
-import { getStudents as fetchStudentsFromApi, approveStudent as approveStudentFromAPI, deleteStudent as deleteStudentFromApi } from '../services/api'; 
+import { getStudents as fetchStudentsFromApi, approveStudent as approveStudentFromAPI, deleteStudent as deleteStudentFromApi, studentPortfolio } from '../services/api'; 
 import AuthContext from '../context/AuthContext'; 
 
 const SupervisorDashboard = () => {
@@ -9,6 +10,7 @@ const SupervisorDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate(); // Initialize the useNavigate hook
 
   // Fetch students when the component mounts
   useEffect(() => {
@@ -59,6 +61,21 @@ const SupervisorDashboard = () => {
       } catch (error) {
         console.error('Error deleting student:', error);
       }
+    }
+  };
+
+  // Handle visit button click
+  const handleVisit = async (studentId) => {
+    try {
+      // Fetch student portfolio using the API
+      const portfolioData = await studentPortfolio(studentId);
+      if (portfolioData) {
+        // Redirect to the student's portfolio page
+        navigate(`/portfolio/${portfolioData.id}`); // Assuming the API returns the student ID
+      }
+    } catch (error) {
+      console.error("Error fetching student portfolio:", error);
+      alert("Failed to fetch the student's portfolio.");
     }
   };
 
@@ -122,6 +139,7 @@ const SupervisorDashboard = () => {
                 <th>Exam Status</th>
                 <th>Status</th>
                 <th>Actions</th>
+                <th>Portfolio</th>
               </tr>
             </thead>
             <tbody>
@@ -166,6 +184,11 @@ const SupervisorDashboard = () => {
                           Delete Student
                         </button>
                       )}
+                    </td>
+                    <td>
+                      {student.is_active ? (
+                        <button onClick={() => handleVisit(student.id)}>Visit</button>
+                      ) : null}
                     </td>
                   </tr>
                 ))

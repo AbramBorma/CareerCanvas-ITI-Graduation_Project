@@ -28,7 +28,7 @@ class IsStudent(BasePermission):
     Allows access only to students.
     """
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.role == Role.STUDENT and request.user.is_active
+        return request.user.is_authenticated and request.user.role == Role.STUDENT and request.user.is_active
 
 class IsAdminOrSupervisor(BasePermission):
     """

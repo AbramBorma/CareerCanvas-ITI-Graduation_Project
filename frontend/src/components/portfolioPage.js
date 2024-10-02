@@ -1,11 +1,43 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../context/AuthContext'; // Import AuthContext
+import React, { useContext, useEffect, useState } from 'react';
 import '../static/styles/PortfolioPage.css';
-import hackerrankIcon from '../static/imgs/hackerrank.png';
+import AuthContext from '../context/AuthContext';
+import { leetCode } from '../services/api';
 
 const PortfolioPage = () => {
-  const [githubUsername, setGithubUsername] = useState(null);
-  const { user } = useContext(AuthContext); // Get the user context
+  const { user } = useContext(AuthContext);
+  const [leetcodeUsername, setLeetCodeUsername] = useState(''); // LeetCode username state
+  const [githubUsername, setGithubUsername] = useState(null); // GitHub username state
+  const [loadingLeetCode, setLoadingLeetCode] = useState(true);
+  const [error, setError] = useState(null);
+  const leetcodeBaseURL = 'https://leetcard.jacoblin.cool/';
+
+
+  useEffect(() => {
+    const fetchLeetCodeStats = async () => {
+      if (user && user.user_id) {
+        try {
+          setLoadingLeetCode(true);
+          const data = await leetCode(user.user_id); // Fetch data using the leetCode function
+          if (data.username) {
+            setLeetCodeUsername(data.username); // Set the LeetCode username
+          } else {
+            setError('No LeetCode statistics available.');
+          }
+        } catch (error) {
+          setError('Failed to fetch LeetCode statistics.');
+          console.error("Error fetching LeetCode statistics", error);
+        } finally {
+          setLoadingLeetCode(false);
+        }
+      } else {
+        setError('User ID is missing');
+      }
+    };
+
+    fetchLeetCodeStats();
+  }, [user]);
 
   useEffect(() => {
     const fetchGitHubUsername = async () => {
@@ -28,7 +60,7 @@ const PortfolioPage = () => {
     };
 
     if (user && user.role === 'student') {
-      fetchGitHubUsername();  // Fetch the GitHub username for students
+      fetchGitHubUsername(); // Fetch the GitHub username for students
     }
   }, [user]);
 
@@ -44,8 +76,30 @@ const PortfolioPage = () => {
           />
         </div>
         <div className="user-name centered-text">
-          {user?.username}
+          Welcome, {user ? `${user.first_name} ${user.last_name}` : "Student"}
         </div>
+      </div>
+
+      {/* LeetCode Section */}
+      <div className="leetcode-box">
+        <h2>LeetCode Statistics</h2>
+        {loadingLeetCode ? (
+          <p>Loading LeetCode statistics...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : leetcodeUsername ? (
+          <div className="iframe-container">
+            <iframe
+              src={`${leetcodeBaseURL}${leetcodeUsername}?theme=nord&font=Buenard&ext=activity`}
+              title="LeetCode Stats"
+              width="100%"
+              height="600px"
+              style={{ border: 'none' }}
+            />
+          </div>
+        ) : (
+          <p>No LeetCode statistics available.</p>
+        )}
       </div>
 
       {/* GitHub Section */}
@@ -64,27 +118,13 @@ const PortfolioPage = () => {
               </div>
             </div>
             <div className="stat-box">
-              <label>Most Used Languages</label> 
+              <label>Most Used Languages</label>
               <img src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${githubUsername}&layout=compact&theme=radical`} alt="Most Used Languages" />
             </div>
           </div>
         ) : (
           <p>Loading GitHub data...</p>
         )}
-      </div>
-
-      {/* HackerRank Section */}
-      <div className="box hackerrank-box">
-        <h3>HackerRank</h3>
-        <div className="box-content">
-          <img src={hackerrankIcon} alt="HackerRank Icon" className="social-icon" />
-          <div className="box-divider"></div>  
-          <div className="dummy-data enhanced-text">  
-            <p>Challenges Completed: <span>50</span></p>
-            <p>Rank: <span>3000</span></p>
-            <p>Badges Earned: <span>10</span></p>
-          </div>
-        </div>
       </div>
 
       {/* Skills Progress Section */}
