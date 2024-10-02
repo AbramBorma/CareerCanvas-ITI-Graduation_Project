@@ -39,6 +39,7 @@ const CodeEditor = () => {
   const [runerror, setRunerorr] = useState(false);
   const location = useLocation();
   const { userAnswers } = location.state || {};
+  
 
 
 
@@ -51,7 +52,7 @@ const CodeEditor = () => {
         setIsLoading(true)
         const res = await getQuestions(subject, "coding")
         console.log(res)
-        const data = res.data
+        const data = res
         const randomIndex = Math.floor(Math.random() * data.length);
         // const randomIndex =0
         setQuestiondata(data[randomIndex])
@@ -218,7 +219,7 @@ const CodeEditor = () => {
     console.log(userAnswers);
     const response=await submitExam(JSON.stringify(userAnswers))
     console.log(response)
-    const result = await response.data;
+    const result = await response;
     alert(`Exam submitted! Your score: ${result.score}`);
 } catch (error) {
     console.error('Error submitting exam:', error);

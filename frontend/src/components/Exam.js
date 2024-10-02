@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams ,useNavigate} from 'react-router-dom';
 import '../static/styles/ExamStyles.css';
 import { getQuestions,submitExam } from '../services/api';
+import AuthContext from '../context/AuthContext';
+
 
 
 const coding = {
@@ -24,17 +26,20 @@ const Exam = () => {
     const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const navigate = useNavigate();
+    const { user, logoutUser } = React.useContext(AuthContext); 
+
 
     useEffect(() => {
         const getRandomQuestions = async () => {
             const reseasy = await getQuestions(subject, "easy");
             const resmed = await getQuestions(subject, "intermediate");
             const reshard = await getQuestions(subject, "advanced");
+            console.log(reseasy)
 
             const subjectQuestions = {
-                easy: reseasy.data,
-                medium: resmed.data,
-                hard: reshard.data,
+                easy: reseasy,
+                medium: resmed,
+                hard: reshard,
             };
 
             if (!subjectQuestions) {
@@ -114,7 +119,7 @@ const Exam = () => {
         const userAnswers = {
             subject_id: subject,
             answers: selectedAnswers,
-            user_email:"mahmoud@gmail.com"
+            user_email:user.email
         };
         
         const code=coding[subject]
