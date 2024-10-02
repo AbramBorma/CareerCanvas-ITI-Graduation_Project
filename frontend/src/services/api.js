@@ -78,6 +78,11 @@ const  useApi = async (username) => {
 export default useApi;
 
 
+
+
+//Exam APIs
+
+
 // export const getQuestions = async (subject,level) => {
 //     return await api.get(`${API_URL}/exams/fetchQuestions/${subject}/${level}`);
 //   };
@@ -124,6 +129,22 @@ export const submitExam = async (answers) => {
 
 
 
+export const getAssignedSubjects = async (user_id) => {
+  const token = getAuthToken();  // Ensure this retrieves the correct token
+  console.log("Using Access Token for Questions Request:", token);  // Log token to verify
+
+  try {
+      const response = await axios.get(`${API_URL}/exams/assigned-subjects/${user_id}`, {
+          headers: {
+              Authorization: `Bearer ${token}`,  // Include the token correctly
+          },
+      });
+      return response.data;  // Handle the response data as needed
+  } catch (error) {
+      console.error("Error fetching questions:", error);
+      throw error;
+  }
+};
 
 
   // Users APIs:

@@ -25,6 +25,7 @@ const Exam = () => {
     const [timeLeft, setTimeLeft] = useState(900); // 15 minutes = 900 seconds
     const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
+    const [cheat,setCheat] = useState(false);
     const navigate = useNavigate();
     const { user, logoutUser } = React.useContext(AuthContext); 
 
@@ -98,14 +99,23 @@ const Exam = () => {
         return () => clearInterval(timer);
     }, [subject]);
 
+function Cheating (){
+    console.log(cheat)
+    if (cheat){
+        handleSubmit();
+    }else{
+        setCheat(true);
+        alert('Warning: No Cheating!');
+    }
+}
 
     useEffect(() => {
         if (window) {
-            window.onblur = () => alert('cheating')
+            window.onblur = () => Cheating();
           }
 
           return () => {window.onblur = null;  };
-    }, []);
+    }, [cheat]);
 
 
     const handleAnswerChange = (questionId, answerId) => {
@@ -139,6 +149,7 @@ const Exam = () => {
             console.log(response)
             const result = await response.data;
             alert(`Exam submitted! Your score: ${result.score}`);
+            navigate(`/exams`);
         } catch (error) {
             console.error('Error submitting exam:', error);
         }
