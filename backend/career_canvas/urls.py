@@ -25,10 +25,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include("users.urls")),
     path('exams/', include("exams.urls")),
+    path('portfolio/', include("portfolio.urls")),
     # path('api/github/<str:username>/', GitHubDataView.as_view(), name='github_data'),
     # path('api/hackerrank/<str:username>/', HackerRankDataView.as_view(), name='hackerrank_data'),
-    path('portfolio/', include('portfolio.urls')),
+
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -193,9 +193,7 @@ def get_students(request):
             branch=supervisor_user.branch,
             track_id=supervisor_user.track_id  # Only get students for tracks assigned to this supervisor
         )
-        
-        print(students)
-        
+                
         if students.exists():
             students_list = [
                 {

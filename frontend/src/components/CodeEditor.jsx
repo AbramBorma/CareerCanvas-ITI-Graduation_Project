@@ -53,6 +53,7 @@ const CodeEditor = () => {
         console.log(res)
         const data = res.data
         const randomIndex = Math.floor(Math.random() * data.length);
+        // const randomIndex =0
         setQuestiondata(data[randomIndex])
         setQuestion(data[randomIndex].question_text);
         const fioption = data[randomIndex].options[0]
@@ -114,8 +115,9 @@ const CodeEditor = () => {
     // for (let index = 0; index < runcase.length; index++) {
 
     // fvalue = fvalue.replace("INPUT", runcase)
+
     if (typeof (inp) == "object")
-      fvalue = fvalue.replace("INPUT", "[" + inp + "]")
+      fvalue = fvalue.replace("INPUT", JSON.stringify(inp))
     else
       fvalue = fvalue.replace("INPUT", inp)
 
@@ -126,6 +128,7 @@ const CodeEditor = () => {
     return axios.post("https://emkc.org/api/v2/piston/execute", {
       language: language,
       version: LANGUAGE_VERSIONS[language],
+      // stdin:inp,
       files: [
         {
           content: fvalue,
@@ -142,13 +145,14 @@ const CodeEditor = () => {
         // const outtest= output[0].replace(/\s/g, '');
         // console.log(newOutput.length)
         if (newOutput.length >= 1) {
-          if(inp == runcase){
-          if (eval(newOutput[0]).toString() === outp.toString()){setRunstate(true); return 1}
-          else {setRunstate(false) ;return 0}
-          }else{
-            if (eval(newOutput[0]).toString() === outp.toString()) return 1
-            else return 0
-          }
+            if(typeof(outp) != "string"){
+            if (eval(newOutput[0]).toString() === outp.toString()) {if(inp == runcase){setRunstate(true);}return 1}
+            else {if(inp == runcase){setRunstate(false);} return 0}
+            }else{
+              if (newOutput[0].toString() === outp.toString()) {if(inp == runcase){setRunstate(true);}return 1}
+              else {if(inp == runcase){setRunstate(false);} return 0}
+            }
+          
         }
         return 0
         
