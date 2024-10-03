@@ -20,10 +20,9 @@ User = get_user_model()
  
 # Function to extract the github username from the provided URL
 def extract_github_username(url):
-    parts = url.rstrip('/').split('/')
-    if len(parts) > 2 and parts[-2] == 'u':
-        return parts[-1]
-    return None
+    parts = url.split('github.com/')
+    return parts[-1]
+    
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -40,7 +39,7 @@ def get_github_username(request, student_id):
     
     github_username = extract_github_username(github_url)
     if not github_username:
-        return Response({"error": "Invalid GitHub URL"}, status=400)
+        return Response({"error": "Invalid GitHub URL", "github_username":github_username}, status=400)
     
     return Response({"github_username": github_username})  # Corrected response key to "github_username"
    

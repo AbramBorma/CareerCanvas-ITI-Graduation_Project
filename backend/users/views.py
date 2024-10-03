@@ -235,6 +235,7 @@ def delete_student(request, student_id):
         return Response({'error': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 # Get All API Routes
+@permission_classes([AllowAny,])
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
@@ -247,7 +248,7 @@ def getRoutes(request):
 
 # Test Endpoint for GET/POST Requests
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def testEndPoint(request):
     if request.method == 'GET':
         data = f"Congratulations {request.user}, your API just responded to a GET request"

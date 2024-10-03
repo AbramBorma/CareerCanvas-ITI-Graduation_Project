@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import '../static/styles/PortfolioPage.css';
 import AuthContext from '../context/AuthContext';
-import { leetCode } from '../services/api';
+import { leetCode, github } from '../services/api';
 
 const PortfolioPage = () => {
   const { user } = useContext(AuthContext);
@@ -10,6 +10,7 @@ const PortfolioPage = () => {
   const [loadingLeetCode, setLoadingLeetCode] = useState(true);
   const [error, setError] = useState(null);
   const leetcodeBaseURL = 'https://leetcard.jacoblin.cool/';
+  const GitHubBaseURL = 'https://github.com/';
 
 
   useEffect(() => {
@@ -40,17 +41,11 @@ const PortfolioPage = () => {
   useEffect(() => {
     const fetchGitHubUsername = async () => {
       try {
-        const response = await fetch('/portfolio/github-stats/', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-          },
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          setGithubUsername(data.github_username);
+        const response = await github(user.user_id);
+        if (response) {
+          setGithubUsername(response.github_username);
         } else {
-          console.error(data.error);
+          console.error(response.error);
         }
       } catch (error) {
         console.error("Error fetching GitHub username:", error);

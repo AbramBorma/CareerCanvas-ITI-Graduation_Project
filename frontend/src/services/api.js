@@ -9,21 +9,6 @@ const API_URL = "http://127.0.0.1:8000";
 
 // ../services/api.js
 
-export const github = async(userId) => {
-    // Replace with your actual GitHub API endpoint
-    const response = await fetch(`/portfolio/student-github/${userId}/`, {
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch GitHub username');
-    }
-
-    const data = await response.json();
-    return data; // Ensure this returns an object containing github_username
-};
 
 
 const getAuthToken = () => {
@@ -243,6 +228,24 @@ export const deleteStudent = async(id) => {
         throw error;
     }
 };
+
+export const github = async(userId) => {
+    const token = getAuthToken();
+    // Replace with your actual GitHub API endpoint
+    const response = await fetch(`/portfolio/student-github/${userId}/`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch GitHub username');
+    }
+
+    const data = await response.json();
+    return data; // Ensure this returns an object containing github_username
+};
+
 
 export const leetCode = async(id) => {
     const token = getAuthToken(); // Retrieve the token
