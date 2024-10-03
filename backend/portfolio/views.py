@@ -16,7 +16,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 User = get_user_model()
  
- 
 def extract_github_username(url):
     parts = url.split('github.com/')
     return parts[-1]
