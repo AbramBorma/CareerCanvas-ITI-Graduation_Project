@@ -3,12 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import '../static/styles/Auth.css';
 import Navbar from './NavBar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LoginPage() {
-  // Extract loginUser from AuthContext
   const { loginUser } = useContext(AuthContext);
-  
-  // Form input states
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordShown, setPasswordShown] = useState(false);
@@ -24,11 +23,18 @@ function LoginPage() {
   // Handle form submission for login
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await loginUser(email, password);  // Use loginUser from AuthContext
+    
+    if (!email || !password) {
+      toast.error('Both fields are required!');
+      return; // Prevent submission
+    }
+    
+    const success = await loginUser(email, password);
     if (success) {
-      navigate('/');  // Redirect to home page on successful login
+      navigate('/'); // Redirect to home page on successful login
     } else {
       setErrorMessage('Invalid email or password. Please try again.');
+      toast.error(errorMessage); // Show error message
     }
   };
 
@@ -86,6 +92,7 @@ function LoginPage() {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

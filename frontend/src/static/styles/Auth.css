@@ -521,6 +521,14 @@ body {
     text-decoration: underline;
 }
 
+/* Customize Toast Styles */
+.Toastify__toast {
+    background-color: #333; /* Dark background */
+    color: #fff;            /* White text */
+    border-radius: 5px;    /* Rounded corners */
+  }
+
+
 @media screen and (max-width: 991px) {
     .form-v7-content {
         flex-direction: column;

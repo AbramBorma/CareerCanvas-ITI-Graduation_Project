@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './NavBar';
 import Footer from './Footer';
 import AuthContext from '../context/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function RegisterPage() {
   const { registerUser } = useContext(AuthContext);
@@ -82,6 +84,24 @@ function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check for empty mandatory fields
+    const mandatoryFields = ['username', 'email', 'password', 'password2', 'role', 'organization', 'branch', 'track', 'first_name', 'last_name'];
+    const emptyFields = mandatoryFields.filter(field => !formData[field]);
+
+    if (emptyFields.length > 0) {
+      emptyFields.forEach(field => {
+        toast.error(`${field.charAt(0).toUpperCase() + field.slice(1)} should not be empty`);
+      });
+      return; // Stop the form submission if there are empty fields
+    }
+
+    // Check for password matching
+    if (formData.password !== formData.password2) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
     try {
       await registerUser(
         formData.email,
@@ -215,9 +235,12 @@ function RegisterPage() {
             <div className="form-row-last">
               <input type="submit" name="register" className="register" value="Sign Up" />
             </div>
+            <p>Already have an account? <Link to="/login">Login here</Link></p>
           </form>
         </div>
+        <ToastContainer />
       </div>
+      <Footer />
     </>
   );
 }
