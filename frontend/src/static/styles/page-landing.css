@@ -72,22 +72,23 @@
 
 /* CTA Button (Get Started) */
 .cta-button {
-  margin-top: 30px;
-  padding: 8px 15px; /* Reduced padding */
-  font-size: 1rem; /* Adjusted font size */
+  margin: 10px auto; /* Center the button with auto margins */
+  padding: 10px 20px; /* Increased padding for a larger button */
+  font-size: 1rem; /* Set a readable font size */
   color: white;
-  background-color: #00468B;
-  border-radius: 10px;
+  background-color: #007BFF; /* Changed to a bright blue for visibility */
+  border-radius: 25px; /* Increased border radius for a rounded look */
   text-decoration: none;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-  display: inline-block;
-  text-align: center;
-  align-self: center; 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Softer shadow for depth */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform transition for hover effect */
+  display: block; /* Ensure the button takes up full width for centering */
+  text-align: center; /* Center the text */
+  width: fit-content; /* Adjust width to fit content */
 }
 
 .cta-button:hover {
-  background-color: #003366;
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
 }
 
 /* Navbar Styles */
