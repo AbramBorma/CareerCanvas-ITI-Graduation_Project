@@ -141,13 +141,7 @@ function ResponsiveAppBar() {
                     >
                       Dashboard
                     </Button>
-                    <Button 
-                      onClick={handleCloseNavMenu} 
-                      href="http://localhost:8000/swagger/" 
-                      sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                      Endpoints
-                    </Button>
+                   
                   </>
                 )}
                 {user.role === 'student' && (
