@@ -6,7 +6,8 @@ import { getStudents as fetchStudentsFromApi,
         deleteStudent as deleteStudentFromApi,
         studentPortfolio,
         examSubjects,
-        setTrackStudentsExam } from '../services/api'; 
+        setTrackStudentsExam,
+        removeTrackStudentsExam } from '../services/api'; 
 import AuthContext from '../context/AuthContext'; 
 
 const SupervisorDashboard = () => {
@@ -117,6 +118,23 @@ const SupervisorDashboard = () => {
     }
   };
 
+
+  const handleRemoveExam = async () => {
+    try {
+      if (!selectedSubject) {
+        alert('Please select an exam subject.');
+        return;
+      }
+      const supervisorId = user.user_id;  // Get supervisor ID from user context
+      // alert(selectedSubject);
+      const examSubject = await removeTrackStudentsExam(supervisorId, { subject: selectedSubject });
+      if (examSubject) {
+      }
+    } catch (error) {
+      console.error("Error setting the exam:", error);
+    }
+  };
+
   return (
     <div className="supervisor-dashboard">
       {/* Top Navigation Bar */}
@@ -165,6 +183,12 @@ const SupervisorDashboard = () => {
             onClick={handleSetExam}
           >
             Set Exam
+          </button>
+          <button
+            className="unset-exam-btn"
+            onClick={handleRemoveExam}
+          >
+            Remove Exam
           </button>
         </div>
 
