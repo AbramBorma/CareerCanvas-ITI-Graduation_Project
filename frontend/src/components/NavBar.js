@@ -154,7 +154,7 @@ function ResponsiveAppBar() {
             ) : (
               <>
                 <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
-                <Button onClick={handleCloseNavMenu} component={Link} to="/exams" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
+                <Button onClick={handleCloseNavMenu} component={Link} to="/login" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
               </>
             )}
           </Box>

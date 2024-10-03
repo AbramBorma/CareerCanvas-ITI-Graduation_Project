@@ -101,6 +101,11 @@
     color: white;
 }
 
+.unset-exam-btn {
+    background-color: #ad1d1d;
+}
+
+
 .unset-exam-btn:hover {
     background-color: #df2626;
 }
