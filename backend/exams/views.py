@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Subject, Question, Exam,AssignedExams
 from .serializers import SubjectSerializer,ExamSerializer
-from users.models import User, Track
+from users.models import User, Track, Role
 import json
 
 class FetchQuestions(APIView):
@@ -92,8 +92,12 @@ class FetchAssignedExams(APIView):
 class SubjectListView(APIView):
     def get(self, request):
         subjects = Subject.objects.all()
-        serializer = SubjectSerializer(subjects, many=True)
-        return Response(serializer.data)
+        
+        # Extract only the names from the queryset
+        subject_names = subjects.values_list('name', flat=True)
+        print(subject_names)
+        
+        return Response(subject_names)
     
 
 class UserExamScoresView(APIView):
@@ -101,8 +105,25 @@ class UserExamScoresView(APIView):
         try:
             user = User.objects.get(id=user_id)
             exams = Exam.objects.filter(user=user)
+            
+            # Serialize the exams but only include the fields you need
             serializer = ExamSerializer(exams, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            
+            # Create a custom response with only the exams data
+            response_data = {
+                "exams": [
+                    {
+                        "subject_name": exam['subject']['name'],
+                        "date_taken": exam['date_taken'],
+                        "score": exam['score'],
+                    }
+                    for exam in serializer.data
+                ]
+            }
+            print(response_data)
+
+            return Response(response_data, status=status.HTTP_200_OK)
+        
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         
@@ -128,15 +149,16 @@ class AssignedSubjectsForUserView(APIView):
 class AssignUsersToSubjectByTrackView(APIView):
     def post(self, request ,user_id):
         user = User.objects.get(id=user_id)
-        subject_name = request.data.get('subject_name')
-        
+        print(user)
+        subject_name = request.data.get('subject')
+        print(subject_name)
         if not user or not subject_name:
             return Response({"error": "Supervisor id and subject name are required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user_track = user.track
             subject = Subject.objects.get(name=subject_name)            
-            users_in_track = User.objects.filter(track=user_track,role="student")
+            users_in_track = User.objects.filter(track=user_track,role=Role.STUDENT)
 
             assigned_count = 0
             for user in users_in_track:

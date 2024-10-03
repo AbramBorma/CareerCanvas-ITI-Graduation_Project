@@ -43,7 +43,10 @@ class Exam(models.Model):
 class AssignedExams(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-
+    
+    @classmethod
+    def get_subject_names_by_student_id(cls, student_id):
+        return cls.objects.filter(user_id=student_id).values_list('subject__name', flat=True)
         
     def __str__(self):
         return f"{self.subject} exam for {self.user.username}"

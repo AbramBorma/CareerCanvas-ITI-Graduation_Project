@@ -23,6 +23,15 @@
     justify-content: flex-start;
     position: relative;
 }
+.welcome h1 {
+    color: #164475;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-align: center;
+}
 
 h3 {
     margin-bottom: 30px;
@@ -75,10 +84,9 @@ h3 {
 
 .user-name {
     margin-top: 20px;
-    font-size: 28px;
     font-weight: bold;
     text-align: center;
-    color: #112b46;
+    color: #164475;
 }
 
 .social-icon {
@@ -114,65 +122,105 @@ h3 {
     color: #002346;
 }
 
-.github-section {
+/* .github-section {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+} */
+
+.github-box h2 {
+    color: #108ea1;
+    font-style: italic;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-align: center;
+    margin: 2rem auto;
 }
 
 .github-stats-row {
     display: flex;
-    gap: 150px;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
     margin-bottom: 20px;
 }
 
 .stat-box {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center; */
     margin-bottom: 20px;
+    min-width: 80%;
+}
+.stat-box img {
+    width: 100%;
+    height: 40%;
 }
 
 .stat-box label {
-    font-size: 18px;
+    font-size: 1.5rem;
+    font-weight: bold;
     color: #244464;
     margin-bottom: 10px;
+    align-self: left;
 }
 
-img {
-    max-width: 100%;
-}
-
-.skill {
-    margin-bottom: 10px;
+.exams-progress-box h2 {
+    color: #108ea1;
+    font-style: italic;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+    margin: 2rem auto;
+  }
+  
+  .exam-card {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
     width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.skill label {
-    width: 150px;
-    margin-right: 10px;
-    margin-left: -40px;
-    font-size: 16px;
-    text-align: right;
-    color: #002346;
-}
-
-.progress-bar {
-    width: calc(100% - 190px);
-    height: 8px;
-    border-radius: 4px;
-    background-color: #e0e0e0;
-}
-
-.progress-bar::-webkit-progress-value {
-    background-color: #002346;
-}
-
-progress::-moz-progress-bar {
-    background-color: #002346;
-}
+  }
+  
+  .MuiTypography-root {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #053f79;
+    margin-bottom: 10px;
+  }
+  
+  .css-ihhumc-MuiTypography-root {
+    font-size: 1.25rem !important;
+    color: #550606 !important;
+    margin-bottom: 15px !important;
+  }
+  
+  /* Dynamic Progress Bar Colors */
+  .progress-high .MuiLinearProgress-bar {
+    background-color: #4caf50 !important; /* Green for high scores */
+  }
+  
+  .progress-medium .MuiLinearProgress-bar {
+    background-color: #ffeb3b !important; /* Yellow for medium scores */
+  }
+  
+  .progress-low .MuiLinearProgress-bar {
+    background-color: #f44336 !important; /* Red for low scores */
+  }
+  
+  @media screen and (max-width: 768px) {
+    .portfolio-page {
+      width: 90%;
+    }
+  
+    .exam-card {
+      padding: 15px;
+    }
+  }
 
 @media screen and (max-width: 768px) {
     .portfolio-page {
@@ -216,7 +264,7 @@ progress::-moz-progress-bar {
     padding: 20px;
 }
 .leetcode-box .iframe-container {
-    width: 300% !important;
+    width: 250% !important;
 
 }
 .leetcode-box h2 {

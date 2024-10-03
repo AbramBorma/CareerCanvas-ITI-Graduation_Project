@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../static/styles/Auth.css'; 
 
@@ -14,14 +14,16 @@ const ResetPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/reset-password-confirm/${uid}/${token}/`, {
+            const response = await axios.post(`http://127.0.0.1:8000/users/reset-password-confirm/${uid}/${token}/`, {
                 new_password: newPassword,
             });
+
             setMessage(response.data.message || 'Password reset successful!');
         } catch (error) {
             setMessage('Error resetting password.');
         }
     };
+    useNavigate('/login');
 
     return (
         <div className="reset-password-container">

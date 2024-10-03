@@ -1,6 +1,5 @@
 import Navbar from "./NavBar"
 import PageLanding from "./PageLanding"
-import Footer from "./Footer"
 import TimeLine from "./TimeLine"
 
 function App() {
@@ -9,7 +8,6 @@ function App() {
       <Navbar />
       <PageLanding />
       <TimeLine />
-      <Footer />
     </div>
   );
 }
