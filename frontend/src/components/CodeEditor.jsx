@@ -99,6 +99,7 @@ const CodeEditor = () => {
         function Cheating (){
           console.log(cheat)
           if (cheat){
+            console.log("Cheating==>submit")
             submit();
           }else{
               setCheat(true);
@@ -235,6 +236,7 @@ const CodeEditor = () => {
     const response=await submitExam(JSON.stringify(userAnswers))
     console.log(response)
     const result = await response;
+    window.onblur = null;
     alert(`Exam submitted! Your score: ${result.score}`);
     navigate(`/exams`);
 } catch (error) {

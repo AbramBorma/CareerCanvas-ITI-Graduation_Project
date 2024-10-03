@@ -56,37 +56,11 @@ class SubmitExam(APIView):
                     correct_answers += 1
                 total_questions += 1
         
-        AssignedExams.objects.filter(user=user).delete()
+        AssignedExams.objects.filter(user=user,subject=subject).delete()
         score = (correct_answers / 29) * 100 if total_questions > 0 else 0
         exam = Exam.objects.create(user=user, subject=subject, score=score)
         return Response({"score": score}, status=status.HTTP_200_OK)
     
-
-
-
-class FetchAssignedExams(APIView):
-    def get(self, request):
-        json_data_str = request.body.decode('utf-8')
-        try:
-            data = json.loads(json_data_str)
-        except json.JSONDecodeError:
-            return Response({"error": "Invalid JSON data"}, status=status.HTTP_400_BAD_REQUEST)
-
-        user_email = data.get('user_email')
-        try:
-            subject = Subject.objects.get(name=subject_name)
-            questions = Question.objects.filter(subject=subject, level=level)
-            data = [
-                {
-                    "id": question.id,
-                    "question_text": question.question_text,
-                    "options": [question.option1, question.option2, question.option3, question.option4],
-                }
-                for question in questions
-            ]
-            return Response(data, status=status.HTTP_200_OK)
-        except Subject.DoesNotExist:
-            return Response({"error": "Subject not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class SubjectListView(APIView):
@@ -149,9 +123,7 @@ class AssignedSubjectsForUserView(APIView):
 class AssignUsersToSubjectByTrackView(APIView):
     def post(self, request ,user_id):
         user = User.objects.get(id=user_id)
-        print(user)
         subject_name = request.data.get('subject')
-        print(subject_name)
         if not user or not subject_name:
             return Response({"error": "Supervisor id and subject name are required"}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -164,6 +136,37 @@ class AssignUsersToSubjectByTrackView(APIView):
             for user in users_in_track:
                 if not AssignedExams.objects.filter(user=user, subject=subject).exists():
                     AssignedExams.objects.create(user=user, subject=subject)
+                    assigned_count += 1
+
+            return Response(
+                {"message": f"Assigned {assigned_count} students to the subject {subject.name} in track {user_track.name}"},
+                status=status.HTTP_201_CREATED
+            )
+        
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        except Subject.DoesNotExist:
+            return Response({"error": f"Subject '{subject_name}' not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+class RemoveAssignedUsersToSubjectByTrackView(APIView):
+    def post(self, request ,user_id):
+        user = User.objects.get(id=user_id)
+        subject_name = request.data.get('subject')
+        if not user or not subject_name:
+            return Response({"error": "Supervisor id and subject name are required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            user_track = user.track
+            subject = Subject.objects.get(name=subject_name)            
+            users_in_track = User.objects.filter(track=user_track,role=Role.STUDENT)
+
+            assigned_count = 0
+            for user in users_in_track:
+                if AssignedExams.objects.filter(user=user, subject=subject).exists():
+                    AssignedExams.objects.filter(user=user,subject=subject).delete()
                     assigned_count += 1
 
             return Response(

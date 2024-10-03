@@ -101,8 +101,8 @@
     color: white;
 }
 
-.set-exam-btn:hover {
-    background-color: #45a049;
+.unset-exam-btn:hover {
+    background-color: #df2626;
 }
 
 /* Student List */
