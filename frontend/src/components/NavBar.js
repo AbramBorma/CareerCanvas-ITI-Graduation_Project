@@ -81,9 +81,20 @@ function ResponsiveAppBar() {
                 <Typography component={Link} to="/" sx={{ textAlign: 'center' }}>Home</Typography>
               </MenuItem>
               {user && user.role === 'admin' && (
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography component={Link} to="/branch-admin-dashboard" sx={{ textAlign: 'center' }}>Dashboard</Typography>
-                </MenuItem>
+                <>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/branch-admin-dashboard" sx={{ textAlign: 'center' }}>Dashboard</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography 
+                      href="http://localhost:8000/swagger/" 
+                      sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }} 
+                      component="a" 
+                    >
+                      Endpoints
+                    </Typography>
+                  </MenuItem>
+                </>
               )}
               {user && user.role === 'supervisor' && (
                 <MenuItem onClick={handleCloseNavMenu}>
@@ -109,10 +120,35 @@ function ResponsiveAppBar() {
             {user ? (
               <>
                 {user.role === 'admin' && (
-                  <Button onClick={handleCloseNavMenu} component={Link} to="/branch-admin-dashboard" sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
+                  <>
+                    <Button onClick={handleCloseNavMenu} component={Link} to="/branch-admin-dashboard" sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
+                    <Button 
+                      onClick={handleCloseNavMenu} 
+                      href="http://localhost:8000/swagger/" 
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Endpoints
+                    </Button>
+                  </>
                 )}
                 {user.role === 'supervisor' && (
-                  <Button onClick={handleCloseNavMenu} component={Link} to="/SDashboard" sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
+                  <>
+                    <Button 
+                      onClick={handleCloseNavMenu} 
+                      component={Link} 
+                      to="/SDashboard" 
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Dashboard
+                    </Button>
+                    <Button 
+                      onClick={handleCloseNavMenu} 
+                      href="http://localhost:8000/swagger/" 
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Endpoints
+                    </Button>
+                  </>
                 )}
                 {user.role === 'student' && (
                   <>
