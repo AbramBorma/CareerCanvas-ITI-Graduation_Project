@@ -168,9 +168,34 @@ class AssignUsersToSubjectByTrackView(APIView):
             return Response({"error": f"Subject '{subject_name}' not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
-
 class RemoveAssignedUsersToSubjectByTrackView(APIView):
-    def post(self, request ,user_id):
+    
+    @swagger_auto_schema(
+        operation_description="Remove assigned students to a specific subject by track",
+        operation_summary="Remove Assigned Students",
+        tags=['Exams'],
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'subject': openapi.Schema(type=openapi.TYPE_STRING, description='Subject name'),
+            },
+            required=['subject'],
+            description="Request body should contain the subject name."
+        ),
+        responses={
+            201: openapi.Response(
+                description="Students successfully removed from the subject.",
+                examples={
+                    "application/json": {
+                        "message": "Assigned 5 students to the subject Math in track AI"
+                    }
+                }
+            ),
+            400: "Bad Request - Missing required fields",
+            404: "Not Found - User or subject not found"
+        }
+    )
+    def post(self, request, user_id):
         user = User.objects.get(id=user_id)
         subject_name = request.data.get('subject')
         if not user or not subject_name:
@@ -179,16 +204,16 @@ class RemoveAssignedUsersToSubjectByTrackView(APIView):
         try:
             user_track = user.track
             subject = Subject.objects.get(name=subject_name)            
-            users_in_track = User.objects.filter(track=user_track,role=Role.STUDENT)
+            users_in_track = User.objects.filter(track=user_track, role=Role.STUDENT)
 
             assigned_count = 0
             for user in users_in_track:
                 if AssignedExams.objects.filter(user=user, subject=subject).exists():
-                    AssignedExams.objects.filter(user=user,subject=subject).delete()
+                    AssignedExams.objects.filter(user=user, subject=subject).delete()
                     assigned_count += 1
 
             return Response(
-                {"message": f"Assigned {assigned_count} students to the subject {subject.name} in track {user_track.name}"},
+                {"message": f"Removed {assigned_count} students from the subject {subject.name} in track {user_track.name}"},
                 status=status.HTTP_201_CREATED
             )
         
