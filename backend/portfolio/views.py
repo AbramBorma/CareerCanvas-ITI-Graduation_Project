@@ -1,7 +1,6 @@
-# backend/portfolio/views.py
+import re
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from django.core.cache import cache
 from rest_framework.decorators import api_view, permission_classes
 from users.permissions import IsStudent, IsSupervisor
@@ -11,19 +10,55 @@ from rest_framework.exceptions import NotFound
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 User = get_user_model()
+ 
+def extract_github_username(url):
+    parts = url.split('github.com/')
+    return parts[-1]
+    
 
-class GitHubStatsView(APIView):
-    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_github_username(request, student_id):
+    try:
+        user = User.objects.get(id=student_id, role=Role.STUDENT)
+    except User.DoesNotExist:
+        raise NotFound("User doesn't exist")
+    
+    github_url = getattr(user, 'github', None)
+    
+    if not github_url:
+        return Response({"error": "GitHub URL not found for this student"}, status=404)
+    
+    github_username = extract_github_username(github_url)
+    if not github_username:
+        return Response({"error": "Invalid GitHub URL", "github_username":github_username}, status=400)
+    
+    return Response({"github_username": github_username})  
+   
+    
 
-    def get(self, request):
-        user = request.user  # Get the currently logged-in user
-        print(user)
-        if user.github and 'github.com/' in user.github:
-            github_username = user.github.split('github.com/')[-1]
-            return Response({'github_username': github_username})
-        return Response({'error': 'GitHub link not found or invalid'}, status=400)
+
+class HackerRankDataView(APIView):
+    def get(self, request, username):
+        # Cache key for HackerRank data
+        cache_key = f'hackerrank_data_{username}'
+        cached_data = cache.get(cache_key)
+
+        if cached_data:
+            # Return cached data if available
+            return Response(cached_data)
+        else:
+            # Trigger Celery task to scrape HackerRank data
+            run_hackerrank_scraping.delay(username)
+
+            # Inform the client that the scraping has started
+            return Response({'message': 'HackerRank scraping started, try again later.'})
+
+# Leetcode Data Fetching from the ready link
 
 # Function to extract the Leetcode username from the provided URL
 def extract_username_from_leetcode_url(url):

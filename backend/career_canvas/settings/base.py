@@ -48,8 +48,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'exams.apps.ExamsConfig',
     'portfolio.apps.PortfolioConfig',
-
-    
 ]
 
 MIDDLEWARE = [
@@ -57,7 +55,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

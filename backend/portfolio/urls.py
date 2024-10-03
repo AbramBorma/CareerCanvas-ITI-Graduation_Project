@@ -3,7 +3,7 @@ from . import views
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from .views import GitHubStatsView
+# from .views import GitHubStatsView
 
 # OpenAPI/Swagger configuration for API documentation
 schema_view = get_schema_view(
@@ -22,6 +22,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('student-leetcode/<int:student_id>/', views.get_leetcode_data, name='get_leetcode_data'),
     path('student-portfolio/<int:student_id>/', views.get_student_portfolio, name='get_student_portfolio'),
-    path('student-github/<int:student_id>', GitHubStatsView.as_view(), name='github-stats'),
+    path('student-github/<int:student_id>/', views.get_github_username, name='get_github_username'),
+
 
 ]
