@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { useParams,useLocation } from 'react-router-dom';
+import { useParams,useLocation ,useNavigate} from 'react-router-dom';
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle"
@@ -37,9 +37,11 @@ const CodeEditor = () => {
   const [runexpect, setRunexpect] = useState([]);
   const [runstate, setRunstate] = useState();
   const [runerror, setRunerorr] = useState(false);
+  const [cheat,setCheat] = useState(false);
   const location = useLocation();
   const { userAnswers } = location.state || {};
-  
+  const navigate = useNavigate();
+
 
 
 
@@ -92,13 +94,26 @@ const CodeEditor = () => {
 
         }, [])
 
-        useEffect(() => {
-          if (window) {
-              window.onblur = () => console.log('cheating')
-            }
-  
-            return () => {window.onblur = null;  };
-      }, []);
+
+
+        function Cheating (){
+          console.log(cheat)
+          if (cheat){
+            submit();
+          }else{
+              setCheat(true);
+              alert('Warning: No Cheating!');
+          }
+      }
+      
+          useEffect(() => {
+              if (window) {
+                  window.onblur = () => Cheating();
+                }
+      
+                return () => {window.onblur = null;  };
+          }, [cheat]);
+      
 
   // test=JSON.parse(test)
   // console.log(test)
@@ -221,6 +236,7 @@ const CodeEditor = () => {
     console.log(response)
     const result = await response;
     alert(`Exam submitted! Your score: ${result.score}`);
+    navigate(`/exams`);
 } catch (error) {
     console.error('Error submitting exam:', error);
     setIsLoadings(false);
