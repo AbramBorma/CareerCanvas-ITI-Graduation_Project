@@ -122,9 +122,6 @@ const SupervisorDashboard = () => {
       {/* Top Navigation Bar */}
       <div className="top-navbar">
         <h2>Supervisor Dashboard</h2>
-        <div className="user-profile">
-          <img src="profile-image-url" alt="User Profile" className="profile-pic" />
-        </div>
       </div>
 
       {/* Main Section */}
