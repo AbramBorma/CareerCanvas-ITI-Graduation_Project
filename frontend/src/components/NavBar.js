@@ -38,8 +38,6 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  console.log(user);
-
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#002346' }}>
       <Container maxWidth="xl">
@@ -111,6 +109,17 @@ function ResponsiveAppBar() {
                   </MenuItem>
                 </>
               )}
+              {/* Add Register and Login to the burger menu */}
+              {!user && (
+                <>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/register" sx={{ textAlign: 'center' }}>Register</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/login" sx={{ textAlign: 'center' }}>Login</Typography>
+                  </MenuItem>
+                </>
+              )}
             </Menu>
           </Box>
 
@@ -154,7 +163,7 @@ function ResponsiveAppBar() {
             ) : (
               <>
                 <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
-                <Button onClick={handleCloseNavMenu} component={Link} to="/exams" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
+                <Button onClick={handleCloseNavMenu} component={Link} to="/login" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
               </>
             )}
           </Box>
@@ -163,7 +172,7 @@ function ResponsiveAppBar() {
             {user ? (
               <Button sx={{ color: 'white' }} onClick={logoutUser}>Logout</Button>
             ) : (
-              <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px' }}>
+              <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, gap: '15px', marginRight: '20px' }}>
                 <Button sx={{ color: 'white' }} component={Link} to="/register">Register</Button>
                 <Button sx={{ color: 'white' }} component={Link} to="/login">Login</Button>
               </Box>

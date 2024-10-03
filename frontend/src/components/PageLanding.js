@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // For navigation
 import Editor from '@monaco-editor/react'; // Monaco editor
 import '../static/styles/page-landing.css'; // Merged CSS file
 
 const PageLandingWithEditor = () => {
   const [code, setCode] = useState(`console.log("Hello, CareerCanvas!");`);
   const [output, setOutput] = useState('');
+  const navigate = useNavigate(); // React Router's navigation hook
 
   // Function to run the code
   const runCode = () => {
@@ -23,6 +25,11 @@ const PageLandingWithEditor = () => {
     }
   };
 
+  // Function to handle Get Started button click
+  const handleGetStarted = () => {
+    navigate('/login'); // Navigate to the login page
+  };
+
   return (
     <div className="page-landing-with-editor">
       {/* Page Landing Section */}
@@ -31,8 +38,9 @@ const PageLandingWithEditor = () => {
           <h1>Welcome to CareerCanvas</h1>
           <p className="intro-paragraph">
               Welcome to Career Canvas!
-              This platform empowers organizations to streamline student management through supervisors, who guide and oversee their progress. Supervisors can manage students, track their performance, and assign exams. Students can build personalized portfolios, take skill-based exams, and showcase their achievements. Ready to elevate your organization’s academic journey? Let’s get started and create your canvas today!          </p>
-          <a href="#get-started" className="cta-button">Get Started</a>
+              This platform empowers organizations to streamline student management through supervisors, who guide and oversee their progress. Supervisors can manage students, track their performance, and assign exams. Students can build personalized portfolios, take skill-based exams, and showcase their achievements. Ready to elevate your organization’s academic journey? Let’s get started and create your canvas today!          
+          </p>
+          <button className="cta-button" onClick={handleGetStarted}>Get Started</button>
         </div>
       </div>
       

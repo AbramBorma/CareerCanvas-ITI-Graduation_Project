@@ -148,6 +148,7 @@ function Cheating (){
             const response=await submitExam(JSON.stringify(userAnswers))
             console.log(response)
             const result = await response.data;
+            window.onblur = null;
             alert(`Exam submitted! Your score: ${result.score}`);
             navigate(`/exams`);
         } catch (error) {
