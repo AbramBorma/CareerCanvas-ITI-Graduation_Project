@@ -1,4 +1,3 @@
-# backend/portfolio/views.py
 import re
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,7 +17,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 User = get_user_model()
  
  
-# Function to extract the github username from the provided URL
 def extract_github_username(url):
     parts = url.split('github.com/')
     return parts[-1]
@@ -41,7 +39,7 @@ def get_github_username(request, student_id):
     if not github_username:
         return Response({"error": "Invalid GitHub URL", "github_username":github_username}, status=400)
     
-    return Response({"github_username": github_username})  # Corrected response key to "github_username"
+    return Response({"github_username": github_username})  
    
     
 
