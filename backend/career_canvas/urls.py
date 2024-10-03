@@ -41,7 +41,6 @@ urlpatterns = [
     path('users/', include("users.urls")),
     path('exams/', include("exams.urls")),
     path('portfolio/', include("portfolio.urls")),
-        path('api/', include("api.urls")),
 
     # Swagger and ReDoc endpoints
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
