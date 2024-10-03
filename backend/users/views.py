@@ -12,6 +12,9 @@ from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework.views import APIView  # <-- Add this import
 from django.views.decorators.csrf import csrf_exempt
 from exams.models import AssignedExams
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 
 
 
@@ -32,7 +35,9 @@ from users.permissions import IsAdmin, IsSupervisor, IsStudent
 # JWT Token View
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-
+    
+    
+    @swagger_auto_schema(operation_summary="Generate JWT Token", tags=['Auth'])
     def post(self, request, *args, **kwargs):
         user = User.objects.filter(email=request.data['email']).first()
         if user and not user.is_active:
@@ -46,6 +51,8 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
+
+    @swagger_auto_schema(operation_summary="User Registration", tags=['Auth'])
     def perform_create(self, serializer):
         user = serializer.save()
 
@@ -70,6 +77,7 @@ class RegisterView(generics.CreateAPIView):
 
 
 # Approve user view (Admin or Supervisor approval required)
+@swagger_auto_schema(method='post', operation_summary="Approve Supervisor (Admin)", tags=['Admin'])
 @api_view(['POST'])
 @permission_classes([IsAdmin])  
 def approve_supervisor(request, user_id):
@@ -97,7 +105,9 @@ def approve_supervisor(request, user_id):
             return Response({"error": "You can only approve supervisors in your branch."}, status=status.HTTP_403_FORBIDDEN)
     except User.DoesNotExist:
         return Response({'error': 'Supervisor not found.'}, status=status.HTTP_404_NOT_FOUND)
-    
+
+
+@swagger_auto_schema(method='get', operation_summary="Get Supervisors (Admin)", tags=['Admin'])    
 @api_view(['GET'])
 @permission_classes([IsAdmin])  # Use your custom permission to ensure the user is an admin
 def get_supervisors(request):
@@ -128,6 +138,7 @@ def get_supervisors(request):
     else:
         return Response({"error": "You do not have permission to view this."}, status=status.HTTP_403_FORBIDDEN)
 
+@swagger_auto_schema(method='delete', operation_summary="Delete Supervisor (Admin)", tags=['Admin'])
 @csrf_exempt
 @api_view(['DELETE'])
 @permission_classes([IsAdmin])  # Ensure only admins can delete supervisors
@@ -150,6 +161,7 @@ def delete_supervisor(request, user_id):
         return Response({'error': 'Supervisor not found.'}, status=status.HTTP_404_NOT_FOUND)
     
 
+@swagger_auto_schema(method='post', operation_summary="Approve Student (Supervisor)", tags=['Supervisor'])
 @api_view(['POST'])
 @permission_classes([IsSupervisor])  
 def approve_student(request, student_id):
@@ -178,6 +190,7 @@ def approve_student(request, student_id):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # @csrf_exempt
+@swagger_auto_schema(method='get', operation_summary="Get Students (Supervisor)", tags=['Supervisor'])
 @api_view(['GET'])
 @permission_classes([IsSupervisor])  # Ensure only supervisors can access this
 def get_students(request):
@@ -215,6 +228,7 @@ def get_students(request):
 
 
 
+@swagger_auto_schema(method='delete', operation_summary="Delete Student (Supervisor)", tags=['Supervisor'])
 @csrf_exempt
 @api_view(['DELETE'])
 @permission_classes([IsSupervisor])  # Ensure only admins can delete supervisors
@@ -237,6 +251,7 @@ def delete_student(request, student_id):
         return Response({'error': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 # Get All API Routes
+@swagger_auto_schema(method='get', operation_summary="Get Routes", tags=['Misc'])
 @permission_classes([AllowAny,])
 @api_view(['GET'])
 def getRoutes(request):
@@ -249,6 +264,8 @@ def getRoutes(request):
 
 
 # Test Endpoint for GET/POST Requests
+@swagger_auto_schema(method='get', operation_summary="Test GET/POST Endpoint", tags=['Misc'])
+@swagger_auto_schema(method='post', operation_summary="Test POST Endpoint", tags=['Misc'])
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
 def testEndPoint(request):
@@ -264,6 +281,7 @@ def testEndPoint(request):
 
 # Password Reset View
 class PasswordResetView(APIView):
+
     def post(self, request, *args, **kwargs):
         serializer = PasswordResetSerializer(data=request.data)
         if serializer.is_valid():
@@ -302,6 +320,7 @@ class PasswordResetConfirmView(APIView):
 
 
 # Send Password Reset Email
+@swagger_auto_schema(method='post', operation_summary="Send Password Reset Email", tags=['Auth'])
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def send_password_reset_email(request):
@@ -326,6 +345,7 @@ def send_password_reset_email(request):
 
 
 # Confirm Password Reset 
+@swagger_auto_schema(method='post', operation_summary="Confirm Password Reset", tags=['Auth'])
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def reset_password_confirm(request, uidb64, token):
@@ -346,6 +366,7 @@ def reset_password_confirm(request, uidb64, token):
 
 
 # List All Roles (Admin, Supervisor, Student)
+@swagger_auto_schema(method='get', operation_summary="Roles List", tags=['General'])
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def roles_view(request):
@@ -358,6 +379,7 @@ def roles_view(request):
 
 
 # Admin View
+@swagger_auto_schema(method='get', operation_summary="Admin View", tags=['Admin'])
 @api_view(['GET'])
 @permission_classes([IsAdmin])
 def admin_view(request):
@@ -366,6 +388,7 @@ def admin_view(request):
 
 
 # Supervisor View
+@swagger_auto_schema(method='get', operation_summary="Supervisor View", tags=['Supervisor'])
 @api_view(['GET'])
 @permission_classes([IsSupervisor])
 def supervisor_view(request):
@@ -374,6 +397,7 @@ def supervisor_view(request):
 
 
 # Student View
+@swagger_auto_schema(method='get', operation_summary="Student View", tags=['Student'])
 @api_view(['GET'])
 @permission_classes([IsStudent])
 def student_view(request):
@@ -382,6 +406,7 @@ def student_view(request):
 
 
 # Activate User (Admin Only)
+@swagger_auto_schema(method='post', operation_summary="Activate User (Admin)", tags=['Admin'])
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def activate_user(request, user_id):
@@ -395,6 +420,7 @@ def activate_user(request, user_id):
 
 
 # List All Tracks
+@swagger_auto_schema(method='get', operation_summary="List All Tracks", tags=['General'])
 @api_view(['GET'])
 @permission_classes([AllowAny])  # Ensure this allows unauthenticated access
 def tracks_list(request):
@@ -410,6 +436,7 @@ def tracks_list(request):
 
 
 # List All Organizations
+@swagger_auto_schema(method='get', operation_summary="List All Organizations", tags=['General'])
 @api_view(['GET'])
 @permission_classes([AllowAny])  # Ensure this allows unauthenticated access
 def organizations_list(request):
@@ -419,6 +446,7 @@ def organizations_list(request):
 
 
 # List All Branches
+@swagger_auto_schema(method='get', operation_summary="List All Branches", tags=['General'])
 @api_view(['GET'])
 @permission_classes([AllowAny])  # Ensure this allows unauthenticated access
 def branches_list(request):

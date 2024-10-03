@@ -4,6 +4,8 @@ from rest_framework import status
 from .models import Subject, Question, Exam,AssignedExams
 from .serializers import SubjectSerializer,ExamSerializer
 from users.models import User, Track, Role
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 import json
 
 class FetchQuestions(APIView):

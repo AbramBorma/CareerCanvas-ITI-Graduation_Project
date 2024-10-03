@@ -66,13 +66,13 @@ urlpatterns = [
     # Roles view
     path('roles/', views.roles_view, name='roles'),
 
-    # Test endpoint
-    path('test/', views.testEndPoint, name='test_endpoint'),
+    # # Test endpoint
+    # path('test/', views.testEndPoint, name='test_endpoint'),
 
     # Password reset related views
     path('password-reset/', views.PasswordResetView.as_view(), name='password_reset'),
     path('reset-password-confirm/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='reset_password_confirm'),
 
-    # Routes view for testing
-    path('routes/', views.getRoutes, name='routes'),
+    # # Routes view for testing
+    # path('routes/', views.getRoutes, name='routes'),
 ]
