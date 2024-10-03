@@ -11,6 +11,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework.views import APIView  # <-- Add this import
 from django.views.decorators.csrf import csrf_exempt
+from exams.models import AssignedExams
 
 
 
@@ -200,15 +201,18 @@ def get_students(request):
                     "email": student.email,
                     "track": student.track.name if student.track else None,  # Get track name
                     "is_active": student.is_active,
-                    "branch": student.branch.name if student.branch else None
+                    "branch": student.branch.name if student.branch else None,
+                    "exams": AssignedExams.get_subject_names_by_student_id(student.id)
                 }
                 for student in students
             ]
+
             return Response({"students": students_list}, status=status.HTTP_200_OK)
         else:
             return Response({"message": "No students found."}, status=status.HTTP_404_NOT_FOUND)
     else:
         return Response({"error": "You do not have permission to view this."}, status=status.HTTP_403_FORBIDDEN)
+
 
 
 @csrf_exempt
