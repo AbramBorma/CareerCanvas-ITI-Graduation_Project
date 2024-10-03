@@ -1,14 +1,19 @@
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Subject, Question, Exam,AssignedExams
-from .serializers import SubjectSerializer,ExamSerializer
-from users.models import User, Track, Role
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
+from .models import Subject, Question, Exam, AssignedExams
+from .serializers import SubjectSerializer, ExamSerializer
+from users.models import User, Role
 import json
 
 class FetchQuestions(APIView):
+    @swagger_auto_schema(
+        operation_summary="Fetch Questions",
+        operation_description="Retrieve a list of questions for a given subject and level.",
+        tags=["Exams"]
+    )
     def get(self, request, subject_name, level):
         try:
             subject = Subject.objects.get(name=subject_name)
@@ -27,6 +32,11 @@ class FetchQuestions(APIView):
 
 
 class SubmitExam(APIView):
+    @swagger_auto_schema(
+        operation_summary="Submit Exam",
+        operation_description="Submit an exam with the user's answers and calculate the score.",
+        tags=["Exams"]
+    )
     def post(self, request):
         json_data_str = request.body.decode('utf-8')
         try:
@@ -43,7 +53,7 @@ class SubmitExam(APIView):
 
         user = User.objects.get(email=user_email)
         subject = Subject.objects.get(name=subject_id)
-        
+
         total_questions = 0
         correct_answers = 0
         for question_id, user_answer in answers.items():
@@ -57,16 +67,19 @@ class SubmitExam(APIView):
                 if is_correct:
                     correct_answers += 1
                 total_questions += 1
-        
+
         AssignedExams.objects.filter(user=user).delete()
         score = (correct_answers / 29) * 100 if total_questions > 0 else 0
         exam = Exam.objects.create(user=user, subject=subject, score=score)
         return Response({"score": score}, status=status.HTTP_200_OK)
-    
-
 
 
 class FetchAssignedExams(APIView):
+    @swagger_auto_schema(
+        operation_summary="Fetch Assigned Exams",
+        operation_description="Retrieve a list of assigned exams for the user.",
+        tags=["Exams"]
+    )
     def get(self, request):
         json_data_str = request.body.decode('utf-8')
         try:
@@ -92,26 +105,29 @@ class FetchAssignedExams(APIView):
 
 
 class SubjectListView(APIView):
+    @swagger_auto_schema(
+        operation_summary="List Subjects",
+        operation_description="Retrieve a list of available subjects.",
+        tags=["Exams"]
+    )
     def get(self, request):
         subjects = Subject.objects.all()
-        
-        # Extract only the names from the queryset
         subject_names = subjects.values_list('name', flat=True)
-        print(subject_names)
-        
         return Response(subject_names)
-    
+
 
 class UserExamScoresView(APIView):
+    @swagger_auto_schema(
+        operation_summary="User Exam Scores",
+        operation_description="Retrieve the exam scores of a specific user.",
+        tags=["Exams"]
+    )
     def get(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
             exams = Exam.objects.filter(user=user)
             
-            # Serialize the exams but only include the fields you need
             serializer = ExamSerializer(exams, many=True)
-            
-            # Create a custom response with only the exams data
             response_data = {
                 "exams": [
                     {
@@ -122,16 +138,19 @@ class UserExamScoresView(APIView):
                     for exam in serializer.data
                 ]
             }
-            print(response_data)
 
             return Response(response_data, status=status.HTTP_200_OK)
         
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        
 
 
 class AssignedSubjectsForUserView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Assigned Subjects for User",
+        operation_description="Retrieve the subjects assigned to a specific user.",
+        tags=["Exams"]
+    )
     def get(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
@@ -141,26 +160,25 @@ class AssignedSubjectsForUserView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        
-
-
-
-
 
 
 class AssignUsersToSubjectByTrackView(APIView):
-    def post(self, request ,user_id):
+    @swagger_auto_schema(
+        operation_summary="Assign Users to Subject by Track",
+        operation_description="Assign all students in a specific track to a subject.",
+        tags=["Exams"]
+    )
+    def post(self, request, user_id):
         user = User.objects.get(id=user_id)
-        print(user)
         subject_name = request.data.get('subject')
-        print(subject_name)
+
         if not user or not subject_name:
             return Response({"error": "Supervisor id and subject name are required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user_track = user.track
             subject = Subject.objects.get(name=subject_name)            
-            users_in_track = User.objects.filter(track=user_track,role=Role.STUDENT)
+            users_in_track = User.objects.filter(track=user_track, role=Role.STUDENT)
 
             assigned_count = 0
             for user in users_in_track:
