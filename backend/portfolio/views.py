@@ -16,31 +16,29 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 User = get_user_model()
  
- 
-def extract_github_username(url):
-    parts = url.split('github.com/')
-    return parts[-1]
+#def extract_github_username(url):
+#     parts = url.split('github.com/')
+#     return parts[-1]
     
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_github_username(request, student_id):
-    try:
-        user = User.objects.get(id=student_id, role=Role.STUDENT)
-    except User.DoesNotExist:
-        raise NotFound("User doesn't exist")
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def get_github_username(request, student_id):
+#     try:
+#         user = User.objects.get(id=student_id, role=Role.STUDENT)
+#     except User.DoesNotExist:
+#         raise NotFound("User doesn't exist")
     
-    github_url = getattr(user, 'github', None)
+#     github_url = getattr(user, 'github', None)
     
-    if not github_url:
-        return Response({"error": "GitHub URL not found for this student"}, status=404)
+#     if not github_url:
+#         return Response({"error": "GitHub URL not found for this student"}, status=404)
     
-    github_username = extract_github_username(github_url)
-    if not github_username:
-        return Response({"error": "Invalid GitHub URL", "github_username":github_username}, status=400)
+#     github_username = extract_github_username(github_url)
+#     if not github_username:
+#         return Response({"error": "Invalid GitHub URL", "github_username":github_username}, status=400)
     
-    return Response({"github_username": github_username})  
-   
+#     return Response({"github_username": github_username})  
     
 
 
