@@ -1,23 +1,31 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom'; // Ensure this line is present
+import { useNavigate } from 'react-router-dom';
 import '../static/styles/SupervisorDashboard.css'; 
-import { getStudents as fetchStudentsFromApi, approveStudent as approveStudentFromAPI, deleteStudent as deleteStudentFromApi, studentPortfolio } from '../services/api'; 
+import { getStudents as fetchStudentsFromApi,
+        approveStudent as approveStudentFromAPI,
+        deleteStudent as deleteStudentFromApi,
+        studentPortfolio,
+        examSubjects,
+        setTrackStudentsExam } from '../services/api'; 
 import AuthContext from '../context/AuthContext'; 
 
 const SupervisorDashboard = () => {
   const { user } = useContext(AuthContext); 
   const [students, setStudents] = useState([]); 
+  const [subjects, setSubjects] = useState([]);  // State for exam subjects
+  const [selectedSubject, setSelectedSubject] = useState('');  // Track the selected subject
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
-  // Fetch students when the component mounts
+  // Fetch students and subjects when the component mounts
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         const response = await fetchStudentsFromApi(); 
-        setStudents(response.students); 
+        setStudents(response.students);
+        console.log(response.students); 
       } catch (err) {
         console.error('Error fetching students:', err);
         setError('Error fetching students');
@@ -25,8 +33,21 @@ const SupervisorDashboard = () => {
         setLoading(false);
       }
     };
-  
+
+    const fetchExamsSubjects = async () => {
+      try {
+        const response = await examSubjects();
+        setSubjects(response);  // Directly setting the response as it's already the list of subjects
+      } catch (err) {
+        console.error('Error fetching subjects:', err);
+        setError('Error fetching subjects');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchStudents();
+    fetchExamsSubjects();
   }, []);
 
   // Filter students based on search query
@@ -71,11 +92,28 @@ const SupervisorDashboard = () => {
       const portfolioData = await studentPortfolio(studentId);
       if (portfolioData) {
         // Redirect to the student's portfolio page
-        navigate(`/portfolio/${portfolioData.id}`); // Assuming the API returns the student ID
+        navigate(`/portfolio/${portfolioData.full_name}/${portfolioData.id}`); // Assuming the API returns the student ID
       }
     } catch (error) {
       console.error("Error fetching student portfolio:", error);
       alert("Failed to fetch the student's portfolio.");
+    }
+  };
+
+  // Handle Set Exam
+  const handleSetExam = async () => {
+    try {
+      if (!selectedSubject) {
+        alert('Please select an exam subject.');
+        return;
+      }
+      const supervisorId = user.user_id;  // Get supervisor ID from user context
+      alert(selectedSubject);
+      const examSubject = await setTrackStudentsExam(supervisorId, { subject: selectedSubject });
+      if (examSubject) {
+      }
+    } catch (error) {
+      console.error("Error setting the exam:", error);
     }
   };
 
@@ -84,9 +122,6 @@ const SupervisorDashboard = () => {
       {/* Top Navigation Bar */}
       <div className="top-navbar">
         <h2>Supervisor Dashboard</h2>
-        <div className="user-profile">
-          <img src="profile-image-url" alt="User Profile" className="profile-pic" />
-        </div>
       </div>
 
       {/* Main Section */}
@@ -111,19 +146,26 @@ const SupervisorDashboard = () => {
             />
           </div>
 
-          {/* Button to Fetch Students of Selected Track */}
-          <button className="fetch-students-btn">Get Student</button>
-
           {/* Exam Selection Dropdown */}
           <div className="exam-selection">
-            <select>
-              <option>Select Exam</option>
-              {/* Exam options will be populated here */}
+            <select
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+            >
+              <option value="">Select Exam</option>
+              {subjects.map((subject, index) => (
+                <option key={index} value={subject}>{subject}</option>
+              ))}
             </select>
           </div>
 
           {/* Button to Set Exam */}
-          <button className="set-exam-btn">Set Exam</button>
+          <button
+            className="set-exam-btn"
+            onClick={handleSetExam}
+          >
+            Set Exam
+          </button>
         </div>
 
         {/* Student Records Table */}
@@ -134,9 +176,9 @@ const SupervisorDashboard = () => {
               <tr>
                 <th>ID</th>
                 <th>Student Name</th>
-                <th>Email</th>
+                <th>Branch</th>
                 <th>Track</th>
-                <th>Exam Status</th>
+                <th>Assigned Exam</th>
                 <th>Status</th>
                 <th>Actions</th>
                 <th>Portfolio</th>
@@ -145,20 +187,20 @@ const SupervisorDashboard = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="7">Loading students...</td>
+                  <td colSpan="8">Loading students...</td>
                 </tr>
               ) : error ? (
                 <tr>
-                  <td colSpan="7">{error}</td>
+                  <td colSpan="8">{error}</td>
                 </tr>
               ) : (
                 filteredStudents.map((student, index) => (
                   <tr key={index}>
                     <td>{student.id}</td>
                     <td>{student.full_name}</td>
-                    <td>{student.email}</td>
+                    <td>{student.branch}</td>
                     <td>{student.track}</td>
-                    <td>{student.examStatus}</td>
+                    <td>{ student.exams && student.exams.length > 0 ? student.exams[0] : 'No Exams' }</td>
                     <td>{student.is_active ? 'Active' : 'Inactive'}</td>
                     <td>
                       {!student.is_active ? (
@@ -187,7 +229,9 @@ const SupervisorDashboard = () => {
                     </td>
                     <td>
                       {student.is_active ? (
-                        <button onClick={() => handleVisit(student.id)}>Visit</button>
+                        <button className="visit-btn" onClick={() => handleVisit(student.id)}>
+                          Visit
+                        </button>
                       ) : null}
                     </td>
                   </tr>

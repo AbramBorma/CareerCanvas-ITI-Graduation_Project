@@ -129,7 +129,6 @@ const OrganizationDashboard = () => {
           )}
         </section>
       </div>
-      <Footer />
     </>
   );
 };

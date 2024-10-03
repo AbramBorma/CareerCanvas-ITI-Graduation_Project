@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import '../static/styles/Auth.css';
 import Navbar from './NavBar';
-import Footer from './Footer';
 
 function LoginPage() {
   // Extract loginUser from AuthContext
@@ -87,7 +86,6 @@ function LoginPage() {
           </form>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import api from '../utils/api';
+
 
 import useAxios from "../utils/useAxios";
 
@@ -276,7 +276,9 @@ export const leetCode = async(id) => {
                 Authorization: `Bearer ${token}`, // Include the token in the header
             }
         });
+        console.log(response.data);
         return response.data;
+        
     } catch (error) {
         console.error("Error fetching student LeetCode Statistics", error);
         throw error;
@@ -298,8 +300,23 @@ export const hackerrank = async(id) => {
     }
 };
 
-export const studentPortfolio = async(id) => {
-    const token = getAuthToken(); // Retrieve the token
+// export const github = async (id) => {
+//     const token = getAuthToken();  // Retrieve the token
+//     try {
+//         const response = await axios.get(`${API_URL}/portfolio/student-gitHub/${id}/`, {
+//             headers: {
+//                 Authorization: `Bearer ${token}`,  // Include the token in the header
+//             }
+//         });
+//         return response.data;
+//     } catch (error) {
+//         console.error("Error fetching student GitHub Statistics", error);
+//         throw error;
+//     }
+// };
+
+export const studentPortfolio = async (id) => {
+    const token = getAuthToken();  // Retrieve the token
     try {
         const response = await axios.get(`${API_URL}/portfolio/student-portfolio/${id}/`, {
             headers: {
@@ -312,3 +329,50 @@ export const studentPortfolio = async(id) => {
         throw error;
     }
 };
+
+export const examSubjects = async () => {
+    const token = getAuthToken();  // Retrieve the token
+    try {
+        const response = await axios.get(`${API_URL}/exams/subjects/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,  // Include the token in the header
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching Exams' subjects", error);
+        throw error;
+    }
+};
+
+export const setTrackStudentsExam = async (supervisorId, data) => {
+    const token = getAuthToken();  // Retrieve the token
+    try {
+      const response = await axios.post(`${API_URL}/exams/assign-users-to-subject/${supervisorId}/`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,  // Include the token in the header
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error setting exam for supervisor.", error);
+      throw error;
+    }
+  };
+
+  export const examsResults = async (id) => {
+    const token = getAuthToken();  // Retrieve the token
+    try {
+      const response = await axios.get(`${API_URL}/exams/scores/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,  // Include the token in the header
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching exams results.", error);
+      throw error;
+    }
+  };
+
+

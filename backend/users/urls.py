@@ -5,6 +5,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework_simplejwt.views import TokenRefreshView
 
+
 # OpenAPI/Swagger configuration for API documentation
 schema_view = get_schema_view(
     openapi.Info(
