@@ -36,7 +36,7 @@ const SupervisorDashboard = () => {
         setStudents(response.students);
       } catch (err) {
         console.error('Error fetching students:', err);
-        setError('Error fetching students');
+        setError('There is no students available');
       } finally {
         setLoading(false);
       }
