@@ -122,12 +122,17 @@ const SupervisorDashboard = () => {
   const handleSetExam = async () => {
     try {
       if (!selectedSubject) {
-        // Show error dialog if no subject is selected
         setErrorDialogOpen(true);
         return;
       }
-      const supervisorId = user.user_id;  
+      const supervisorId = user.user_id;
       await setTrackStudentsExam(supervisorId, { subject: selectedSubject });
+      
+      // Update the students state to reflect the assigned exam
+      setStudents(students.map(student => 
+        student.is_active ? { ...student, exams: [selectedSubject] } : student
+      ));
+      
     } catch (error) {
       console.error("Error setting the exam:", error);
     }
@@ -135,21 +140,25 @@ const SupervisorDashboard = () => {
 
   const handleRemoveExam = async () => {
     if (!selectedSubject) {
-      setErrorDialogOpen(true); // Open error dialog if no subject is selected
-      return; // Prevent further execution if no subject is selected
+      setErrorDialogOpen(true);
+      return;
     }
-  
+    
     try {
-      const supervisorId = user.user_id;  // Get the supervisor ID
-      await removeTrackStudentsExam(supervisorId, { subject: selectedSubject }); // Call the API to remove the exam
-      setSuccessDialogOpen(true); // Open success dialog instead of alert
+      const supervisorId = user.user_id;
+      await removeTrackStudentsExam(supervisorId, { subject: selectedSubject });
+      
+      // Update the students state to reflect the removed exam
+      setStudents(students.map(student => 
+        student.is_active ? { ...student, exams: [] } : student
+      ));
+      
+      setSuccessDialogOpen(true);
     } catch (error) {
       console.error("Error removing the exam:", error);
-      alert('Failed to remove the exam.');
-    } finally {
-      setDialogOpen(false); // Close the confirmation dialog
     }
   };
+  
 
   return (
     <div className="supervisor-dashboard">
