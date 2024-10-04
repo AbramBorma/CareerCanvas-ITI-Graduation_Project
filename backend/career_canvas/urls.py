@@ -21,7 +21,6 @@ from django.conf.urls.static import static
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-# from portfolio.views import GitHubDataView, HackerRankDataView
 
 schema_view = get_schema_view(
     openapi.Info(

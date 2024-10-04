@@ -58,7 +58,7 @@
 .search-filter-section {
     width: 100%; /* Responsive width */
     max-width: 600px; /* Set a maximum width */
-    margin: 0 auto; /* Center align */
+    margin: 0 ; /* Center align */
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
@@ -79,7 +79,7 @@
 }
 
 /* Buttons */
-.fetch-students-btn, .set-exam-btn {
+.fetch-students-btn, .set-exam-btn, .unset-exam-btn {
     padding: 8px;
     border-radius: 4px;
     font-size: 0.85rem;
@@ -101,8 +101,15 @@
     color: white;
 }
 
-.set-exam-btn:hover {
-    background-color: #45a049;
+.unset-exam-btn {
+    background-color: #ad1d1d;
+    color: white;
+}
+
+
+.unset-exam-btn:hover {
+    background-color: #df2626;
+    color: white;
 }
 
 /* Student List */
@@ -196,12 +203,12 @@
 }
 
 .delete-btn {
-    background-color: #f44336;
+    background-color: #9e1107;
     color: white;
 }
 
 .delete-btn:hover {
-    background-color: #d32f2f;
+    background-color: #eb4c4c;
 }
 
 .approve-btn {
@@ -214,12 +221,12 @@
 }
 
 .visit-btn {
-    background-color: #007bff;
-    color: white;
+    padding: 5px 1.5rem;
 }
 
 .visit-btn:hover {
-    background-color: #0069d9;
+    color: white;
+    background-color: #09417c;
 }
 
 /* Media Queries for Smaller Screens */

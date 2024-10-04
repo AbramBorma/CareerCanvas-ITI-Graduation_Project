@@ -24,8 +24,8 @@ urlpatterns = [
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    # Use Class-based View (CBV) for user registration
-    path('register/', views.RegisterView.as_view(), name='auth_register'),
+    # # Use Class-based View (CBV) for user registration
+    # path('register/', views.RegisterView.as_view(), name='auth_register'),
 
     # Function-based View (FBV) for user registration (optional, for more control)
     path('api/register/', views.register_user, name='register_user'),
@@ -41,7 +41,7 @@ urlpatterns = [
 
     # Approve and activate user routes
     # path('approve-user/<int:user_id>/', views.approve_user, name='approve_user'),
-    path('activate-user/<int:user_id>/', views.activate_user, name='activate-user'),
+    # path('activate-user/<int:user_id>/', views.activate_user, name='activate-user'),
 
     # Approve supervisors and get list of supervisors in the branch
     path('approve-supervisor/<int:user_id>/', views.approve_supervisor, name='approve_supervisor'),
@@ -66,13 +66,13 @@ urlpatterns = [
     # Roles view
     path('roles/', views.roles_view, name='roles'),
 
-    # Test endpoint
-    path('test/', views.testEndPoint, name='test_endpoint'),
+    # # Test endpoint
+    # path('test/', views.testEndPoint, name='test_endpoint'),
 
     # Password reset related views
     path('password-reset/', views.PasswordResetView.as_view(), name='password_reset'),
     path('reset-password-confirm/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='reset_password_confirm'),
 
-    # Routes view for testing
-    path('routes/', views.getRoutes, name='routes'),
+    # # Routes view for testing
+    # path('routes/', views.getRoutes, name='routes'),
 ]
