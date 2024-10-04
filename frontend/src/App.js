@@ -18,6 +18,8 @@ import { useContext } from 'react';
 import './App.css';
 import AuthContext from './context/AuthContext';
 import GitHubStats from './components/GitHubStats';
+import EditProfile from './components/EditProfile';
+
 
 function App() {
   const { user } = useContext(AuthContext); // Get the user context
@@ -46,6 +48,8 @@ function App() {
           <Route path="/exams" element={<Exams />} />
           <Route path="/exams/:subject" element={<Exam />} />
           <Route path="/monaco/:subject" element={<CodeEditor />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+
 
           {/* Conditional rendering of dashboard routes based on user role */}
           {user && user.role === 'admin' && (

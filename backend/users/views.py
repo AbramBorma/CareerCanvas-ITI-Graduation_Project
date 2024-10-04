@@ -12,6 +12,7 @@ from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework.views import APIView  # <-- Add this import
 from django.views.decorators.csrf import csrf_exempt
 from exams.models import AssignedExams
+from users.serializer import EditProfileSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -470,3 +471,14 @@ def register_user(request):
         return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
     print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#####################################
+
+class EditProfileView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = EditProfileSerializer
+
+    @swagger_auto_schema(operation_summary="Edit User Profile", tags=['User'])
+    def get_object(self):
+        return self.request.user

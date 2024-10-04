@@ -3,6 +3,8 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from django.contrib.auth.hashers import make_password,check_password
+
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -195,3 +197,60 @@ class TrackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
         fields = ['id', 'name', 'branch']
+
+#######################################################
+
+class EditProfileSerializer(serializers.ModelSerializer):
+    github = serializers.URLField(required=False, allow_blank=True)
+    linkedin = serializers.URLField(required=False, allow_blank=True)
+    leetcode = serializers.URLField(required=False, allow_blank=True)
+    hackerrank = serializers.URLField(required=False, allow_blank=True)
+
+    current_password = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    new_password = serializers.CharField(write_only=True, required=False, allow_blank=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 'last_name', 'email', 'username', 
+            'github', 'linkedin', 'leetcode', 'hackerrank',
+            'current_password', 'new_password'  
+        ]
+
+    def validate_email(self, value):
+        user = self.context['request'].user
+        if User.objects.exclude(pk=user.pk).filter(email=value).exists():
+            raise serializers.ValidationError("This email is already in use.")
+        return value
+
+    def validate_username(self, value):
+        user = self.context['request'].user
+        if User.objects.exclude(pk=user.pk).filter(username=value).exists():
+            raise serializers.ValidationError("This username is already in use.")
+        return value
+
+    def validate(self, data):
+        user = self.context['request'].user
+        current_password = data.get('current_password')
+        new_password = data.get('new_password')
+
+        if new_password:  
+            if not current_password:
+                raise serializers.ValidationError("You must provide the current password to change it.")
+            
+            if not check_password(current_password, user.password):
+                raise serializers.ValidationError("Current password is incorrect.")
+
+            if current_password == new_password:
+                raise serializers.ValidationError("The new password cannot be the same as the current password.")
+        
+        return data
+
+    def update(self, instance, validated_data):
+        new_password = validated_data.pop('new_password', None)
+        validated_data.pop('current_password', None)  
+
+        if new_password:
+            instance.password = make_password(new_password)
+
+        return super().update(instance, validated_data)
