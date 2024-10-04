@@ -116,12 +116,27 @@ function ResponsiveAppBar() {
 
           {/* Desktop Menu (Left-aligned) */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button onClick={handleCloseNavMenu} component={Link} to="/" sx={{ my: 2, color: 'white', display: 'block' }}>Home</Button>
+            <Button 
+              onClick={handleCloseNavMenu} 
+              component={Link} 
+              to="/" 
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Home
+            </Button>
+
             {user ? (
               <>
                 {user.role === 'admin' && (
                   <>
-                    <Button onClick={handleCloseNavMenu} component={Link} to="/branch-admin-dashboard" sx={{ my: 2, color: 'white', display: 'block' }}>Dashboard</Button>
+                    <Button 
+                      onClick={handleCloseNavMenu} 
+                      component={Link} 
+                      to="/branch-admin-dashboard" 
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Dashboard
+                    </Button>
                     <Button 
                       onClick={handleCloseNavMenu} 
                       href="http://localhost:8000/swagger/" 
@@ -132,29 +147,64 @@ function ResponsiveAppBar() {
                   </>
                 )}
                 {user.role === 'supervisor' && (
+                  <Button 
+                    onClick={handleCloseNavMenu} 
+                    component={Link} 
+                    to="/SDashboard" 
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    Dashboard
+                  </Button>
+                )}
+                {user.role === 'student' && (
                   <>
                     <Button 
                       onClick={handleCloseNavMenu} 
                       component={Link} 
-                      to="/SDashboard" 
+                      to="/portfolio" 
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
-                      Dashboard
+                      Portfolio
                     </Button>
-                   
-                  </>
-                )}
-                {user.role === 'student' && (
-                  <>
-                    <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
-                    <Button onClick={handleCloseNavMenu} component={Link} to="/exams" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
+                    <Button 
+                      onClick={handleCloseNavMenu} 
+                      component={Link} 
+                      to="/exams" 
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Examine
+                    </Button>
+
+                    {/* Add the Edit Profile Button only for students */}
+                    <Button 
+                      onClick={handleCloseNavMenu} 
+                      component={Link} 
+                      to="/edit-profile"  
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Edit Profile
+                    </Button>
                   </>
                 )}
               </>
             ) : (
               <>
-                <Button onClick={handleCloseNavMenu} component={Link} to="/portfolio" sx={{ my: 2, color: 'white', display: 'block' }}>Portfolio</Button>
-                <Button onClick={handleCloseNavMenu} component={Link} to="/login" sx={{ my: 2, color: 'white', display: 'block' }}>Examine</Button>
+                <Button 
+                  onClick={handleCloseNavMenu} 
+                  component={Link} 
+                  to="/portfolio" 
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Portfolio
+                </Button>
+                <Button 
+                  onClick={handleCloseNavMenu} 
+                  component={Link} 
+                  to="/login" 
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Examine
+                </Button>
               </>
             )}
           </Box>

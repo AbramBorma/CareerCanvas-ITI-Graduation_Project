@@ -75,4 +75,8 @@ urlpatterns = [
 
     # # Routes view for testing
     # path('routes/', views.getRoutes, name='routes'),
+    
+    #Route For editProfile
+    path('edit-profile/', views.EditProfileView.as_view(), name='edit-profile'),
+
 ]
