@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import '../static/styles/organizationdashboard.css';
 import Navbar from "./NavBar";
 import Footer from './Footer';
+import Dialog from './Dialog'; // Import Dialog component
 import { getSupervisors as fetchSupervisorsFromApi, approveSupervisor as approveSupervisorFromApi, deleteSupervisor as deleteSupervisorFromApi } from "../services/api"; 
 import AuthContext from '../context/AuthContext';  // Import AuthContext
 
@@ -11,6 +12,8 @@ const OrganizationDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState({ title: '', message: '', onConfirm: null });
 
   // Fetch supervisors on component mount
   useEffect(() => {
@@ -36,32 +39,53 @@ const OrganizationDashboard = () => {
       )
     : supervisors;
 
+  // Open the dialog
+  const openDialog = (title, message, onConfirm) => {
+    setDialogContent({ title, message, onConfirm });
+    setDialogOpen(true);
+  };
+
+  // Close the dialog
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
+
   // Approve supervisor
-  const handleApprove = async (id) => {
-    const confirmApprove = window.confirm("Are you sure you want to approve this supervisor?");
-    if (confirmApprove) {
-      try {
-        await approveSupervisorFromApi(id); 
-        setSupervisors(supervisors.map(supervisor =>
-          supervisor.id === id ? { ...supervisor, is_active: true } : supervisor
-        ));
-      } catch (error) {
-        console.error('Error approving supervisor:', error);
+  const handleApprove = (id) => {
+    openDialog(
+      "Approve Supervisor",
+      "Are you sure you want to approve this supervisor?",
+      async () => {
+        try {
+          await approveSupervisorFromApi(id); 
+          setSupervisors(supervisors.map(supervisor =>
+            supervisor.id === id ? { ...supervisor, is_active: true } : supervisor
+          ));
+        } catch (error) {
+          console.error('Error approving supervisor:', error);
+        } finally {
+          closeDialog();
+        }
       }
-    }
+    );
   };
 
   // Delete supervisor
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this supervisor?");
-    if (confirmDelete) {
-      try {
-        await deleteSupervisorFromApi(id); 
-        setSupervisors(supervisors.filter(supervisor => supervisor.id !== id));
-      } catch (error) {
-        console.error('Error deleting supervisor:', error);
+  const handleDelete = (id) => {
+    openDialog(
+      "Delete Supervisor",
+      "Are you sure you want to delete this supervisor?",
+      async () => {
+        try {
+          await deleteSupervisorFromApi(id); 
+          setSupervisors(supervisors.filter(supervisor => supervisor.id !== id));
+        } catch (error) {
+          console.error('Error deleting supervisor:', error);
+        } finally {
+          closeDialog();
+        }
       }
-    }
+    );
   };
 
   return (
@@ -129,6 +153,15 @@ const OrganizationDashboard = () => {
           )}
         </section>
       </div>
+      
+      {/* Dialog Component */}
+      <Dialog
+        isOpen={dialogOpen}
+        title={dialogContent.title}
+        message={dialogContent.message}
+        onConfirm={dialogContent.onConfirm}
+        onClose={closeDialog}
+      />
     </>
   );
 };
