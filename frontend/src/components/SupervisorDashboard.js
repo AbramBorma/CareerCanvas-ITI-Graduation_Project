@@ -136,8 +136,17 @@ const SupervisorDashboard = () => {
       setErrorDialogOpen(true); // Open error dialog if no subject is selected
       return; // Prevent further execution if no subject is selected
     }
-    setCurrentAction({ type: 'remove_exam' });
-    setDialogOpen(true); // Open dialog for removing exam
+  
+    try {
+      const supervisorId = user.user_id;  // Get the supervisor ID
+      await removeTrackStudentsExam(supervisorId, { subject: selectedSubject }); // Call the API to remove the exam
+      alert('Exam removed successfully');
+    } catch (error) {
+      console.error("Error removing the exam:", error);
+      alert('Failed to remove the exam.');
+    } finally {
+      setDialogOpen(false); // Close dialog
+    }
   };
 
   return (
