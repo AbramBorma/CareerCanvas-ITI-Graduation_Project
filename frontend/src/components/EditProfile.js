@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { updateProfileData, getProfileData, getAuthToken } from '../services/api'; // Import your API functions
 import '../static/styles/EditProfile.css';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+// Component for snackbar alerts
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const EditProfile = () => {
   const [profileData, setProfileData] = useState({
@@ -15,6 +22,18 @@ const EditProfile = () => {
   
   const [loading, setLoading] = useState(true); // Loading state
   const token = getAuthToken(); // Get token from localStorage or any auth context
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' or 'error'
+
+  // Handle close snackbar
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   // Fetch profile data when component loads
   useEffect(() => {
@@ -46,10 +65,14 @@ const EditProfile = () => {
   const handleSave = async () => {
     try {
       await updateProfileData(profileData); // Send updated profile data
-      alert('Profile updated successfully!');
+      setSnackbarSeverity('success');
+      setSnackbarMessage('Profile updated successfully!');
+      setSnackbarOpen(true);
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('Failed to update profile');
+      setSnackbarSeverity('error');
+      setSnackbarMessage('Failed to update profile');
+      setSnackbarOpen(true);
     }
   };
 
@@ -129,6 +152,18 @@ const EditProfile = () => {
       <div className="actions">
         <button className="save-btn" onClick={handleSave}>Save</button>
       </div>
+
+      {/* Snackbar for success or error messages */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000} // Duration to show the snackbar
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} // Position of snackbar
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
