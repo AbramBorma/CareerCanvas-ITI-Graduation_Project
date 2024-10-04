@@ -27,20 +27,20 @@ export default function HorizontalTimeline() {
             <TimelineDot color='secondary' />
             <TimelineConnector /> {/* Connector line restored */}
           </TimelineSeparator>
-          <TimelineContent className="left-content">Build Portfolio</TimelineContent>
+          <TimelineContent className="left-content">Enroll in Track</TimelineContent>
         </TimelineItem>
         <TimelineItem>
           <TimelineSeparator>
             <TimelineDot color='primary' />
             <TimelineConnector /> {/* Connector line restored */}
           </TimelineSeparator>
-          <TimelineContent className="right-content">Add Skills</TimelineContent>
+          <TimelineContent className="right-content">Take Exams</TimelineContent>
         </TimelineItem>
         <TimelineItem>
           <TimelineSeparator>
             <TimelineDot color='success' />
           </TimelineSeparator>
-          <TimelineContent className="left-content">Take Exams</TimelineContent>
+          <TimelineContent className="left-content">Monitor Progress</TimelineContent>
         </TimelineItem>
       </Timeline>
     </div>
