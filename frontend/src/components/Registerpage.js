@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './NavBar';
-import Footer from './Footer';
 import AuthContext from '../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -79,30 +78,56 @@ function RegisterPage() {
   }, [formData.branch]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // Log formData for debugging
+    console.log('Form Data:', formData);
+  
+    let mandatoryFields;
+  
+    // Condition 1: If role is 'admin'
+    if (formData.role === 'admin') {
+      console.log('Admin role selected');
+      mandatoryFields = ['username', 'email', 'password', 'password2', 'organization', 'branch', 'first_name', 'last_name'];
+    } 
+    // Condition 2: If role is 'supervisor'
+    else if (formData.role === 'supervisor') {
+      console.log('Supervisor role selected');
+      mandatoryFields = ['username', 'email', 'password', 'password2', 'organization', 'branch', 'track', 'first_name', 'last_name'];
+    } 
+    // Condition 3: For all other roles, include all fields
+    else {
+      console.log('Other role selected');
+      mandatoryFields = ['username', 'email', 'password', 'password2', 'organization', 'branch', 'track', 'first_name', 'last_name', 'linkedin', 'github', 'hackerrank', 'leetcode'];
+    }
+  
     // Check for empty mandatory fields
-    const mandatoryFields = ['username', 'email', 'password', 'password2', 'role', 'organization', 'branch', 'track', 'first_name', 'last_name'];
     const emptyFields = mandatoryFields.filter(field => !formData[field]);
-
+  
     if (emptyFields.length > 0) {
       emptyFields.forEach(field => {
         toast.error(`${field.charAt(0).toUpperCase() + field.slice(1)} should not be empty`);
       });
-      return; // Stop the form submission if there are empty fields
+      return; // Stop form submission if there are empty fields
     }
-
-    // Check for password matching
+  
+    // Check if passwords match
     if (formData.password !== formData.password2) {
       toast.error('Passwords do not match');
       return;
     }
-
+  
     try {
+      // Register user logic here
       await registerUser(
         formData.email,
         formData.username,
@@ -124,6 +149,8 @@ function RegisterPage() {
       console.error('Error registering user', error);
     }
   };
+  
+  
 
   return (
     <>

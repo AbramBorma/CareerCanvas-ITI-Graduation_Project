@@ -29,34 +29,41 @@ const SupervisorDashboard = () => {
 
 
   // Fetch students and subjects when the component mounts
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await fetchStudentsFromApi(); 
-        setStudents(response.students);
-      } catch (err) {
-        console.error('Error fetching students:', err);
-        setError('There is no students available');
-      } finally {
-        setLoading(false);
+useEffect(() => {
+  const fetchStudents = async () => {
+    setLoading(true); // Start loading
+    try {
+      const response = await fetchStudentsFromApi(); 
+      if (response.students.length === 0) {
+        setError("There are no students available."); // Set error message if no students
+      } else {
+        setStudents(response.students); // Set students if available
+        setError(null); // Clear error message
       }
-    };
+    } catch (err) {
+      console.error('Error fetching students:', err);
+      setError('There are no students available.');
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
 
-    const fetchExamsSubjects = async () => {
-      try {
-        const response = await examSubjects();
-        setSubjects(response);
-      } catch (err) {
-        console.error('Error fetching subjects:', err);
-        setError('Error fetching subjects');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchExamsSubjects = async () => {
+    try {
+      const response = await examSubjects();
+      setSubjects(response);
+    } catch (err) {
+      console.error('Error fetching subjects:', err);
+      setError('Error fetching subjects');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchStudents();
-    fetchExamsSubjects();
-  }, []);
+  fetchStudents();
+  fetchExamsSubjects();
+}, []);
+
 
   // Filter students based on search query
   const filteredStudents = searchQuery
@@ -273,7 +280,7 @@ const SupervisorDashboard = () => {
                         className="view-portfolio-btn"
                         onClick={() => handleVisit(student.id)}
                       >
-                        View Portfolio
+                        View
                       </button>
                     </td>
                   </tr>
