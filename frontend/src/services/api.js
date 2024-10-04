@@ -235,20 +235,22 @@ export const approveStudent = async(id) => {
     }
 };
 
-export const deleteStudent = async(id) => {
+export const deleteStudent = async (studentId, supervisorId) => {
     const token = getAuthToken(); // Retrieve the token
     try {
-        const response = await axios.delete(`${API_URL}/users/delete-student/${id}/`, {
-            headers: {
-                Authorization: `Bearer ${token}`, // Include the token in the header
-            }
-        });
-        return response.data;
+      const response = await axios.delete(`${API_URL}/users/delete-student/${studentId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the header
+        },
+        data: { supervisor_id: supervisorId }  // Pass supervisor ID in the body
+      });
+      return response.data;
     } catch (error) {
-        console.error("Error deleting student", error);
-        throw error;
+      console.error("Error deleting student", error);
+      throw error;
     }
-};
+  };
+  
 
 export const github = async(userId) => {
     const token = getAuthToken();
