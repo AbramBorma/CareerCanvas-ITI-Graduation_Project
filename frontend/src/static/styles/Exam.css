@@ -1,152 +1,120 @@
 .exams-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center align items */
-    padding: 20px;
-    height: 70vh;
+    align-items: center;
+    justify-content: center; /* Center content vertically */
+    padding: 30px;
+    min-height: 80vh; /* Increased height for better layout */
+    background-color: #f4f7fb; /* Light background for a clean look */
 }
 
 .exams-title {
-    color: #002346; /* Main color */
-    font-size: 2.5em; /* Larger font size */
-    margin-bottom: 20px; /* Space below the title */
-    text-align: center; /* Center text */
+    color: #1d3557; /* Deep navy blue for the title */
+    font-size: 3em; /* Larger font size for prominence */
+    margin-bottom: 30px; /* More space below the title */
+    font-weight: 600; /* Bold font for a stronger presence */
+    text-align: center;
+    letter-spacing: 1px; /* Slightly spaced letters */
+}
+
+.exam-instructions {
+    color: #e63946; /* Muted red for a softer warning tone */
+    font-weight: 500; /* Moderate boldness */
+    margin-bottom: 25px;
+    font-size: 1.3em; /* Better readability */
+    text-align: center; /* Center the instructions text */
+    max-width: 500px; /* Restrict width for better readability */
+    line-height: 1.5; /* Improved line spacing */
 }
 
 .select-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%; /* Full width for the container */
-    max-width: 400px; /* Limit the width of the container */
+    width: 100%;
+    max-width: 450px; /* Increased width for a spacious layout */
+    padding: 20px; /* Increased padding for better spacing */
+    background-color: #ffffff; /* White background for the form */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Softer shadow for depth */
+    border-radius: 10px; /* Rounded corners */
+    transition: box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.select-container:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Enhanced hover shadow */
 }
 
 .exam-select {
-    padding: 12px;
-    font-size: 1.1em;
-    border: 1px solid #002346; /* Border color */
-    border-radius: 5px;
-    margin-bottom: 15px; /* Space below the select box */
-    width: 100%; /* Full width for the select */
+    padding: 14px;
+    font-size: 1.2em;
+    border: 2px solid #1d3557; /* Stronger border */
+    border-radius: 8px;
+    margin-bottom: 20px; /* Increased space below the select */
+    width: 100%;
     cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+}
+
+.exam-select:focus {
+    border-color: #457b9d; /* Lighter shade on focus */
+    box-shadow: 0 0 6px rgba(69, 123, 157, 0.5); /* Soft shadow on focus */
+    outline: none; /* Remove default outline */
 }
 
 .start-exam-button {
-    background-color: #002346; /* Main color */
-    color: white; /* White text */
-    padding: 12px 20px;
+    background-color: #1d3557;
+    color: white;
+    padding: 10px 16px; /* Reduced padding */
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s, transform 0.2s;
-    width: 100%; /* Full width for the button */
+    font-size: 1em; /* Smaller font size */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Added box-shadow transition */
+    width: auto; /* Button will now size according to content */
 }
 
 .start-exam-button:hover {
-    background-color: #001d32; /* Darker shade for hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
+    background-color: #457b9d;
+    transform: scale(1.08); /* Slightly larger hover effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
 }
 
 .start-exam-button:disabled {
-    background-color: #ccc; /* Disabled button color */
-    cursor: not-allowed; /* Not-allowed cursor */
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6; /* Faded effect for disabled buttons */
 }
 
-.exam-instructions {
-    color: red; /* Change text color to red */
-    font-weight: bold; /* Make the text bold */
-    margin-bottom: 20px; /* Add some space below the instructions */
-    font-size: 1.2em; /* Increase font size for better visibility */
-}
-.exams-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center align items */
-    padding: 20px;
-}
-
-.exams-title {
-    color: #002346; /* Main color */
-    font-size: 2.5em; /* Larger font size */
-    margin-bottom: 20px; /* Space below the title */
-    text-align: center; /* Center text */
-}
-
-.select-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%; /* Full width for the container */
-    max-width: 400px; /* Limit the width of the container */
-}
-
-.exam-select {
-    padding: 12px;
-    font-size: 1.1em;
-    border: 1px solid #002346; /* Border color */
-    border-radius: 5px;
-    margin-bottom: 15px; /* Space below the select box */
-    width: 100%; /* Full width for the select */
-    cursor: pointer;
-}
-
-.start-exam-button {
-    background-color: #002346; /* Main color */
-    color: white; /* White text */
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s, transform 0.2s;
-    width: 100%; /* Full width for the button */
-}
-
-.start-exam-button:hover {
-    background-color: #001d32; /* Darker shade for hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
-}
-
-.start-exam-button:disabled {
-    background-color: #ccc; /* Disabled button color */
-    cursor: not-allowed; /* Not-allowed cursor */
-}
-
-.exam-instructions {
-    color: red; /* Change text color to red */
-    font-weight: bold; /* Make the text bold */
-    margin-bottom: 20px; /* Add some space below the instructions */
-    font-size: 1.2em; /* Increase font size for better visibility */
-}
-
-/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     .exams-title {
-        font-size: 2em; /* Slightly smaller font size on smaller screens */
+        font-size: 2.2em;
     }
 
     .select-container {
-        max-width: 90%; /* Increase the width of the select container */
+        max-width: 100%; /* Full width on smaller screens */
     }
 
     .exam-select,
     .start-exam-button {
-        font-size: 1em; /* Adjust font size for smaller screens */
-        padding: 10px; /* Adjust padding */
+        font-size: 1em;
+        padding: 12px;
     }
 
     .exam-instructions {
-        font-size: 1em; /* Adjust font size for instructions */
+        font-size: 1.1em;
     }
 }
 
 @media (max-width: 480px) {
     .exams-title {
-        font-size: 1.5em; /* Further decrease font size for extra small screens */
+        font-size: 1.8em;
     }
 
     .start-exam-button {
-        padding: 10px; /* Adjust padding for smaller screens */
+        padding: 10px;
+    }
+
+    .exam-instructions {
+        font-size: 1em;
     }
 }
