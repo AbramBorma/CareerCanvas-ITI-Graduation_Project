@@ -38,7 +38,7 @@ function App() {
                    )
                  } 
           />
-          <Route path="/portfolio/:studentId" element={<SupervisorStudentPortfolio />} /> 
+          <Route path="/portfolio/:fullName/:studentId" element={<SupervisorStudentPortfolio />} /> 
           <Route path="/register" element={<Registerpage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

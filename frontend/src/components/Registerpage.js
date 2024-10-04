@@ -240,7 +240,6 @@ function RegisterPage() {
         </div>
         <ToastContainer />
       </div>
-      <Footer />
     </>
   );
 }

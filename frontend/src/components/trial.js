@@ -8,17 +8,22 @@ import { getStudents as fetchStudentsFromApi,
         examSubjects,
         setTrackStudentsExam,
         removeTrackStudentsExam } from '../services/api'; 
-import AuthContext from '../context/AuthContext'; 
+import AuthContext from '../context/AuthContext';
+import ResponsiveDialog from './Confirmation'; // Import ResponsiveDialog
 
 const SupervisorDashboard = () => {
   const { user } = useContext(AuthContext); 
   const [students, setStudents] = useState([]); 
-  const [subjects, setSubjects] = useState([]);  // State for exam subjects
-  const [selectedSubject, setSelectedSubject] = useState('');  // Track the selected subject
+  const [subjects, setSubjects] = useState([]);  
+  const [selectedSubject, setSelectedSubject] = useState('');  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const [dialogTitle, setDialogTitle] = useState('');  
+  const [dialogMessage, setDialogMessage] = useState(''); 
+  const [isDialogOpen, setDialogOpen] = useState(false);  // Manage dialog open/close
+  const [selectedStudent, setSelectedStudent] = useState(null); // Using this to track the selected student ID for the API
+  const navigate = useNavigate(); 
 
   // Fetch students and subjects when the component mounts
   useEffect(() => {
@@ -26,7 +31,6 @@ const SupervisorDashboard = () => {
       try {
         const response = await fetchStudentsFromApi(); 
         setStudents(response.students);
-        console.log(response.students); 
       } catch (err) {
         console.error('Error fetching students:', err);
         setError('Error fetching students');
@@ -38,7 +42,7 @@ const SupervisorDashboard = () => {
     const fetchExamsSubjects = async () => {
       try {
         const response = await examSubjects();
-        setSubjects(response);  // Directly setting the response as it's already the list of subjects
+        setSubjects(response);  
       } catch (err) {
         console.error('Error fetching subjects:', err);
         setError('Error fetching subjects');
@@ -73,30 +77,32 @@ const SupervisorDashboard = () => {
     }
   };
 
-  // Delete student
+  // Delete student (using your API logic)
   const handleDelete = async (id) => {
-    setLoading(true);
-    const confirmDelete = window.confirm("Are you sure you want to delete this student?");
-    if (confirmDelete) {
-      try {
-        await deleteStudentFromApi(id); 
+    try {
+        alert(id);
+        await deleteStudentFromApi(id);  // No selectedStudentId or user ID
         setStudents(students.filter(student => student.id !== id));
-      } catch (error) {
-        console.error('Error deleting student:', error);
-      } finally {
-        setLoading(false);
-      }
+        console.log(students);
+    } catch (error) {
+      console.error('Error deleting student:', error);
     }
+    setDialogOpen(false); // Close dialog after deletion
+  };
+
+  // Open the delete confirmation dialog
+  const openDeleteDialog = () => {
+    setDialogTitle('Confirm Delete');  
+    setDialogMessage('Are you sure you want to delete this student?');  
+    setDialogOpen(true);  // Open the dialog
   };
 
   // Handle visit button click
   const handleVisit = async (studentId) => {
     try {
-      // Fetch student portfolio using the API
       const portfolioData = await studentPortfolio(studentId);
       if (portfolioData) {
-        // Redirect to the student's portfolio page
-        navigate(`/portfolio/${portfolioData.full_name}/${portfolioData.id}`); // Assuming the API returns the student ID
+        navigate(`/portfolio/${portfolioData.full_name}/${portfolioData.id}`); 
       }
     } catch (error) {
       console.error("Error fetching student portfolio:", error);
@@ -111,15 +117,12 @@ const SupervisorDashboard = () => {
         alert('Please select an exam subject.');
         return;
       }
-      const supervisorId = user.user_id;  // Get supervisor ID from user context
+      const supervisorId = user.user_id;  
       const examSubject = await setTrackStudentsExam(supervisorId, { subject: selectedSubject });
-      if (examSubject) {
-      }
     } catch (error) {
       console.error("Error setting the exam:", error);
     }
   };
-
 
   const handleRemoveExam = async () => {
     try {
@@ -127,13 +130,10 @@ const SupervisorDashboard = () => {
         alert('Please select an exam subject.');
         return;
       }
-      const supervisorId = user.user_id;  // Get supervisor ID from user context
-      // alert(selectedSubject);
+      const supervisorId = user.user_id;  
       const confirmRemoveExam = window.confirm("Are you sure you want to Unassign this exam for the whole track?")
       if (confirmRemoveExam) {
         const examSubject = await removeTrackStudentsExam(supervisorId, { subject: selectedSubject });
-        if (examSubject) {
-        } 
       }
     } catch (error) {
       console.error("Error setting the exam:", error);
@@ -240,20 +240,28 @@ const SupervisorDashboard = () => {
                           >
                             Approve
                           </button>
-                          <button
-                            className="delete-btn"
-                            onClick={() => handleDelete(student.id)}
-                          >
-                            Delete Student
-                          </button>
+                          {/* Insert ResponsiveDialog instead of delete button */}
+                          <ResponsiveDialog
+                              title="Confirm Delete"
+                              message="Are you sure you want to delete this student?"
+                              agreeText="Confirm"
+                              disagreeText="Cancel"
+                              onConfirm={handleDelete}
+                              onClose={() => setDialogOpen(false)}
+                              open={isDialogOpen && selectedStudent === student.id} // Ensure it only opens for the correct student
+                              onClick={() => openDeleteDialog(student.id)} // Open dialog for this student
+                          />
                         </>
                       ) : (
-                        <button
-                          className="delete-btn"
-                          onClick={() => handleDelete(student.id)}
-                        >
-                          Delete Student
-                        </button>
+                        <ResponsiveDialog
+                        title="Confirm Delete"
+                        message="Are you sure you want to delete this student?"
+                        agreeText="Confirm"
+                        disagreeText="Cancel"
+                        onConfirm={handleDelete}
+                        onClose={() => setDialogOpen(false)}
+                        onClick={() => openDeleteDialog(student.id)} // Open dialog for this student
+                    />
                       )}
                     </td>
                     <td>
