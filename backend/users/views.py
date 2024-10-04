@@ -473,7 +473,7 @@ def register_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #####################################
-class EditProfileView(generics.UpdateAPIView):
+class EditProfileView(generics.RetrieveUpdateAPIView): 
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = EditProfileSerializer
@@ -481,7 +481,11 @@ class EditProfileView(generics.UpdateAPIView):
     def get_object(self):
         return self.request.user
 
-
     def put(self, request, *args, **kwargs):
         print("Request Data:", request.data)  
         return super().put(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs): 
+        user = self.get_object()
+        serializer = self.get_serializer(user)
+        return Response(serializer.data)

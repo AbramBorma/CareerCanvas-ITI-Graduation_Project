@@ -19,7 +19,6 @@ import './App.css';
 import AuthContext from './context/AuthContext';
 import GitHubStats from './components/GitHubStats';
 import EditProfile from './components/EditProfile';
-import EditP from './components/editp';  // Import the editp component
 
 
 function App() {
@@ -59,7 +58,6 @@ function App() {
                    )
                  } 
           />
-         <Route path="/editp" element={<EditP />} /> 
 
           {/* Conditional rendering of dashboard routes based on user role */}
           {user && user.role === 'admin' && (
