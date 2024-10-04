@@ -473,7 +473,6 @@ def register_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #####################################
-
 class EditProfileView(generics.UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
