@@ -479,6 +479,5 @@ class EditProfileView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = EditProfileSerializer
 
-    @swagger_auto_schema(operation_summary="Edit User Profile", tags=['User'])
     def get_object(self):
         return self.request.user

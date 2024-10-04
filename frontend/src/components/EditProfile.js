@@ -31,8 +31,6 @@ const EditProfile = () => {
           <div className="user-info-fields">
           <input type="text" placeholder="First Name" />
           <input type="text" placeholder="Last Name" />
-            <input type="text" placeholder="Username" />
-            <input type="email" placeholder="Email" />
           </div>
         </div>
       </div>
@@ -46,29 +44,6 @@ const EditProfile = () => {
         <input type="url" placeholder="HackerRank" />
       </div>
 
-
-      {/* Security Section */}
-      <div className="box security-box">
-        <h3>Security</h3>
-        <div className="password-container">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Current Password"
-          />
-          <button onClick={toggleShowPassword} className="show-hide-btn">
-            <i className={`fas fa-eye${showPassword ? "" : "-slash"}`}></i>
-          </button>
-        </div>
-        <div className="password-container">
-          <input
-            type={showNewPassword ? "text" : "password"}
-            placeholder="New Password"
-          />
-          <button onClick={toggleShowNewPassword} className="show-hide-btn">
-            <i className={`fas fa-eye${showNewPassword ? "" : "-slash"}`}></i>
-          </button>
-        </div>
-      </div>
 
       <div className="actions">
         <button className="save-btn">Save</button>

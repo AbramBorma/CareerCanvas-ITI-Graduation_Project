@@ -206,51 +206,47 @@ class EditProfileSerializer(serializers.ModelSerializer):
     leetcode = serializers.URLField(required=False, allow_blank=True)
     hackerrank = serializers.URLField(required=False, allow_blank=True)
 
-    current_password = serializers.CharField(write_only=True, required=False, allow_blank=True)
-    new_password = serializers.CharField(write_only=True, required=False, allow_blank=True)
 
     class Meta:
         model = User
         fields = [
-            'first_name', 'last_name', 'email', 'username', 
-            'github', 'linkedin', 'leetcode', 'hackerrank',
-            'current_password', 'new_password'  
-        ]
+            'first_name', 'last_name',  
+            'github', 'linkedin', 'leetcode', 'hackerrank'        ]
 
-    def validate_email(self, value):
-        user = self.context['request'].user
-        if User.objects.exclude(pk=user.pk).filter(email=value).exists():
-            raise serializers.ValidationError("This email is already in use.")
-        return value
+    # def validate_email(self, value):
+    #     user = self.context['request'].user
+    #     if User.objects.exclude(pk=user.pk).filter(email=value).exists():
+    #         raise serializers.ValidationError("This email is already in use.")
+    #     return value
 
-    def validate_username(self, value):
-        user = self.context['request'].user
-        if User.objects.exclude(pk=user.pk).filter(username=value).exists():
-            raise serializers.ValidationError("This username is already in use.")
-        return value
+    # def validate_username(self, value):
+    #     user = self.context['request'].user
+    #     if User.objects.exclude(pk=user.pk).filter(username=value).exists():
+    #         raise serializers.ValidationError("This username is already in use.")
+    #     return value
 
-    def validate(self, data):
-        user = self.context['request'].user
-        current_password = data.get('current_password')
-        new_password = data.get('new_password')
+    # def validate(self, data):
+    #     user = self.context['request'].user
+    #     current_password = data.get('current_password')
+    #     new_password = data.get('new_password')
 
-        if new_password:  
-            if not current_password:
-                raise serializers.ValidationError("You must provide the current password to change it.")
+    #     if new_password:  
+    #         if not current_password:
+    #             raise serializers.ValidationError("You must provide the current password to change it.")
             
-            if not check_password(current_password, user.password):
-                raise serializers.ValidationError("Current password is incorrect.")
+    #         if not check_password(current_password, user.password):
+    #             raise serializers.ValidationError("Current password is incorrect.")
 
-            if current_password == new_password:
-                raise serializers.ValidationError("The new password cannot be the same as the current password.")
+    #         if current_password == new_password:
+    #             raise serializers.ValidationError("The new password cannot be the same as the current password.")
         
-        return data
+    #     return data
 
-    def update(self, instance, validated_data):
-        new_password = validated_data.pop('new_password', None)
-        validated_data.pop('current_password', None)  
+    # def update(self, instance, validated_data):
+    #     new_password = validated_data.pop('new_password', None)
+    #     validated_data.pop('current_password', None)  
 
-        if new_password:
-            instance.password = make_password(new_password)
+    #     if new_password:
+    #         instance.password = make_password(new_password)
 
-        return super().update(instance, validated_data)
+    #     return super().update(instance, validated_data)

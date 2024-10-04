@@ -40,6 +40,7 @@ function App() {
                    )
                  } 
           />
+          
           <Route path="/portfolio/:fullName/:studentId" element={<SupervisorStudentPortfolio />} /> 
           <Route path="/register" element={<Registerpage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -48,7 +49,15 @@ function App() {
           <Route path="/exams" element={<Exams />} />
           <Route path="/exams/:subject" element={<Exam />} />
           <Route path="/monaco/:subject" element={<CodeEditor />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/edit-profile" 
+                 element={
+                   user ? (
+                     <EditProfile />
+                   ) : (
+                     <LoginPage />
+                   )
+                 } 
+          />
 
 
           {/* Conditional rendering of dashboard routes based on user role */}
