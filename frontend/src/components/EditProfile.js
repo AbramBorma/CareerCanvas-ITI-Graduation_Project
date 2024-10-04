@@ -29,8 +29,11 @@ const EditProfile = () => {
            
           </div>
           <div className="user-info-fields">
+          <input type="text" placeholder="Email" />
+
           <input type="text" placeholder="First Name" />
           <input type="text" placeholder="Last Name" />
+
           </div>
         </div>
       </div>

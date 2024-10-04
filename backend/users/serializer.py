@@ -219,34 +219,3 @@ class EditProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("This email is already in use.")
         return value
 
-    # def validate_username(self, value):
-    #     user = self.context['request'].user
-    #     if User.objects.exclude(pk=user.pk).filter(username=value).exists():
-    #         raise serializers.ValidationError("This username is already in use.")
-    #     return value
-
-    # def validate(self, data):
-    #     user = self.context['request'].user
-    #     current_password = data.get('current_password')
-    #     new_password = data.get('new_password')
-
-    #     if new_password:  
-    #         if not current_password:
-    #             raise serializers.ValidationError("You must provide the current password to change it.")
-            
-    #         if not check_password(current_password, user.password):
-    #             raise serializers.ValidationError("Current password is incorrect.")
-
-    #         if current_password == new_password:
-    #             raise serializers.ValidationError("The new password cannot be the same as the current password.")
-        
-    #     return data
-
-    # def update(self, instance, validated_data):
-    #     new_password = validated_data.pop('new_password', None)
-    #     validated_data.pop('current_password', None)  
-
-    #     if new_password:
-    #         instance.password = make_password(new_password)
-
-    #     return super().update(instance, validated_data)

@@ -480,3 +480,8 @@ class EditProfileView(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+    def put(self, request, *args, **kwargs):
+        print("Request Data:", request.data)  
+        return super().put(request, *args, **kwargs)
