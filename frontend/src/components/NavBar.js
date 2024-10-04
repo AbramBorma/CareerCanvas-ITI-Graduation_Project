@@ -174,18 +174,18 @@ function ResponsiveAppBar() {
                     >
                       Examine
                     </Button>
+
+                    {/* Add the Edit Profile Button only for students */}
+                    <Button 
+                      onClick={handleCloseNavMenu} 
+                      component={Link} 
+                      to="/edit-profile"  
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Edit Profile
+                    </Button>
                   </>
                 )}
-
-                {/* Add the Edit Profile Button */}
-                <Button 
-  onClick={handleCloseNavMenu} 
-  component={Link} 
-  to="/edit-profile"  
-  sx={{ my: 2, color: 'white', display: 'block' }}
->
-   Profile
-</Button>
               </>
             ) : (
               <>
