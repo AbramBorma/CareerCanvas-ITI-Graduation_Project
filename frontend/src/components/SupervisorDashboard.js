@@ -25,6 +25,8 @@ const SupervisorDashboard = () => {
   const [errorDialogOpen, setErrorDialogOpen] = useState(false); // Error dialog open state
   const [currentAction, setCurrentAction] = useState(null); // Track current action
   const navigate = useNavigate(); 
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false); 
+
 
   // Fetch students and subjects when the component mounts
   useEffect(() => {
@@ -140,12 +142,12 @@ const SupervisorDashboard = () => {
     try {
       const supervisorId = user.user_id;  // Get the supervisor ID
       await removeTrackStudentsExam(supervisorId, { subject: selectedSubject }); // Call the API to remove the exam
-      alert('Exam removed successfully');
+      setSuccessDialogOpen(true); // Open success dialog instead of alert
     } catch (error) {
       console.error("Error removing the exam:", error);
       alert('Failed to remove the exam.');
     } finally {
-      setDialogOpen(false); // Close dialog
+      setDialogOpen(false); // Close the confirmation dialog
     }
   };
 
@@ -296,6 +298,17 @@ const SupervisorDashboard = () => {
         onClose={() => setErrorDialogOpen(false)}
         onConfirm={() => setErrorDialogOpen(false)} // Close the error dialog
       />
+
+      {/* Success Dialog */}
+       <Dialog
+        isOpen={successDialogOpen}  // Ensure this uses successDialogOpen
+        title="Success"
+        message="Exam removed successfully."
+        onClose={() => setSuccessDialogOpen(false)}
+        onConfirm={() => setSuccessDialogOpen(false)} // Close the success dialog
+      />
+
+      
     </div>
   );
 };
