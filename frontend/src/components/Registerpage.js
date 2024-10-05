@@ -127,7 +127,6 @@ function RegisterPage() {
     }
   
     try {
-      // Register user logic here
       await registerUser(
         formData.email,
         formData.username,
@@ -144,7 +143,6 @@ function RegisterPage() {
         formData.hackerrank,
         formData.leetcode
       );
-      navigate('/login');
     } catch (error) {
       console.error('Error registering user', error);
     }

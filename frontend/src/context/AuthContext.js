@@ -1,6 +1,9 @@
 import { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';  // To decode the JWT token
+import { toast } from 'react-toastify';  
+import 'react-toastify/dist/ReactToastify.css';  
+
 
 const AuthContext = createContext();
 
@@ -39,47 +42,88 @@ export const AuthProvider = ({ children }) => {
         return cookieValue;
     }
 
-    // User registration
-    const registerUser = async (email, username, first_name, last_name, password, password2, role, organization, branch, track, linkedin, github, hackerrank, leetcode) => {
-        const csrftoken = getCSRFToken();  // Get CSRF token
-        try {
-            const response = await fetch('http://127.0.0.1:8000/users/api/register/', {  // Updated endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken  // Send CSRF token in headers
-                },
-                body: JSON.stringify({
-                    email,
-                    username,
-                    first_name,
-                    last_name,
-                    password,
-                    password2,
-                    role,
-                    organization,
-                    branch,
-                    track,  
-                    linkedin,
-                    github,
-                    hackerrank,
-                    leetcode,
-                }),
-            });
-
-            if (response.ok) {
-                navigate('/login');  // Redirect to login after successful registration
-            } else {
-                const data = await response.json();
-                alert('Error during registration: ' + (data.detail || 'Unknown error'));
-            }
-        } catch (error) {
-            alert('Something went wrong during registration.');
-            console.error('Registration error:', error);
-        }
+// User registration
+const registerUser = async (
+    email,
+    username,
+    first_name,
+    last_name,
+    password,
+    password2,
+    role,
+    organization,
+    branch,
+    track,
+    linkedin,
+    github,
+    hackerrank,
+    leetcode
+  ) => {
+    const csrftoken = getCSRFToken();  // Get CSRF token
+  
+    // Function to validate URLs
+    const isValidURL = (url) => {
+      try {
+        new URL(url);
+        return true;
+      } catch {
+        return false;
+      }
     };
-
-    // User login
+  
+    // Validation before making the request
+    if (!username || username.includes('@')) {
+      toast.error('Please enter a valid username, not an email.');
+      return;
+    }
+  
+    if (!isValidURL(linkedin) || !isValidURL(github) || !isValidURL(hackerrank) || !isValidURL(leetcode)) {
+      toast.error('Please enter valid URLs for LinkedIn, GitHub, HackerRank, and LeetCode.');
+      return;
+    }
+  
+    try {
+      const response = await fetch('http://127.0.0.1:8000/users/api/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken,  // Send CSRF token in headers
+        },
+        body: JSON.stringify({
+          email,
+          username,
+          first_name,
+          last_name,
+          password,
+          password2,
+          role,
+          organization,
+          branch,
+          track,
+          linkedin,
+          github,
+          hackerrank,
+          leetcode,
+        }),
+      });
+  
+      if (response.ok) {
+        toast.success('Registration successful! Redirecting to login...');
+        navigate('/login');  // Redirect to login after successful registration
+      } else {
+        const data = await response.json();
+        if (data.detail) {
+          toast.error('Email is already registered. Please try another one.');
+        } else {
+          toast.error('Registration failed: ' + JSON.stringify(data));
+        }
+      }
+    } catch (error) {
+      toast.error('Something went wrong during registration.');
+      console.error('Registration error:', error);
+    }
+  };
+        // User login
     const loginUser = async (email, password) => {
         try {
             const response = await fetch('http://127.0.0.1:8000/users/token/', {  // Updated endpoint
