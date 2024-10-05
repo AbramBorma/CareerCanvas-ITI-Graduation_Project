@@ -283,3 +283,35 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+
+  .pagination {
+    margin: 2rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination .MuiPagination-ul {
+    padding: 0;
+}
+
+.pagination .MuiPaginationItem-root {
+    font-size: 0.875rem; /* Make the buttons smaller */
+    background-color: #004080; /* Your website theme color */
+    color: white;
+    border-radius: 5px;
+    margin: 0 0.25rem;
+}
+
+.pagination .MuiPaginationItem-root:hover {
+    background-color: #0066cc; /* Hover color */
+}
+
+.pagination .MuiPaginationItem-root.Mui-selected {
+    background-color: #003366; /* Selected button color */
+}
+
+.pagination .MuiPaginationItem-root.Mui-selected:hover {
+    background-color: #002244; /* Selected hover color */
+}
