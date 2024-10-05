@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center; /* Center content vertically */
     padding: 30px;
-    min-height: 80vh; /* Increased height for better layout */
+    min-height: 68vh; /* Increased height for better layout */
     background-color: #f4f7fb; /* Light background for a clean look */
 }
 
