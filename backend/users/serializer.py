@@ -3,6 +3,8 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from django.contrib.auth.hashers import make_password,check_password
+
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -195,3 +197,25 @@ class TrackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
         fields = ['id', 'name', 'branch']
+
+#######################################################
+
+class EditProfileSerializer(serializers.ModelSerializer):
+    github = serializers.URLField(required=False, allow_blank=True)
+    linkedin = serializers.URLField(required=False, allow_blank=True)
+    leetcode = serializers.URLField(required=False, allow_blank=True)
+    hackerrank = serializers.URLField(required=False, allow_blank=True)
+
+
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 'last_name', 'email',  
+            'github', 'linkedin', 'leetcode', 'hackerrank'        ]
+
+    def validate_email(self, value):
+        user = self.context['request'].user
+        if User.objects.exclude(pk=user.pk).filter(email=value).exists():
+            raise serializers.ValidationError("This email is already in use.")
+        return value
+

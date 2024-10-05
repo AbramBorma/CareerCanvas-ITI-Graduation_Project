@@ -1,5 +1,3 @@
-
-
 import useAxios from "../utils/useAxios";
 
 import axios from 'axios';
@@ -10,8 +8,7 @@ const API_URL = "http://127.0.0.1:8000";
 // ../services/api.js
 
 
-
-const getAuthToken = () => {
+export const getAuthToken = () => {
     const authTokens = localStorage.getItem('authTokens');
     if (authTokens) {
         const tokens = JSON.parse(authTokens);
@@ -21,6 +18,42 @@ const getAuthToken = () => {
     console.warn("No tokens found in localStorage.");
     return null; // Return null if no tokens are found
 };
+
+export const getProfileData = async() => {
+    const token = getAuthToken(); // Retrieve the token from localStorage
+    console.log("Using Access Token for Profile Request:", token); // Log token to verify
+
+    try {
+        const response = await axios.get(`${API_URL}/users/edit-profile/`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+            },
+        });
+        return response.data; // Return the profile data
+    } catch (error) {
+        console.error("Error fetching profile data:", error);
+        throw error;
+    }
+};
+
+export const updateProfileData = async(profileData) => {
+    const token = getAuthToken(); // Retrieve the token from localStorage
+    console.log("Using Access Token for Profile Update Request:", token); // Log token to verify
+
+    try {
+        const response = await axios.put(`${API_URL}/users/edit-profile/`, profileData, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+                'Content-Type': 'application/json', // Set the correct content type
+            },
+        });
+        return response.data; // Return the updated profile data
+    } catch (error) {
+        console.error("Error updating profile data:", error);
+        throw error;
+    }
+};
+
 
 
 const useApi = async(username) => {
@@ -133,21 +166,21 @@ export const submitExam = async(answers) => {
 
 
 
-export const getAssignedSubjects = async (user_id) => {
-  const token = getAuthToken();  // Ensure this retrieves the correct token
-  console.log("Using Access Token for Questions Request:", token);  // Log token to verify
+export const getAssignedSubjects = async(user_id) => {
+    const token = getAuthToken(); // Ensure this retrieves the correct token
+    console.log("Using Access Token for Questions Request:", token); // Log token to verify
 
-  try {
-      const response = await axios.get(`${API_URL}/exams/assigned-subjects/${user_id}`, {
-          headers: {
-              Authorization: `Bearer ${token}`,  // Include the token correctly
-          },
-      });
-      return response.data;  // Handle the response data as needed
-  } catch (error) {
-      console.error("Error fetching questions:", error);
-      throw error;
-  }
+    try {
+        const response = await axios.get(`${API_URL}/exams/assigned-subjects/${user_id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token correctly
+            },
+        });
+        return response.data; // Handle the response data as needed
+    } catch (error) {
+        console.error("Error fetching questions:", error);
+        throw error;
+    }
 };
 
 
@@ -203,12 +236,12 @@ export const deleteSupervisor = async(id) => {
     }
 };
 
-export const getStudents = async() => {
+export const getStudents = async (page = 1, search = '') => {
     const token = getAuthToken(); // Ensure this retrieves the correct token
     console.log("Using Access Token for Supervisors Request:", token); // Log token to verify
 
     try {
-        const response = await axios.get(`${API_URL}/users/students/`, {
+        const response = await axios.get(`${API_URL}/users/students/?page=${page}&search=${search}`, {
             headers: {
                 Authorization: `Bearer ${token}`, // Include the token correctly
             }
@@ -235,20 +268,22 @@ export const approveStudent = async(id) => {
     }
 };
 
-export const deleteStudent = async(id) => {
+export const deleteStudent = async (studentId, supervisorId) => {
     const token = getAuthToken(); // Retrieve the token
     try {
-        const response = await axios.delete(`${API_URL}/users/delete-student/${id}/`, {
-            headers: {
-                Authorization: `Bearer ${token}`, // Include the token in the header
-            }
-        });
-        return response.data;
+      const response = await axios.delete(`${API_URL}/users/delete-student/${studentId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the header
+        },
+        data: { supervisor_id: supervisorId }  // Pass supervisor ID in the body
+      });
+      return response.data;
     } catch (error) {
-        console.error("Error deleting student", error);
-        throw error;
+      console.error("Error deleting student", error);
+      throw error;
     }
-};
+  };
+  
 
 export const github = async(userId) => {
     const token = getAuthToken();
@@ -278,45 +313,16 @@ export const leetCode = async(id) => {
         });
         console.log(response.data);
         return response.data;
-        
+
     } catch (error) {
         console.error("Error fetching student LeetCode Statistics", error);
         throw error;
     }
 };
 
-export const hackerrank = async(id) => {
+
+export const studentPortfolio = async(id) => {
     const token = getAuthToken(); // Retrieve the token
-    try {
-        const response = await axios.get(`${API_URL}/portfolio/student-hackerrank/${id}/`, {
-            headers: {
-                Authorization: `Bearer ${token}`, // Include the token in the header
-            }
-        });
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching student HackerRank Statistics", error);
-        throw error;
-    }
-};
-
-// export const github = async (id) => {
-//     const token = getAuthToken();  // Retrieve the token
-//     try {
-//         const response = await axios.get(`${API_URL}/portfolio/student-gitHub/${id}/`, {
-//             headers: {
-//                 Authorization: `Bearer ${token}`,  // Include the token in the header
-//             }
-//         });
-//         return response.data;
-//     } catch (error) {
-//         console.error("Error fetching student GitHub Statistics", error);
-//         throw error;
-//     }
-// };
-
-export const studentPortfolio = async (id) => {
-    const token = getAuthToken();  // Retrieve the token
     try {
         const response = await axios.get(`${API_URL}/portfolio/student-portfolio/${id}/`, {
             headers: {
@@ -330,12 +336,12 @@ export const studentPortfolio = async (id) => {
     }
 };
 
-export const examSubjects = async () => {
-    const token = getAuthToken();  // Retrieve the token
+export const examSubjects = async() => {
+    const token = getAuthToken(); // Retrieve the token
     try {
         const response = await axios.get(`${API_URL}/exams/subjects/`, {
             headers: {
-                Authorization: `Bearer ${token}`,  // Include the token in the header
+                Authorization: `Bearer ${token}`, // Include the token in the header
             }
         });
         return response.data;
@@ -345,34 +351,48 @@ export const examSubjects = async () => {
     }
 };
 
-export const setTrackStudentsExam = async (supervisorId, data) => {
-    const token = getAuthToken();  // Retrieve the token
+export const setTrackStudentsExam = async(supervisorId, data) => {
+    const token = getAuthToken(); // Retrieve the token
     try {
-      const response = await axios.post(`${API_URL}/exams/assign-users-to-subject/${supervisorId}/`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,  // Include the token in the header
-        },
-      });
-      return response.data;
+        const response = await axios.post(`${API_URL}/exams/assign-users-to-subject/${supervisorId}/`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the header
+            },
+        });
+        return response.data;
     } catch (error) {
-      console.error("Error setting exam for supervisor.", error);
-      throw error;
+        console.error("Error setting exam for supervisor.", error);
+        throw error;
     }
-  };
+};
 
-  export const examsResults = async (id) => {
-    const token = getAuthToken();  // Retrieve the token
+export const examsResults = async(id) => {
+    const token = getAuthToken(); // Retrieve the token
     try {
-      const response = await axios.get(`${API_URL}/exams/scores/${id}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,  // Include the token in the header
-        },
-      });
-      return response.data;
+        const response = await axios.get(`${API_URL}/exams/scores/${id}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the header
+            },
+        });
+        return response.data;
     } catch (error) {
-      console.error("Error fetching exams results.", error);
-      throw error;
+        console.error("Error fetching exams results.", error);
+        throw error;
     }
-  };
+};
 
 
+export const removeTrackStudentsExam = async(supervisorId, data) => {
+    const token = getAuthToken(); // Retrieve the token
+    try {
+        const response = await axios.post(`${API_URL}/exams/remove-assigned-users-to-subject/${supervisorId}/`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the header
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error setting exam for supervisor.", error);
+        throw error;
+    }
+};

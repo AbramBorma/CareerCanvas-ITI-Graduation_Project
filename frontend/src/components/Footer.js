@@ -6,6 +6,7 @@ import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import XIcon from '@mui/icons-material/X';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
+
 const Footer = () => {
     return (
         <footer className="footer-container">
@@ -22,10 +23,9 @@ const Footer = () => {
             <div className="footer-section internal-links">
                 <h4>CAREERCANVAS FEATURES</h4>
                 <ul>
-                    <li><a href="register.html">Register</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="portfolio.html">Portfolio</a></li>
-                    <li><a href="examination.html">Examination</a></li>
+                    <li><a href="/register">Register</a></li>
+                    <li><a href="/portfolio">Portfolio</a></li>
+                    <li><a href="/exams">Examination</a></li>
                 </ul>
             </div>
 

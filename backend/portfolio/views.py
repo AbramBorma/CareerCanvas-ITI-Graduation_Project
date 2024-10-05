@@ -11,15 +11,23 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 
 
 User = get_user_model()
- 
+
 def extract_github_username(url):
     parts = url.split('github.com/')
     return parts[-1]
     
-
+@swagger_auto_schema(
+    method='get',
+    operation_description="Retrieve GitHub username for a student",
+    operation_summary="Get GitHub Username",
+    tags=["Portfolio"]
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_github_username(request, student_id):
@@ -67,6 +75,12 @@ def extract_username_from_leetcode_url(url):
         return parts[-1]
     return None
 
+@swagger_auto_schema(
+    method='get',
+    operation_description="Retrieve Leetcode and GitHub usernames for a student",
+    operation_summary="Get Leetcode and GitHub Usernames",
+    tags=["Portfolio"]
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_leetcode_data(request, student_id):
@@ -98,7 +112,12 @@ def get_leetcode_data(request, student_id):
     })  # Return both usernames to the frontend
 
 
-
+@swagger_auto_schema(
+    method='get',
+    operation_description="Retrieve a student's portfolio for supervisors",
+    operation_summary="Get Student Portfolio",
+    tags=["Portfolio"]
+)
 @api_view(['GET'])
 @permission_classes([IsSupervisor])
 def get_student_portfolio(request, student_id):
