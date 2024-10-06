@@ -65,7 +65,10 @@ function App() {
 
           {/* Conditional rendering of dashboard routes based on user role */}
           {user && user.role === 'admin' && (
-            <Route path="/branch-admin-dashboard" element={<BranchAdminDashboard />} />
+            <Route 
+              path="/branch-admin-dashboard" 
+              element={useProtectedRoute(BranchAdminDashboard)} // Protect BranchAdminDashboard
+            />
           )}
 
            {user && user.role === 'supervisor' && (
@@ -74,7 +77,7 @@ function App() {
               element={useProtectedRoute(SupervisorDashboard)} // Protect SupervisorDashboard
             />
           )}
-          
+
           <Route path="/github-stats" element={<GitHubStats />} />
 
           {/* Fallback route for unmatched paths */}
