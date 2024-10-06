@@ -20,6 +20,8 @@ from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
+from .utils import send_verification_email
+
 
 
 
@@ -78,6 +80,19 @@ class RegisterView(generics.CreateAPIView):
         elif user.role == Role.STUDENT:
             user.is_active = False  # For students, ensure account remains inactive until admin approval
             user.save()
+            
+              # Send verification email
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+        verification_link = f"http://localhost:3000/verify-email/{uid}/{token}/"  
+        
+        send_mail(
+            'Verify Your Email',
+            f'Click the link to verify your email: {verification_link}',
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+            fail_silently=False,
+        )
 
         print(f"User {user.username} registered successfully with role {user.role}")
 
@@ -503,6 +518,11 @@ class EditProfileView(generics.RetrieveUpdateAPIView):
 
 User = get_user_model()
 
+
+# Verify Email View
+@swagger_auto_schema(method='get', operation_summary="Verify Email", tags=['Auth'])
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def verify_email(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -511,10 +531,11 @@ def verify_email(request, uidb64, token):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
-        user.email_verified = True
+        user.is_active = True  # Activate the user upon verification
+        user.email_verified = True  # Update email verification status if this field exists
         user.save()
         messages.success(request, 'Your email has been verified. You can now log in.')
-        return redirect('login')
+        return redirect('login')  # Redirect to login or any appropriate page
     else:
         messages.error(request, 'The verification link is invalid.')
-        return redirect('home')
+        return redirect('home')  # Redirect to home or any appropriate page
