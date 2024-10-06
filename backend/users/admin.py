@@ -33,9 +33,9 @@ class BranchFilter(admin.SimpleListFilter):
         return queryset
 
 class UserAdmin(admin.ModelAdmin):
-    # Displaying additional fields like organization, branch, and role, email_verified and approval status
+    # Displaying additional fields like organization, branch, role, email_verified, and approval status
     list_display = ('email', 'username', 'role', 'get_organization', 'get_branch', 'email_verified', 'is_approved_by_admin')
-    list_filter = ('role', OrganizationFilter, BranchFilter, 'email_verified', 'is_approved_by_admin')  # Add filters for email_verified and admin approval status
+    list_filter = ('role', OrganizationFilter, BranchFilter, 'email_verified', 'is_approved_by_admin')  # Filters for roles, organization, branch, email_verified, and admin approval status
 
     search_fields = ('email', 'username')  # Enable search by email and username
     actions = ['approve_users']  # Add a bulk action for approving users
@@ -55,6 +55,7 @@ class UserAdmin(admin.ModelAdmin):
         queryset.update(is_approved_by_admin=True)
         self.message_user(request, "Selected users have been approved.")
     approve_users.short_description = 'Approve selected users'
+
 
 # Registering Organization, Branch, and Track models
 admin.site.register(User, UserAdmin)

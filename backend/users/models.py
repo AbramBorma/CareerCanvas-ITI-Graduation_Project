@@ -56,19 +56,18 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    role = models.CharField(
-        max_length=20,
-        choices=Role.choices
-    )
+    role = models.CharField(max_length=20, choices=Role.choices)
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
     branch = models.ForeignKey(Branch, null=True, blank=True, on_delete=models.SET_NULL)
-    track = models.ForeignKey(Track, null=True, blank=True, on_delete=models.SET_NULL)  # Each student has one track
-    email_verified = models.BooleanField(default=False)  # To track email verification
-    is_active = models.BooleanField(default=False)  # User account must be approved before activation
+    track = models.ForeignKey(Track, null=True, blank=True, on_delete=models.SET_NULL)
+    email_verified = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    
+    # New field for approval status
+    is_approved_by_admin = models.BooleanField(default=False)  # Add this line
 
-    # Links that are required for students
     github = models.URLField(blank=True, null=True)
     hackerrank = models.URLField(blank=True, null=True)
     linkedin = models.URLField(blank=True, null=True)
@@ -80,7 +79,6 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def save(self, *args, **kwargs):
-        # Enforce that URLs are required only if the role is student and user is not superuser
         if self.role == Role.STUDENT and not self.is_superuser:
             required_fields = ['github', 'hackerrank', 'linkedin', 'leetcode']
             for field in required_fields:
@@ -90,3 +88,4 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
