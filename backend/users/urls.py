@@ -4,6 +4,10 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework_simplejwt.views import TokenRefreshView
+from .views import verify_email
+
+
+app_name = 'users'
 
 
 
@@ -79,5 +83,7 @@ urlpatterns = [
     
     #Route For editProfile
     path('edit-profile/', views.EditProfileView.as_view(), name='edit-profile'),
+    
+    path('verify/<uidb64>/<token>/', verify_email, name='verify_email'),
 
 ]
