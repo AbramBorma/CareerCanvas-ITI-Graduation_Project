@@ -63,6 +63,7 @@ class User(AbstractUser):
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
     branch = models.ForeignKey(Branch, null=True, blank=True, on_delete=models.SET_NULL)
     track = models.ForeignKey(Track, null=True, blank=True, on_delete=models.SET_NULL)  # Each student has one track
+    email_verified = models.BooleanField(default=False)  # To track email verification
     is_active = models.BooleanField(default=False)  # User account must be approved before activation
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

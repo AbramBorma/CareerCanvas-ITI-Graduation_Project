@@ -16,3 +16,4 @@ requests
 celery
 scrapy
 django-redis
+sendgrid
