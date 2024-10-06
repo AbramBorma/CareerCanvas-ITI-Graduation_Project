@@ -17,7 +17,9 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q
-
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
 
 
 
@@ -496,3 +498,23 @@ class EditProfileView(generics.RetrieveUpdateAPIView):
         user = self.get_object()
         serializer = self.get_serializer(user)
         return Response(serializer.data)
+
+
+
+User = get_user_model()
+
+def verify_email(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.email_verified = True
+        user.save()
+        messages.success(request, 'Your email has been verified. You can now log in.')
+        return redirect('login')
+    else:
+        messages.error(request, 'The verification link is invalid.')
+        return redirect('home')
