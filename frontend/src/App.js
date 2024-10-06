@@ -19,6 +19,8 @@ import './App.css';
 import AuthContext from './context/AuthContext';
 import GitHubStats from './components/GitHubStats';
 import EditProfile from './components/EditProfile';
+import useProtectedRoute from './hooks/useProtectedRoute'; 
+
 
 
 function App() {
@@ -31,10 +33,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portfolio/form" element={<PortfolioForm />} />
-          <Route path="/portfolio" 
+           
+           <Route path="/portfolio" 
                  element={
                    user && user.role === 'student' ? (
-                     <PortfolioPage />
+                     useProtectedRoute(PortfolioPage) // Protect the PortfolioPage
                    ) : (
                      <LoginPage />
                    )
@@ -49,10 +52,11 @@ function App() {
           <Route path="/exams" element={<Exams />} />
           <Route path="/exams/:subject" element={<Exam />} />
           <Route path="/monaco/:subject" element={<CodeEditor />} />
+           
           <Route path="/edit-profile" 
                  element={
                    user ? (
-                     <EditProfile />
+                     useProtectedRoute(EditProfile) // Protect EditProfile
                    ) : (
                      <LoginPage />
                    )
@@ -63,9 +67,14 @@ function App() {
           {user && user.role === 'admin' && (
             <Route path="/branch-admin-dashboard" element={<BranchAdminDashboard />} />
           )}
-          {user && user.role === 'supervisor' && (
-            <Route path="/SDashboard" element={<SupervisorDashboard />} />
+
+           {user && user.role === 'supervisor' && (
+            <Route 
+              path="/SDashboard" 
+              element={useProtectedRoute(SupervisorDashboard)} // Protect SupervisorDashboard
+            />
           )}
+          
           <Route path="/github-stats" element={<GitHubStats />} />
 
           {/* Fallback route for unmatched paths */}
