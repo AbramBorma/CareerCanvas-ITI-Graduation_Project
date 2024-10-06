@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     sgMail.setApiKey('SKb36393484a3d258ed13d476f95b78e36');
-    // Secret key:  FQhbEcina8Ai0OnNHEwLHCR1Il62SN5r
+    
 
 const sendVerificationEmail = async (email, token) => {
     const verificationUrl = `http://localhost:3000/verify-email?token=${token}`;
@@ -151,7 +151,7 @@ const registerUser = async (
     }
   };
 
-  
+
         // User login
     const loginUser = async (email, password) => {
         try {
