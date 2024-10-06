@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';  // To decode the JWT token
 import { toast } from 'react-toastify';  
 import 'react-toastify/dist/ReactToastify.css';  
+import sgMail from '@sendgrid/mail';
 
 
 const AuthContext = createContext();
@@ -41,6 +42,28 @@ export const AuthProvider = ({ children }) => {
         }
         return cookieValue;
     }
+
+    sgMail.setApiKey('SKb36393484a3d258ed13d476f95b78e36');
+    
+
+const sendVerificationEmail = async (email, token) => {
+    const verificationUrl = `http://localhost:3000/verify-email?token=${token}`;
+    
+    const msg = {
+        to: email,
+        from: 'ahmedttaarek@gmail.com', // Verified sender email
+        subject: 'Verify your email',
+        text: `Please verify your email by clicking on the following link: ${verificationUrl}`,
+        html: `<strong>Please verify your email by clicking on the following link: <a href="${verificationUrl}">Verify Email</a></strong>`,
+    };
+
+    try {
+        await sgMail.send(msg);
+        console.log('Verification email sent');
+    } catch (error) {
+        console.error('Error sending verification email', error);
+    }
+};
 
 // User registration
 const registerUser = async (
@@ -108,6 +131,10 @@ const registerUser = async (
       });
   
       if (response.ok) {
+        const data = await response.json();
+        const verificationToken = data.token; // Token returned from backend for email verification
+        await sendVerificationEmail(email, verificationToken);  // Send verification email
+
         toast.success('Registration successful! Redirecting to login...');
         navigate('/login');  // Redirect to login after successful registration
       } else {
@@ -123,6 +150,8 @@ const registerUser = async (
       console.error('Registration error:', error);
     }
   };
+
+
         // User login
     const loginUser = async (email, password) => {
         try {
