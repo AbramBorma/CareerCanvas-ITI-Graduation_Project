@@ -216,6 +216,7 @@ CELERY_TASK_SERIALIZER = 'json'
 
 #send grid configurations
 
+
 SENDGRID_API_KEY = 'SKb36393484a3d258ed13d476f95b78e36'
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False

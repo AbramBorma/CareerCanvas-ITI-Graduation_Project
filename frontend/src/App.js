@@ -21,10 +21,9 @@ import GitHubStats from './components/GitHubStats';
 import EditProfile from './components/EditProfile';
 import useProtectedRoute from './hooks/useProtectedRoute'; 
 
-
-
 function App() {
   const { user } = useContext(AuthContext); // Get the user context
+  const isProtected = useProtectedRoute(); // Call the hook at the top level
 
   return (
     <>
@@ -33,11 +32,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portfolio/form" element={<PortfolioForm />} />
-           
-           <Route path="/portfolio" 
+          
+          <Route path="/portfolio" 
                  element={
                    user && user.role === 'student' ? (
-                     useProtectedRoute(PortfolioPage) // Protect the PortfolioPage
+                     isProtected ? <PortfolioPage /> : <LoginPage />
                    ) : (
                      <LoginPage />
                    )
@@ -56,7 +55,7 @@ function App() {
           <Route path="/edit-profile" 
                  element={
                    user ? (
-                     useProtectedRoute(EditProfile) // Protect EditProfile
+                     isProtected ? <EditProfile /> : <LoginPage />
                    ) : (
                      <LoginPage />
                    )
@@ -67,14 +66,14 @@ function App() {
           {user && user.role === 'admin' && (
             <Route 
               path="/branch-admin-dashboard" 
-              element={useProtectedRoute(BranchAdminDashboard)} // Protect BranchAdminDashboard
+              element={isProtected ? <BranchAdminDashboard /> : <LoginPage />} // Protect BranchAdminDashboard
             />
           )}
 
            {user && user.role === 'supervisor' && (
             <Route 
               path="/SDashboard" 
-              element={useProtectedRoute(SupervisorDashboard)} // Protect SupervisorDashboard
+              element={isProtected ? <SupervisorDashboard /> : <LoginPage />} // Protect SupervisorDashboard
             />
           )}
 
