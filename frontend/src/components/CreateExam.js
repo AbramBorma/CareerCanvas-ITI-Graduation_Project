@@ -1,12 +1,12 @@
-import React, { useEffect, useState,useContext } from 'react';
-import { getQuestions, examSubjects,addSupervisorQuestions } from '../services/api';
-import AuthContext from '../context/AuthContext'; 
+import React, { useEffect, useState, useContext } from 'react';
+import { getQuestions, examSubjects, addSupervisorQuestions,getSupervisorExams ,getExamQuestions} from '../services/api';
+import AuthContext from '../context/AuthContext';
 import '../static/styles/CreateExam.css';
 
 const CreateExam = () => {
-    const { user } = useContext(AuthContext); 
+    const { user } = useContext(AuthContext);
     const [subjects, setSubjects] = useState([]);
-    const [selectedSubject, setSelectedSubject] = useState('');
+    const [selectedSubject, setSelectedSubject] = useState();
     const [difficulty, setDifficulty] = useState('');
     const [questions, setQuestions] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -21,10 +21,23 @@ const CreateExam = () => {
     const difficultyLevels = ['easy', 'intermediate', 'advanced', 'coding'];
 
     // Fetch subjects from the API
+    // useEffect(() => {
+    //     const fetchSubjects = async () => {
+    //         try {
+    //             const response = await examSubjects();
+    //             setSubjects(response);
+    //         } catch (error) {
+    //             console.error('Error fetching subjects:', error);
+    //         }
+    //     };
+
+    //     fetchSubjects();
+    // }, []);
+
     useEffect(() => {
         const fetchSubjects = async () => {
             try {
-                const response = await examSubjects();
+                const response = await getSupervisorExams(user.user_id);
                 setSubjects(response);
             } catch (error) {
                 console.error('Error fetching subjects:', error);
@@ -35,56 +48,77 @@ const CreateExam = () => {
     }, []);
 
     // Fetch questions based on selected subject and difficulty
-    const fetchQuestions = async () => {
-        if (!selectedSubject || !difficulty) {
-            alert('Please select both a subject and difficulty level.');
-            return;
-        }
-        if (difficulty == "coding") {
-            setQuestionsPerPage(2);
-            setSelectedPerPage(2)
-        } else {
-            setQuestionsPerPage(5);
-            setSelectedPerPage(5)
-        }
 
+    const fetchAllQuestions =async()=>{
         try {
-            const response = await getQuestions(selectedSubject, difficulty);
+            const response = await getQuestions(JSON.parse(selectedSubject).subject, difficulty);
             setQuestions(response);
             setCurrentPageQuestions(1); // Reset to first page when fetching new questions
         } catch (error) {
             console.error('Error fetching questions:', error);
+        }}
+
+    const fetchSelectedQuestions =async()=>{
+            try {
+                const response = await getExamQuestions(JSON.parse(selectedSubject).id, difficulty);
+                console.log(response)
+                setSelectedQuestions(response);
+                setCurrentPageSelected(1); // Reset to first page when fetching new questions
+            } catch (error) {
+                console.error('Error fetching questions:', error);
+            }}
+
+
+    const fetchQuestions = async () => {
+        // console.log(JSON.parse(selectedSubject).id)
+        if (!selectedSubject || !difficulty) {
+            alert('Please select both a subject and difficulty level.');
+            return;
         }
+        
+
+        if (difficulty === "coding") {
+            setQuestionsPerPage(2);
+            setSelectedPerPage(2);
+        } else {
+            setQuestionsPerPage(5);
+            setSelectedPerPage(5);
+        }
+        fetchAllQuestions()
+        fetchSelectedQuestions()
     };
 
     const addQuestions = async () => {
-        if (!selectedQuestions) {
-            alert('Please select Some Questions first.');
+        if (selectedQuestions.length === 0) {
+            alert('Please select some questions first.');
             return;
         }
 
         try {
-            const response = await addSupervisorQuestions(user.user_id, {"questions" : selectedQuestions});
+            const response = await addSupervisorQuestions( 1, { questions: selectedQuestions });
             console.log(response);
-            // setCurrentPageQuestions(1); // Reset to first page when fetching new questions
         } catch (error) {
-            console.error('Error fetching questions:', error);
+            console.error('Error adding questions:', error);
         }
     };
-
 
     // Filter questions based on search term
     const filteredQuestions = questions.filter((question) =>
         question.question_text.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Handle question selection
+    // Handle question selection (prevent duplicates)
     const handleQuestionSelect = (question) => {
         setSelectedQuestions((prevSelected) =>
             prevSelected.includes(question)
-                ? prevSelected.filter((q) => q !== question)
-                : [...prevSelected, question]
+                ? prevSelected.filter((q) => q !== question) // Remove if it's already selected
+                : [...prevSelected, question] // Add if it's not in the list
         );
+    };
+
+    // Check if a question is already selected
+    const isQuestionSelected = (question) => {
+        return selectedQuestions.some(selected => selected.id === question.id);
     };
 
     // Pagination logic for questions
@@ -106,8 +140,8 @@ const CreateExam = () => {
             <h2>Fetch Exam Questions</h2>
 
             {/* Subject Dropdown */}
-            <div>
-                <label htmlFor="subject">Select Subject:</label>
+            <div className="subject-div">
+                <label htmlFor="subject">Select Exam:</label>
                 <select
                     id="subject"
                     value={selectedSubject}
@@ -116,11 +150,13 @@ const CreateExam = () => {
                 >
                     <option value="">-- Select Subject --</option>
                     {subjects.map((subject) => (
-                        <option key={subject} value={subject}>
-                            {subject}
+                        <option key={subject.id} value={JSON.stringify(subject)}>
+                            {subject.name}
                         </option>
                     ))}
                 </select>
+                <button className="add-btn">Add subject</button>
+                <button className="delete-btn">Delete subject</button>
             </div>
 
             {/* Difficulty Dropdown */}
@@ -146,7 +182,7 @@ const CreateExam = () => {
                 Fetch Questions
             </button>
 
-            {/* Search Input */}subjects
+            {/* Search Input */}
             <div>
                 <input
                     type="text"
@@ -166,7 +202,7 @@ const CreateExam = () => {
                             <label>
                                 <input
                                     type="checkbox"
-                                    checked={selectedQuestions.includes(question)}
+                                    checked={isQuestionSelected(question)} // Check if it's already selected
                                     onChange={() => handleQuestionSelect(question)}
                                 />
                                 {question.question_text}
@@ -207,6 +243,7 @@ const CreateExam = () => {
         </div>
     );
 };
+
 
 // Pagination Component
 const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {

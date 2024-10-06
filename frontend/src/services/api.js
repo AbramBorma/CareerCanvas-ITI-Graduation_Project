@@ -398,10 +398,10 @@ export const removeTrackStudentsExam = async(supervisorId, data) => {
 };
 
 
-export const addSupervisorQuestions = async(supervisorId, data) => {
+export const addSupervisorQuestions = async(examID,data) => {
     const token = getAuthToken(); // Retrieve the token
     try {
-        const response = await axios.post(`${API_URL}/exams/add-supervisor-questions/${supervisorId}/`, data, {
+        const response = await axios.post(`${API_URL}/exams/add-supervisor-questions/${examID}/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`, // Include the token in the header
             },
@@ -409,6 +409,42 @@ export const addSupervisorQuestions = async(supervisorId, data) => {
         return response.data;
     } catch (error) {
         console.error("Error setting exam for supervisor.", error);
+        throw error;
+    }
+};
+
+
+
+export const getSupervisorExams = async(user_id) => {
+    const token = getAuthToken(); // Ensure this retrieves the correct token
+    console.log("Using Access Token for Questions Request:", token); // Log token to verify
+
+    try {
+        const response = await axios.get(`${API_URL}/exams/supervisor-exams/${user_id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token correctly
+            },
+        });
+        return response.data; // Handle the response data as needed
+    } catch (error) {
+        console.error("Error fetching questions:", error);
+        throw error;
+    }
+};
+
+export const getExamQuestions = async(examID, level) => {
+    const token = getAuthToken(); // Ensure this retrieves the correct token
+    console.log("Using Access Token for Questions Request:", token); // Log token to verify
+
+    try {
+        const response = await axios.get(`${API_URL}/exams/exam-questions/${examID}/${level}`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token correctly
+            },
+        });
+        return response.data; // Handle the response data as needed
+    } catch (error) {
+        console.error("Error fetching questions:", error);
         throw error;
     }
 };
