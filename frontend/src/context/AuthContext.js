@@ -170,6 +170,19 @@ const registerUser = async (
                 console.log("Access Token:", data.access);
                 console.log("Refresh Token:", data.refresh);
 
+                const decodedToken = jwtDecode(data.access);
+
+                if (!decodedToken.email_verified) {
+                    toast.error('Please verify your email to log in.');
+                    return false;
+                }
+    
+                if (!decodedToken.is_approved_by_admin) {
+                    toast.error('Not approved yet by the admin');
+                    navigate('/home');  // Redirect to the home page
+                    return false;
+                }
+
                 // Store access and refresh tokens
                 setAuthTokens(data);  // Store access and refresh tokens
                 setUser(jwtDecode(data.access));  // Decode the access token to extract user info
