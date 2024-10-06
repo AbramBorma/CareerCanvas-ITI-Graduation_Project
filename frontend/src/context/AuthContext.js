@@ -43,14 +43,15 @@ export const AuthProvider = ({ children }) => {
         return cookieValue;
     }
 
-    sgMail.setApiKey('YOUR_SENDGRID_API_KEY');
+    sgMail.setApiKey('SKb36393484a3d258ed13d476f95b78e36');
+    // Secret key:  FQhbEcina8Ai0OnNHEwLHCR1Il62SN5r
 
 const sendVerificationEmail = async (email, token) => {
     const verificationUrl = `http://localhost:3000/verify-email?token=${token}`;
     
     const msg = {
         to: email,
-        from: 'your-email@example.com', // Verified sender email
+        from: 'ahmedttaarek@gmail.com', // Verified sender email
         subject: 'Verify your email',
         text: `Please verify your email by clicking on the following link: ${verificationUrl}`,
         html: `<strong>Please verify your email by clicking on the following link: <a href="${verificationUrl}">Verify Email</a></strong>`,
@@ -130,6 +131,10 @@ const registerUser = async (
       });
   
       if (response.ok) {
+        const data = await response.json();
+        const verificationToken = data.token; // Token returned from backend for email verification
+        await sendVerificationEmail(email, verificationToken);  // Send verification email
+
         toast.success('Registration successful! Redirecting to login...');
         navigate('/login');  // Redirect to login after successful registration
       } else {
@@ -145,6 +150,8 @@ const registerUser = async (
       console.error('Registration error:', error);
     }
   };
+
+  
         // User login
     const loginUser = async (email, password) => {
         try {
