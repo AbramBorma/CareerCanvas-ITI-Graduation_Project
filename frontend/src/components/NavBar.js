@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu'; 
+import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -86,10 +86,10 @@ function ResponsiveAppBar() {
                     <Typography component={Link} to="/branch-admin-dashboard" sx={{ textAlign: 'center' }}>Dashboard</Typography>
                   </MenuItem>
                   <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography 
-                      href="http://localhost:8000/swagger/" 
-                      sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }} 
-                      component="a" 
+                    <Typography
+                      href="http://localhost:8000/swagger/"
+                      sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }}
+                      component="a"
                     >
                       Endpoints
                     </Typography>
@@ -100,6 +100,7 @@ function ResponsiveAppBar() {
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography component={Link} to="/SDashboard" sx={{ textAlign: 'center' }}>Track Supervisor Dashboard</Typography>
                 </MenuItem>
+
               )}
               {(!user || user.role === 'student') && (
                 <>
@@ -116,10 +117,10 @@ function ResponsiveAppBar() {
 
           {/* Desktop Menu (Left-aligned) */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button 
-              onClick={handleCloseNavMenu} 
-              component={Link} 
-              to="/" 
+            <Button
+              onClick={handleCloseNavMenu}
+              component={Link}
+              to="/"
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
               Home
@@ -129,17 +130,17 @@ function ResponsiveAppBar() {
               <>
                 {user.role === 'admin' && (
                   <>
-                    <Button 
-                      onClick={handleCloseNavMenu} 
-                      component={Link} 
-                      to="/branch-admin-dashboard" 
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      component={Link}
+                      to="/branch-admin-dashboard"
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       Dashboard
                     </Button>
-                    <Button 
-                      onClick={handleCloseNavMenu} 
-                      href="http://localhost:8000/swagger/" 
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      href="http://localhost:8000/swagger/"
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       Endpoints
@@ -147,39 +148,50 @@ function ResponsiveAppBar() {
                   </>
                 )}
                 {user.role === 'supervisor' && (
-                  <Button 
-                    onClick={handleCloseNavMenu} 
-                    component={Link} 
-                    to="/SDashboard" 
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    Dashboard
-                  </Button>
+                  <>
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      component={Link}
+                      to="/SDashboard"
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Dashboard
+                    </Button>
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      component={Link}
+                      to="/SCreateExam"
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Exams
+                    </Button>
+                  </>
+
                 )}
                 {user.role === 'student' && (
                   <>
-                    <Button 
-                      onClick={handleCloseNavMenu} 
-                      component={Link} 
-                      to="/portfolio" 
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      component={Link}
+                      to="/portfolio"
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       Portfolio
                     </Button>
-                    <Button 
-                      onClick={handleCloseNavMenu} 
-                      component={Link} 
-                      to="/exams" 
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      component={Link}
+                      to="/exams"
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       Examine
                     </Button>
 
                     {/* Add the Edit Profile Button only for students */}
-                    <Button 
-                      onClick={handleCloseNavMenu} 
-                      component={Link} 
-                      to="/edit-profile"  
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      component={Link}
+                      to="/edit-profile"
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       Edit Profile
@@ -189,18 +201,18 @@ function ResponsiveAppBar() {
               </>
             ) : (
               <>
-                <Button 
-                  onClick={handleCloseNavMenu} 
-                  component={Link} 
-                  to="/portfolio" 
+                <Button
+                  onClick={handleCloseNavMenu}
+                  component={Link}
+                  to="/portfolio"
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   Portfolio
                 </Button>
-                <Button 
-                  onClick={handleCloseNavMenu} 
-                  component={Link} 
-                  to="/login" 
+                <Button
+                  onClick={handleCloseNavMenu}
+                  component={Link}
+                  to="/login"
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   Examine

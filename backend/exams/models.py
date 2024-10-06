@@ -50,3 +50,35 @@ class AssignedExams(models.Model):
         
     def __str__(self):
         return f"{self.subject} exam for {self.user.username}"
+    
+
+
+
+class SupervisorSubject(models.Model):
+    name = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    number_of_questions = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f"{self.name}for{self.user.username}"
+
+
+class SupervisorQuestion(models.Model):
+    LEVEL_CHOICES = [
+        ('easy', 'Easy'),
+        ('intermediate', 'Intermediate'),
+        ('advanced', 'Advanced'),
+        ('coding', 'Coding'),
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="supervisorQuestions")
+    question_text = models.TextField()
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    option1 = models.CharField(max_length=200)
+    option2 = models.CharField(max_length=200)
+    option3 = models.CharField(max_length=200)
+    option4 = models.CharField(max_length=200)
+    correct_answer = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.question_text[:50]

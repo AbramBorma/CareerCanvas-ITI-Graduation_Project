@@ -3,8 +3,8 @@ from drf_yasg import openapi
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Subject, Question, Exam, AssignedExams
-from .serializers import SubjectSerializer, ExamSerializer
+from .models import Subject, Question, Exam, AssignedExams,SupervisorQuestion
+from .serializers import SubjectSerializer, ExamSerializer,SupervisorQuestionSerializer
 from users.models import User, Role
 import json
 
@@ -21,7 +21,10 @@ class FetchQuestions(APIView):
             data = [
                 {
                     "id": question.id,
+                    "subject":question.subject.id,
+                    "level":question.level,
                     "question_text": question.question_text,
+                    "correct_answer":question.correct_answer,
                     "options": [question.option1, question.option2, question.option3, question.option4],
                 }
                 for question in questions
@@ -222,3 +225,58 @@ class RemoveAssignedUsersToSubjectByTrackView(APIView):
         
         except Subject.DoesNotExist:
             return Response({"error": f"Subject '{subject_name}' not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+
+
+class AddSupervisorQuestionsView(APIView):
+    def post(self, request, user_id):
+        questions_data = request.data.get('questions', [])
+        user = User.objects.get(id=user_id)
+
+        print(user_id)
+
+        if not questions_data:
+            return Response({'error': 'No questions provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        supervisor_questions = []
+        for question_data in questions_data:
+            sub = Subject.objects.get(id=question_data['subject'])
+            if not SupervisorQuestion.objects.filter(user=user, question_text=question_data['question_text'],subject=sub).exists():
+                question_data['user'] = user_id  # Assign the user ID to the question data
+                question_data['option1'] =question_data['options'][0]
+                question_data['option2'] =question_data['options'][1]
+                question_data['option3'] =question_data['options'][2]
+                question_data['option4'] =question_data['options'][3]
+                question_data.pop('options')
+                serializer = SupervisorQuestionSerializer(data=question_data)
+
+                if serializer.is_valid():
+                    supervisor_questions.append(serializer.save())
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'message': 'Questions added successfully', 'questions': SupervisorQuestionSerializer(supervisor_questions, many=True).data}, status=status.HTTP_201_CREATED)
+
+
+
+class FetchExamQuestions(APIView):
+    @swagger_auto_schema(
+        operation_summary="Fetch Questions",
+        operation_description="Retrieve a list of questions for a given subject and level.",
+        tags=["Exams"]
+    )
+    def get(self, request, subject_name, level):
+        try:
+            subject = Subject.objects.get(name=subject_name)
+            questions = SupervisorQuestion.objects.filter(subject=subject, level=level)
+            data = [
+                {
+                    "id": question.id,
+                    "question_text": question.question_text,
+                    "options": [question.option1, question.option2, question.option3, question.option4],
+                }
+                for question in questions
+            ]
+            return Response(data, status=status.HTTP_200_OK)
+        except Subject.DoesNotExist:
+            return Response({"error": "Subject not found"}, status=status.HTTP_404_NOT_FOUND)
