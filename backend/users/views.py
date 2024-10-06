@@ -48,7 +48,16 @@ class MyTokenObtainPairView(TokenObtainPairView):
     @swagger_auto_schema(operation_summary="Generate JWT Token", tags=['Auth'])
     def post(self, request, *args, **kwargs):
         user = User.objects.filter(email=request.data['email']).first()
-        if user and not user.is_active:
+         # Check if user exists
+        if not user:
+            raise AuthenticationFailed("User with this email does not exist.")
+        
+        # Check if user's email is verified
+        if not user.is_email_verified:
+            raise AuthenticationFailed("Your email is not verified. Please check your inbox.")
+        
+        # Check if user's account is activated by admin
+        if not user.is_active:
             raise AuthenticationFailed("Your account is not activated yet. Please contact the admin.")
         return super().post(request, *args, **kwargs)
 

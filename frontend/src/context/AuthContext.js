@@ -152,51 +152,47 @@ const registerUser = async (
   };
 
 
-        // User login
+         // User login
     const loginUser = async (email, password) => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/users/token/', {  // Updated endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
+      try {
+          const response = await fetch('http://127.0.0.1:8000/users/token/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ email, password }),
+          });
 
-            const data = await response.json();
+          const data = await response.json();
 
-            if (response.ok) {
-                // Log the tokens to verify
-                console.log("Access Token:", data.access);
-                console.log("Refresh Token:", data.refresh);
+          if (response.ok) {
+              const decodedToken = jwtDecode(data.access);
 
-                const decodedToken = jwtDecode(data.access);
+              if (!decodedToken.email_verified) {
+                  toast.error('Please verify your email to log in.');
+                  return false;
+              }
 
-                if (!decodedToken.email_verified) {
-                    toast.error('Please verify your email to log in.');
-                    return false;
-                }
-    
-                if (!decodedToken.is_approved_by_admin) {
-                    toast.error('Not approved yet by the admin');
-                    navigate('/home');  // Redirect to the home page
-                    return false;
-                }
+              if (!decodedToken.is_approved_by_admin) {
+                  toast.error('Not approved yet by the admin.');
+                  return false;
+              }
 
-                // Store access and refresh tokens
-                setAuthTokens(data);  // Store access and refresh tokens
-                setUser(jwtDecode(data.access));  // Decode the access token to extract user info
-                localStorage.setItem('authTokens', JSON.stringify(data));  // Save tokens to localStorage
-                return true;  // Indicate successful login
-            } else {
-                alert('Invalid credentials.');
-                return false;  // Indicate login failure
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            return false;
-        }
-    };
+              setAuthTokens(data);  // Store tokens
+              setUser(jwtDecode(data.access));  // Decode and set user info
+              localStorage.setItem('authTokens', JSON.stringify(data));  // Save tokens to localStorage
+              navigate('/dashboard');  // Navigate to dashboard upon successful login
+              return true;
+          } else {
+              toast.error('Invalid credentials.');
+              return false;
+          }
+      } catch (error) {
+          console.error('Login error:', error);
+          toast.error('Login failed. Please try again.');
+          return false;
+      }
+  };
     
     // User logout
     const logoutUser = () => {
