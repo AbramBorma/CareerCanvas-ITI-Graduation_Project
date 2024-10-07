@@ -27,7 +27,7 @@ const Exams = () => {
 
     const handleStartExam = () => {
         if (selectedSubject) {
-            navigate(`/exams/${selectedSubject.toLowerCase()}`);
+            navigate(`/exams/${JSON.parse(selectedSubject).subject.toLowerCase()}`);
         }
     };
 
@@ -51,7 +51,7 @@ const Exams = () => {
                         >
                             <option value="">Select an Exam</option>
                             {subjects.map((subject) => (
-                                <option key={subject.id} value={subject.name}>
+                                <option key={subject.id} value={JSON.stringify(subject)}>
                                     {subject.name} Exam
                                 </option>
                             ))}

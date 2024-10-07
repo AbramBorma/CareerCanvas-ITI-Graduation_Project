@@ -70,8 +70,8 @@ class AssignedExams(models.Model):
 
 
 class SupervisorQuestion(models.Model):
-    exam = models.ForeignKey(SupervisorExam, on_delete=models.CASCADE, related_name="SupervisorExam",default=None)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE,default=None)
+    exam = models.ForeignKey(SupervisorExam, on_delete=models.CASCADE, related_name="SupervisorExam")
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.exam.name} for {self.exam.user.username}: {self.question.question_text[:50]}"

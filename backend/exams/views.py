@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Subject, Question, Exam, AssignedExams,SupervisorQuestion,SupervisorExam
-from .serializers import SubjectSerializer, ExamSerializer,SupervisorQuestionSerializer,SupervisorExamSerializer
+from .serializers import SubjectSerializer, ExamSerializer,SupervisorQuestionSerializer,SupervisorExamSerializer,SupervisorExamSerializer
 from users.models import User, Role
 import json
 
@@ -130,7 +130,7 @@ class AssignedSubjectsForUserView(APIView):
             user = User.objects.get(id=user_id)
             assigned_exams = AssignedExams.objects.filter(user=user)
             subjects = [assigned_exam.subject for assigned_exam in assigned_exams]
-            serializer = SubjectSerializer(subjects, many=True)
+            serializer = SupervisorExamSerializer(subjects, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -144,31 +144,31 @@ class AssignUsersToSubjectByTrackView(APIView):
     )
     def post(self, request, user_id):
         user = User.objects.get(id=user_id)
-        subject_name = request.data.get('subject')
-        if not user or not subject_name:
-            return Response({"error": "Supervisor id and subject name are required"}, status=status.HTTP_400_BAD_REQUEST)
+        exam_id = request.data.get('examID')
+        if not user or not exam_id:
+            return Response({"error": "Supervisor id and exam name are required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user_track = user.track
-            subject = Subject.objects.get(name=subject_name)            
+            exam = SupervisorExam.objects.get(id=exam_id)            
             users_in_track = User.objects.filter(track=user_track, role=Role.STUDENT)
 
             assigned_count = 0
             for user in users_in_track:
-                if not AssignedExams.objects.filter(user=user, subject=subject).exists():
-                    AssignedExams.objects.create(user=user, subject=subject)
+                if not AssignedExams.objects.filter(user=user, subject=exam).exists():
+                    AssignedExams.objects.create(user=user, subject=exam)
                     assigned_count += 1
 
             return Response(
-                {"message": f"Assigned {assigned_count} students to the subject {subject.name} in track {user_track.name}"},
+                {"message": f"Assigned {assigned_count} students to the exam {exam.name} in track {user_track.name}"},
                 status=status.HTTP_201_CREATED
             )
         
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         
-        except Subject.DoesNotExist:
-            return Response({"error": f"Subject '{subject_name}' not found"}, status=status.HTTP_404_NOT_FOUND)
+        except SupervisorExam.DoesNotExist:
+            return Response({"error": f"Exam '{exam_id}' not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class RemoveAssignedUsersToSubjectByTrackView(APIView):
@@ -200,31 +200,31 @@ class RemoveAssignedUsersToSubjectByTrackView(APIView):
     )
     def post(self, request, user_id):
         user = User.objects.get(id=user_id)
-        subject_name = request.data.get('subject')
-        if not user or not subject_name:
-            return Response({"error": "Supervisor id and subject name are required"}, status=status.HTTP_400_BAD_REQUEST)
+        exam_id = request.data.get('examID')
+        if not user or not exam_id:
+            return Response({"error": "Supervisor id and Exam name are required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user_track = user.track
-            subject = Subject.objects.get(name=subject_name)            
+            exam = SupervisorExam.objects.get(id=exam_id)            
             users_in_track = User.objects.filter(track=user_track, role=Role.STUDENT)
 
             assigned_count = 0
             for user in users_in_track:
-                if AssignedExams.objects.filter(user=user, subject=subject).exists():
-                    AssignedExams.objects.filter(user=user, subject=subject).delete()
+                if AssignedExams.objects.filter(user=user, subject=exam).exists():
+                    AssignedExams.objects.filter(user=user, subject=exam).delete()
                     assigned_count += 1
 
             return Response(
-                {"message": f"Removed {assigned_count} students from the subject {subject.name} in track {user_track.name}"},
+                {"message": f"Removed {assigned_count} students from the Exam {exam.name} in track {user_track.name}"},
                 status=status.HTTP_201_CREATED
             )
         
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         
-        except Subject.DoesNotExist:
-            return Response({"error": f"Subject '{subject_name}' not found"}, status=status.HTTP_404_NOT_FOUND)
+        except SupervisorExam.DoesNotExist:
+            return Response({"error": f"Exam '{exam_id}' not found"}, status=status.HTTP_404_NOT_FOUND)
         
 
 
@@ -243,6 +243,21 @@ class SupervisorExamListView(APIView):
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
+class DeleteSupervisorExamView(APIView):
+    def delete(self, request, exam_id):
+        try:
+            # Fetch the SupervisorExam object by its ID
+            exam = SupervisorExam.objects.get(id=exam_id)
+            
+            # Delete the exam
+            exam.delete()
+            
+            # Return a success response
+            return Response({"message": "Exam deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except SupervisorExam.DoesNotExist:
+            # Return a 404 if the exam is not found
+            return Response({"error": "Exam not found"}, status=status.HTTP_404_NOT_FOUND)
+        
 
 class AddSupervisorQuestionsView(APIView):
     def post(self, request, exam_id):

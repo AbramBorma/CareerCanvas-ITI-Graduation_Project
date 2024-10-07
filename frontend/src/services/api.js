@@ -448,3 +448,18 @@ export const getExamQuestions = async(examID, level) => {
         throw error;
     }
 };
+
+export const deleteExam = async(id) => {
+    const token = getAuthToken(); // Retrieve the token
+    try {
+        const response = await axios.delete(`${API_URL}/exams/delete-exam/${id}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the header
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting supervisor", error);
+        throw error;
+    }
+};

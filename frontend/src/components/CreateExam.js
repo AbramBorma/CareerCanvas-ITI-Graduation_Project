@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { getQuestions, examSubjects, addSupervisorQuestions,getSupervisorExams ,getExamQuestions} from '../services/api';
+import { getQuestions, addSupervisorQuestions, getSupervisorExams, getExamQuestions, deleteExam } from '../services/api';
 import AuthContext from '../context/AuthContext';
+import SupervisorAddExam from './SupervisorAddExam'
 import '../static/styles/CreateExam.css';
 
 const CreateExam = () => {
@@ -11,6 +12,9 @@ const CreateExam = () => {
     const [questions, setQuestions] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedQuestions, setSelectedQuestions] = useState([]);
+    const [selectedSubjectchanged, setSelectedSubjectchanged] = useState(false)
+    const [showModal, setShowModal] = useState(false);
+
 
     // Pagination states for questions and selected questions
     const [currentPageQuestions, setCurrentPageQuestions] = useState(1);
@@ -45,28 +49,30 @@ const CreateExam = () => {
         };
 
         fetchSubjects();
-    }, []);
+    }, [selectedSubjectchanged]);
 
     // Fetch questions based on selected subject and difficulty
 
-    const fetchAllQuestions =async()=>{
+    const fetchAllQuestions = async () => {
         try {
             const response = await getQuestions(JSON.parse(selectedSubject).subject, difficulty);
             setQuestions(response);
             setCurrentPageQuestions(1); // Reset to first page when fetching new questions
         } catch (error) {
             console.error('Error fetching questions:', error);
-        }}
+        }
+    }
 
-    const fetchSelectedQuestions =async()=>{
-            try {
-                const response = await getExamQuestions(JSON.parse(selectedSubject).id, difficulty);
-                console.log(response)
-                setSelectedQuestions(response);
-                setCurrentPageSelected(1); // Reset to first page when fetching new questions
-            } catch (error) {
-                console.error('Error fetching questions:', error);
-            }}
+    const fetchSelectedQuestions = async () => {
+        try {
+            const response = await getExamQuestions(JSON.parse(selectedSubject).id, difficulty);
+            console.log(response)
+            setSelectedQuestions(response);
+            setCurrentPageSelected(1); // Reset to first page when fetching new questions
+        } catch (error) {
+            console.error('Error fetching questions:', error);
+        }
+    }
 
 
     const fetchQuestions = async () => {
@@ -75,7 +81,7 @@ const CreateExam = () => {
             alert('Please select both a subject and difficulty level.');
             return;
         }
-        
+
 
         if (difficulty === "coding") {
             setQuestionsPerPage(2);
@@ -93,9 +99,8 @@ const CreateExam = () => {
             alert('Please select some questions first.');
             return;
         }
-
         try {
-            const response = await addSupervisorQuestions( 1, { questions: selectedQuestions });
+            const response = await addSupervisorQuestions(JSON.parse(selectedSubject).id, { questions: selectedQuestions });
             console.log(response);
         } catch (error) {
             console.error('Error adding questions:', error);
@@ -120,6 +125,27 @@ const CreateExam = () => {
     const isQuestionSelected = (question) => {
         return selectedQuestions.some(selected => selected.id === question.id);
     };
+
+
+    const addTheExam = () => {
+        setShowModal(true)
+    }
+
+    const deleteTheExam = async () => {
+        if (!selectedSubject) {
+            alert('Please select an Exam first.');
+            return;
+        }
+        const response = await deleteExam(JSON.parse(selectedSubject).id);
+        console.log(response)
+        setSelectedSubject()
+        setSelectedSubjectchanged(state => !state)
+    }
+
+
+
+
+
 
     // Pagination logic for questions
     const indexOfLastQuestion = currentPageQuestions * questionsPerPage;
@@ -155,10 +181,12 @@ const CreateExam = () => {
                         </option>
                     ))}
                 </select>
-                <button className="add-btn">Add subject</button>
-                <button className="delete-btn">Delete subject</button>
+                <button onClick={addTheExam} className="add-btn">Add subject</button>
+                <button onClick={deleteTheExam} className="delete-btn">Delete subject</button>
             </div>
-
+            {showModal && (
+                      <SupervisorAddExam  onClose={() => { setShowModal(false); setSelectedSubjectchanged(state => !state); }} />
+                )}
             {/* Difficulty Dropdown */}
             <div>
                 <label htmlFor="difficulty">Select Difficulty:</label>
@@ -240,6 +268,7 @@ const CreateExam = () => {
             <button onClick={addQuestions} className="fetch-btn">
                 Add Questions
             </button>
+
         </div>
     );
 };

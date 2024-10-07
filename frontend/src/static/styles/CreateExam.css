@@ -19,6 +19,7 @@
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    position: static;
 }
 
 .fetch-btn {
@@ -222,6 +223,7 @@
     border: 1px solid #ddd;
     cursor: pointer;
     background-color: #f5f5f5;
+    position: static;
   }
   
   .page-item.active .page-link {
@@ -231,6 +233,5 @@
   
   .page-item.disabled .page-link {
     cursor: not-allowed;
-    opacity: 0.5;
   }
   
