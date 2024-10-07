@@ -3,8 +3,8 @@ from drf_yasg import openapi
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Subject, Question, Exam, AssignedExams
-from .serializers import SubjectSerializer, ExamSerializer
+from .models import Subject, Question, Exam, AssignedExams,SupervisorQuestion,SupervisorExam
+from .serializers import SubjectSerializer, ExamSerializer,SupervisorQuestionSerializer,SupervisorExamSerializer,SupervisorExamSerializer
 from users.models import User, Role
 import json
 
@@ -21,7 +21,10 @@ class FetchQuestions(APIView):
             data = [
                 {
                     "id": question.id,
+                    # "subject":question.subject.id,
+                    # "level":question.level,
                     "question_text": question.question_text,
+                    "correct_answer":question.correct_answer,
                     "options": [question.option1, question.option2, question.option3, question.option4],
                 }
                 for question in questions
@@ -45,14 +48,15 @@ class SubmitExam(APIView):
             return Response({"error": "Invalid JSON data"}, status=status.HTTP_400_BAD_REQUEST)
 
         user_email = data.get('user_email')
-        subject_id = data.get('subject_id')
+        subject_id = data.get('exam_id')
         answers = data.get('answers')  # {'question_id': 'selected_option', ...}
+        total = data.get('totalNumber')
 
         if not user_email or not subject_id or not isinstance(answers, dict):
             return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
 
         user = User.objects.get(email=user_email)
-        subject = Subject.objects.get(name=subject_id)
+        subject = SupervisorExam.objects.get(id=subject_id)
 
         total_questions = 0
         correct_answers = 0
@@ -69,7 +73,7 @@ class SubmitExam(APIView):
                 total_questions += 1
         
         AssignedExams.objects.filter(user=user,subject=subject).delete()
-        score = (correct_answers / 29) * 100 if total_questions > 0 else 0
+        score = (correct_answers / total) * 100 if total_questions > 0 else 0
         exam = Exam.objects.create(user=user, subject=subject, score=score)
         return Response({"score": score}, status=status.HTTP_200_OK)
     
@@ -83,8 +87,8 @@ class SubjectListView(APIView):
     )
     def get(self, request):
         subjects = Subject.objects.all()
-        subject_names = subjects.values_list('name', flat=True)
-        return Response(subject_names)
+        serializer = SubjectSerializer(subjects, many=True)  # Serialize the queryset
+        return Response(serializer.data) 
 
 
 class UserExamScoresView(APIView):
@@ -127,7 +131,7 @@ class AssignedSubjectsForUserView(APIView):
             user = User.objects.get(id=user_id)
             assigned_exams = AssignedExams.objects.filter(user=user)
             subjects = [assigned_exam.subject for assigned_exam in assigned_exams]
-            serializer = SubjectSerializer(subjects, many=True)
+            serializer = SupervisorExamSerializer(subjects, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -141,31 +145,31 @@ class AssignUsersToSubjectByTrackView(APIView):
     )
     def post(self, request, user_id):
         user = User.objects.get(id=user_id)
-        subject_name = request.data.get('subject')
-        if not user or not subject_name:
-            return Response({"error": "Supervisor id and subject name are required"}, status=status.HTTP_400_BAD_REQUEST)
+        exam_id = request.data.get('examID')
+        if not user or not exam_id:
+            return Response({"error": "Supervisor id and exam name are required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user_track = user.track
-            subject = Subject.objects.get(name=subject_name)            
+            exam = SupervisorExam.objects.get(id=exam_id)            
             users_in_track = User.objects.filter(track=user_track, role=Role.STUDENT)
 
             assigned_count = 0
             for user in users_in_track:
-                if not AssignedExams.objects.filter(user=user, subject=subject).exists():
-                    AssignedExams.objects.create(user=user, subject=subject)
+                if not AssignedExams.objects.filter(user=user, subject=exam).exists():
+                    AssignedExams.objects.create(user=user, subject=exam)
                     assigned_count += 1
 
             return Response(
-                {"message": f"Assigned {assigned_count} students to the subject {subject.name} in track {user_track.name}"},
+                {"message": f"Assigned {assigned_count} students to the exam {exam.name} in track {user_track.name}"},
                 status=status.HTTP_201_CREATED
             )
         
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         
-        except Subject.DoesNotExist:
-            return Response({"error": f"Subject '{subject_name}' not found"}, status=status.HTTP_404_NOT_FOUND)
+        except SupervisorExam.DoesNotExist:
+            return Response({"error": f"Exam '{exam_id}' not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class RemoveAssignedUsersToSubjectByTrackView(APIView):
@@ -197,28 +201,185 @@ class RemoveAssignedUsersToSubjectByTrackView(APIView):
     )
     def post(self, request, user_id):
         user = User.objects.get(id=user_id)
-        subject_name = request.data.get('subject')
-        if not user or not subject_name:
-            return Response({"error": "Supervisor id and subject name are required"}, status=status.HTTP_400_BAD_REQUEST)
+        exam_id = request.data.get('examID')
+        if not user or not exam_id:
+            return Response({"error": "Supervisor id and Exam name are required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user_track = user.track
-            subject = Subject.objects.get(name=subject_name)            
+            exam = SupervisorExam.objects.get(id=exam_id)            
             users_in_track = User.objects.filter(track=user_track, role=Role.STUDENT)
 
             assigned_count = 0
             for user in users_in_track:
-                if AssignedExams.objects.filter(user=user, subject=subject).exists():
-                    AssignedExams.objects.filter(user=user, subject=subject).delete()
+                if AssignedExams.objects.filter(user=user, subject=exam).exists():
+                    AssignedExams.objects.filter(user=user, subject=exam).delete()
                     assigned_count += 1
 
             return Response(
-                {"message": f"Removed {assigned_count} students from the subject {subject.name} in track {user_track.name}"},
+                {"message": f"Removed {assigned_count} students from the Exam {exam.name} in track {user_track.name}"},
                 status=status.HTTP_201_CREATED
             )
         
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         
+        except SupervisorExam.DoesNotExist:
+            return Response({"error": f"Exam '{exam_id}' not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+
+
+
+
+
+
+
+class SupervisorExamListView(APIView):
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            supervisor_exams = SupervisorExam.objects.filter(user=user)
+            serializer = SupervisorExamSerializer(supervisor_exams, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class CreateSupervisorExamView(APIView):
+    def post(self, request):
+        # Extract data from the request
+        name = request.data.get('name')
+        subject_name = request.data.get('subject')
+        user_id = request.data.get('user')
+        number_of_questions = request.data.get('number_of_questions')
+
+        # Validate that all required fields are present
+        if not all([name, subject_name, user_id, number_of_questions]):
+            return Response(
+                {"error": "All fields (name, subject_name, user, number_of_questions) are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Get the Subject object by name
+        try:
+            subject = Subject.objects.get(name=subject_name)
         except Subject.DoesNotExist:
-            return Response({"error": f"Subject '{subject_name}' not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"error": f"Subject with name '{subject_name}' does not exist."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Get the User object by ID
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {"error": f"User with id '{user_id}' does not exist."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Check if a SupervisorExam with the same name and user already exists
+        if SupervisorExam.objects.filter(name=name, user=user).exists():
+            return Response(
+                {"error": "An exam with this name already exists for the specified user."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Create the new SupervisorExam object
+        supervisor_exam = SupervisorExam.objects.create(
+            name=name,
+            subject=subject,
+            user=user,
+            number_of_questions=number_of_questions
+        )
+
+        # Serialize the created object
+        serializer = SupervisorExamSerializer(supervisor_exam)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+
+class DeleteSupervisorExamView(APIView):
+    def delete(self, request, exam_id):
+        try:
+            # Fetch the SupervisorExam object by its ID
+            exam = SupervisorExam.objects.get(id=exam_id)
+            
+            # Delete the exam
+            exam.delete()
+            
+            # Return a success response
+            return Response({"message": "Exam deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except SupervisorExam.DoesNotExist:
+            # Return a 404 if the exam is not found
+            return Response({"error": "Exam not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+
+class AddSupervisorQuestionsView(APIView):
+    def post(self, request, exam_id):
+        questions_data = request.data.get('questions', [])
+
+        if not questions_data:
+            return Response({'error': 'No questions provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        supervisor_questions = []
+        try:
+            # Fetch the user and the subject (exam) first
+            exam = SupervisorExam.objects.get(id=exam_id)  # Exam is linked to the Subject model
+        except (User.DoesNotExist, SupervisorExam.DoesNotExist) as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        for question_data in questions_data:
+            try:
+                question = Question.objects.get(id=question_data['id'])
+
+                # Check if SupervisorQuestion already exists
+                supervisor_question, created = SupervisorQuestion.objects.get_or_create(
+                    exam=exam,  # Link the subject as the exam
+                    question=question
+                )
+
+                if created:
+                    supervisor_questions.append(supervisor_question)  # Only add new records
+
+            except Question.DoesNotExist as e:
+                return Response({'error': f'Question not found: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if supervisor_questions:
+            return Response({'message': 'Questions added successfully', 'added_questions': len(supervisor_questions)}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'message': 'No new questions were added.'}, status=status.HTTP_200_OK)
+
+
+
+class FetchExamQuestions(APIView):
+    @swagger_auto_schema(
+        operation_summary="Fetch Questions",
+        operation_description="Retrieve a list of questions for a given subject and level.",
+        tags=["Exams"]
+    )
+    def get(self, request, exam_id, level):
+        try:
+            exam = SupervisorExam.objects.get(id=exam_id)
+            questions = SupervisorQuestion.objects.filter(exam=exam, question__level=level)
+            data = [
+                {
+                    "id": question.question.id,
+                    "question_text": question.question.question_text,
+                    "options": [
+                        question.question.option1,
+                        question.question.option2,
+                        question.question.option3,
+                        question.question.option4,
+                    ],
+                }
+                for question in questions
+            ]
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        except SupervisorExam.DoesNotExist:
+            return Response({"error": "Exam not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

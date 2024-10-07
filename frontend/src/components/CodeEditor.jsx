@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle"
 import Spinner from './Spinner.js';
 import { Editor } from "@monaco-editor/react";
-import { getQuestions,submitExam } from '../services/api';
+import { getExamQuestions,submitExam } from '../services/api';
 // import { LANGUAGE_VERSIONS, CODE_SNIPPETS } from "./constants";
 
 const LANGUAGE_VERSIONS = {
@@ -52,7 +52,8 @@ const CodeEditor = () => {
     try {
       const fetchedQuestion = async () => {
         setIsLoading(true)
-        const res = await getQuestions(subject, "coding")
+        const res = await getExamQuestions(userAnswers.exam_id, "coding");
+        // const res = await getQuestions(subject, "coding")
         console.log(res)
         const data = res
         const randomIndex = Math.floor(Math.random() * data.length);

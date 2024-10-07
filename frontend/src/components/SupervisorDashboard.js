@@ -6,7 +6,7 @@ import {
   approveStudent as approveStudentFromAPI,
   deleteStudent as deleteStudentFromApi,
   studentPortfolio,
-  examSubjects,
+  getSupervisorExams,
   setTrackStudentsExam,
   removeTrackStudentsExam 
 } from '../services/api'; 
@@ -66,7 +66,7 @@ const SupervisorDashboard = () => {
 
   const fetchExamsSubjects = async () => {
     try {
-      const response = await examSubjects();
+      const response = await getSupervisorExams(user.user_id);
       setSubjects(response);
     } catch (err) {
       console.error('Error fetching subjects:', err);
@@ -147,11 +147,11 @@ const SupervisorDashboard = () => {
         return;
       }
       const supervisorId = user.user_id;
-      await setTrackStudentsExam(supervisorId, { subject: selectedSubject });
+      await setTrackStudentsExam(supervisorId, { examID: JSON.parse(selectedSubject).id });
       
       // Update the students state to reflect the assigned exam
       setStudents(students.map(student => 
-        student.is_active ? { ...student, exams: [selectedSubject] } : student
+        student.is_active ? { ...student, exams: [JSON.parse(selectedSubject).name] } : student
       ));
       
     } catch (error) {
@@ -167,7 +167,7 @@ const SupervisorDashboard = () => {
     
     try {
       const supervisorId = user.user_id;
-      await removeTrackStudentsExam(supervisorId, { subject: selectedSubject });
+      await removeTrackStudentsExam(supervisorId, {  examID: JSON.parse(selectedSubject).id });
       
       // Update the students state to reflect the removed exam
       setStudents(students.map(student => 
@@ -211,7 +211,7 @@ const SupervisorDashboard = () => {
             >
               <option value="">Select Exam</option>
               {subjects.map((subject, index) => (
-                <option key={index} value={subject}>{subject}</option>
+                <option key={index} value={JSON.stringify(subject)}>{subject.name}</option>
               ))}
             </select>
           </div>

@@ -19,6 +19,8 @@ import './App.css';
 import AuthContext from './context/AuthContext';
 import GitHubStats from './components/GitHubStats';
 import EditProfile from './components/EditProfile';
+import CreateExam from './components/CreateExam';
+
 
 
 function App() {
@@ -66,6 +68,9 @@ function App() {
           {user && user.role === 'supervisor' && (
             <Route path="/SDashboard" element={<SupervisorDashboard />} />
           )}
+          {user && user.role === 'supervisor' && (
+            <Route path="/SCreateExam" element={<CreateExam />} />
+           )}
           <Route path="/github-stats" element={<GitHubStats />} />
 
           {/* Fallback route for unmatched paths */}

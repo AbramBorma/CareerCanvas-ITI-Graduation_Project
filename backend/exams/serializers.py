@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Subject, Question, Exam
+from .models import Subject, Question, Exam,SupervisorQuestion,SupervisorExam
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,3 +19,20 @@ class ExamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exam
         fields = ['id', 'user', 'subject', 'date_taken', 'score']
+
+
+class SupervisorExamSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()  # To show username
+    subject = serializers.StringRelatedField()  # To show subject name
+
+    class Meta:
+        model = SupervisorExam
+        fields = ['id', 'name', 'subject', 'user', 'number_of_questions']
+
+class SupervisorQuestionSerializer(serializers.ModelSerializer):
+    exam = serializers.StringRelatedField(source='exam.name')  # To show exam name
+    question = serializers.StringRelatedField(source='question.question_text')  # To show question text
+
+    class Meta:
+        model = SupervisorQuestion
+        fields = ['id', 'exam', 'question']

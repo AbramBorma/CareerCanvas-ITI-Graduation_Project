@@ -97,6 +97,7 @@ const EditProfile = () => {
               placeholder="Email"
               value={profileData.email}
               onChange={handleInputChange}
+              className="input"
             />
             <label>First Name </label>
             <input
@@ -105,6 +106,7 @@ const EditProfile = () => {
               placeholder="First Name"
               value={profileData.first_name}
               onChange={handleInputChange}
+              className="input"
             />
             <label>Last Name </label>
             <input
@@ -113,11 +115,12 @@ const EditProfile = () => {
               placeholder="Last Name"
               value={profileData.last_name}
               onChange={handleInputChange}
+              className="input"
             />
           </div>
         </div>
       </div>
-
+  
       {/* Dashboard Links Section */}
       <div className="box dashboard-links-box">
         <h3>Portfolio Links</h3>
@@ -128,6 +131,7 @@ const EditProfile = () => {
           placeholder="GitHub"
           value={profileData.github}
           onChange={handleInputChange}
+          className="input"
         />
         <label>LinkedIn Link</label>
         <input
@@ -136,6 +140,7 @@ const EditProfile = () => {
           placeholder="LinkedIn"
           value={profileData.linkedin}
           onChange={handleInputChange}
+          className="input"
         />
         <label>LeetCode Link</label>
         <input
@@ -144,6 +149,7 @@ const EditProfile = () => {
           placeholder="LeetCode"
           value={profileData.leetcode}
           onChange={handleInputChange}
+          className="input"
         />
         <label>HackerRank Link</label>
         <input
@@ -152,14 +158,15 @@ const EditProfile = () => {
           placeholder="HackerRank"
           value={profileData.hackerrank}
           onChange={handleInputChange}
+          className="input"
         />
       </div>
-
+  
       {/* Save Button */}
       <div className="actions">
         <button className="save-btn" onClick={handleSave}>Save</button>
       </div>
-
+  
       {/* Snackbar for success or error messages */}
       <Snackbar
         open={snackbarOpen}
@@ -173,6 +180,7 @@ const EditProfile = () => {
       </Snackbar>
     </div>
   );
+  
 };
 
 export default EditProfile;
