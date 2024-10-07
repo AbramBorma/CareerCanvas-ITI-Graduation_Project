@@ -90,6 +90,7 @@ const EditProfile = () => {
             {/* Profile Picture Can Be Added Here */}
           </div>
           <div className="user-info-fields">
+            <label>Email </label>
             <input
               type="text"
               name="email"
@@ -97,6 +98,7 @@ const EditProfile = () => {
               value={profileData.email}
               onChange={handleInputChange}
             />
+            <label>First Name </label>
             <input
               type="text"
               name="first_name"
@@ -104,6 +106,7 @@ const EditProfile = () => {
               value={profileData.first_name}
               onChange={handleInputChange}
             />
+            <label>Last Name </label>
             <input
               type="text"
               name="last_name"
@@ -118,6 +121,7 @@ const EditProfile = () => {
       {/* Dashboard Links Section */}
       <div className="box dashboard-links-box">
         <h3>Portfolio Links</h3>
+        <label>GitHub Link</label>
         <input
           type="url"
           name="github"
@@ -125,6 +129,7 @@ const EditProfile = () => {
           value={profileData.github}
           onChange={handleInputChange}
         />
+        <label>LinkedIn Link</label>
         <input
           type="url"
           name="linkedin"
@@ -132,6 +137,7 @@ const EditProfile = () => {
           value={profileData.linkedin}
           onChange={handleInputChange}
         />
+        <label>LeetCode Link</label>
         <input
           type="url"
           name="leetcode"
@@ -139,6 +145,7 @@ const EditProfile = () => {
           value={profileData.leetcode}
           onChange={handleInputChange}
         />
+        <label>HackerRank Link</label>
         <input
           type="url"
           name="hackerrank"
