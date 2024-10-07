@@ -113,7 +113,6 @@ const CreateExam = () => {
             toast.error('Please select some questions first');
             return;
         }
-
         try {
             const response = await addSupervisorQuestions(JSON.parse(realSelectedSubject).id, { questions: selectedQuestions });
             console.log(response);
