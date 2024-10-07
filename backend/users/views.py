@@ -17,13 +17,15 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q
-
-
-
-
-
-
 from users.models import Branch, Track, Organization, User, Role
+
+from .models import User 
+from django.urls import reverse
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from django.contrib.sites.shortcuts import get_current_site
+
+
 from users.serializer import (
     MyTokenObtainPairSerializer,
     OrganizationSerializer,
@@ -43,10 +45,14 @@ class MyTokenObtainPairView(TokenObtainPairView):
     
     @swagger_auto_schema(operation_summary="Generate JWT Token", tags=['Auth'])
     def post(self, request, *args, **kwargs):
-        user = User.objects.filter(email=request.data['email']).first()
-        if user and not user.is_active:
-            raise AuthenticationFailed("Your account is not activated yet. Please contact the admin.")
-        return super().post(request, *args, **kwargs)
+        user = User.objects.get(email=request.data['email'])
+        if user and user.is_verified == True:
+            if not user.check_password(request.data['password']):
+                raise AuthenticationFailed("Invalid password")
+            return super().post(request, *args, **kwargs)
+        raise AuthenticationFailed("Your account is not activated yet. Please contact the admin.")
+
+        
 
 
 # User Registration View
@@ -55,29 +61,16 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
-
     @swagger_auto_schema(operation_summary="User Registration", tags=['Auth'])
     def perform_create(self, serializer):
         user = serializer.save()
 
-        if user.role in [Role.ADMIN, Role.SUPERVISOR]:
-            user.is_active = False  # Mark the user as inactive until approval
-            user.save()
-            
-            # Notify admin for approval via email
-            send_mail(
-                'Approval Needed for New Registration',
-                f'User {user.username} with role {user.role} has registered and is awaiting approval.',
-                'from@example.com',
-                ['admin@example.com'],  # Send this to the admin for approval
-                fail_silently=False,
-            )
-        
-        elif user.role == Role.STUDENT:
-            user.is_active = False  # For students, ensure account remains inactive until admin approval
+        if user.role in [Role.ADMIN, Role.SUPERVISOR, Role.STUDENT]:
+            user.is_active = False  # Make user inactive until they verify their email or get approved
             user.save()
 
         print(f"User {user.username} registered successfully with role {user.role}")
+        
 
 
 # Approve user view (Admin or Supervisor approval required)
@@ -94,7 +87,7 @@ def approve_supervisor(request, user_id):
 
         # Check if the supervisor belongs to the same branch as the admin
         if user.branch == admin_user.branch:
-            user.is_active = True  # Approve the supervisor
+            user.is_authorized = True  # Approve the supervisor
             user.save()
 
             # Send approval email
@@ -132,7 +125,7 @@ def get_supervisors(request):
                 "first_name": supervisor.first_name,  # Add first name
                 "last_name": supervisor.last_name,    # Add last name
                 "branch": supervisor.branch.name if supervisor.branch else "N/A",  # Add branch name, handle case if branch is None
-                "is_active": supervisor.is_active  # whether the supervisor is approved or not
+                "is_authorized": supervisor.is_authorized  # whether the supervisor is approved or not
             }
             for supervisor in supervisors
         ]
@@ -180,7 +173,7 @@ class ApproveStudentAPIView(APIView):
                 track_id=supervisor_user.track_id
             )
 
-            student.is_active = True
+            student.is_authorized = True
             student.save()
 
             # Send approval email
@@ -226,7 +219,7 @@ class StudentListAPIView(APIView):
                 "username": student.username,
                 "email": student.email,
                 "track": student.track.name if student.track else None,
-                "is_active": student.is_active,
+                "is_authorized": student.is_authorized,
                 "branch": student.branch.name if student.branch else None,
                 "exams": AssignedExams.get_subject_names_by_student_id(student.id)
             }
@@ -473,11 +466,52 @@ def branches_list(request):
 @permission_classes([AllowAny])  # Ensure this allows unauthenticated access
 def register_user(request):
     serializer = UserSerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid():
         serializer.save()
+        user = User.objects.get(email = serializer.data['email'])
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))    
+            
+        
+        # Generate verification link
+        current_site = get_current_site(request)
+        verification_url = f"http://{current_site.domain}{reverse('verify_email', args=[uid, token])}"
+        
+        
+        print(verification_url)
+
+        # Send verification email
+        subject = 'Verify Your Email'
+        message = f'Hi {user.username},\n\nPlease verify your email by clicking the link: {verification_url}'
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+            fail_silently=False,
+        )
+        print(f"Verification email sent to {user.username} at {user.email}")
+            
+        
         return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
+    
     print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def verify_email(request, uidb64, token):
+    try:
+        uidb = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk = uidb)
+        if not user.is_verified and default_token_generator.check_token(user, token):  #change to is verfied
+            user.is_verified = True  # Activate the user's account
+            user.is_active = True
+            user.save()
+            return HttpResponse('Your email has been verified. You can now log in.')
+        else:
+            return HttpResponse('Your email has already been verified.')
+    except User.DoesNotExist:
+        return HttpResponse('Invalid verification link.')
 
 #####################################
 class EditProfileView(generics.RetrieveUpdateAPIView): 

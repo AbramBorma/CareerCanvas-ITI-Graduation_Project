@@ -26,14 +26,14 @@ function App() {
 
   return (
     <>
-      <NavBar /> {/* Render the NavBar */}
+      <NavBar /> {/* Render the NavBar */}•••
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portfolio/form" element={<PortfolioForm />} />
           <Route path="/portfolio" 
                  element={
-                   user && user.role === 'student' ? (
+                   user && user.role === 'student' && user.is_authorized === false ? (
                      <PortfolioPage />
                    ) : (
                      <LoginPage />
