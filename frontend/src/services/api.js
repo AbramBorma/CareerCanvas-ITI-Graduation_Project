@@ -463,3 +463,18 @@ export const deleteExam = async(id) => {
         throw error;
     }
 };
+
+export const addExam = async(data) => {
+    const token = getAuthToken(); // Retrieve the token
+    try {
+        const response = await axios.post(`${API_URL}/exams/create-supervisor-exam/`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the header
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error setting exam for supervisor.", error);
+        throw error;
+    }
+};

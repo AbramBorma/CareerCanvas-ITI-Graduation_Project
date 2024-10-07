@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useContext } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle"
-import { examSubjects } from '../services/api.js';
+import "bootstrap/dist/js/bootstrap.bundle";
+import AuthContext from '../context/AuthContext';
+import { examSubjects ,addExam} from '../services/api.js';
 import Spinner from './Spinner.js';
 
 const SupervisorAddExam = ({ onClose }) => {
+    const { user } = useContext(AuthContext);
     const [inputs, setInputs] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -16,9 +18,10 @@ const SupervisorAddExam = ({ onClose }) => {
         const fetchSubjects = async () => {
             try {
                 const response = await examSubjects();
+                console.log(response)
                 setSubjects(response);
             } catch (err) {
-                setError(err.message || 'Error fetching authors');
+                setError(err.message);
             } finally {
                 setLoading(false);
             }
@@ -34,13 +37,19 @@ const SupervisorAddExam = ({ onClose }) => {
     };
 
     const handleSubmit = async (event) => {
-        console.log(inputs)
         event.preventDefault();
+        let data = {
+            ...inputs,
+            user: user.user_id,
+            number_of_questions: (inputs.easy+","+inputs.intermediate+","+inputs.advanced)
+        };
+        // console.log(data)
         try {
+        const response = await addExam(data);
             onClose();
         } catch (error) {
             console.log(error);
-            setError(error.response.data.message);
+            setError(error.response.data.error);
         }
     };
 
@@ -64,25 +73,26 @@ const SupervisorAddExam = ({ onClose }) => {
                             <label className="form-label">Enter Exam Title:</label>
                             <input
                                 type="text"
-                                name="title"
-                                value={inputs.title || ""}
+                                name="name"
+                                value={inputs.name || ""}
                                 onChange={handleChange}
                                 className="form-control"
+                                required
                             />
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Choose Subject:</label>
                             <select
                                 name='subject'
-                                id="subject"
-                                value={selectedSubject}
+                                value={inputs.subject}
                                 onChange={handleChange}
                                 className="form-select"
+                                required
                             >
                                 <option value="">-- Select Subject --</option>
                                 {subjects.map((subject) => (
-                                    <option key={subject} value={subject}>
-                                        {subject}
+                                    <option key={subject.id} value={subject.name}>
+                                        {subject.name}
                                     </option>
                                 ))}
                             </select>
@@ -112,31 +122,37 @@ const SupervisorAddExam = ({ onClose }) => {
                             <label className="mx-2">No. Easy:</label>
                             <input
                                 type="number"
+                                min={0}
                                 name="easy"
                                 value={inputs.easy || ""}
                                 onChange={handleChange}
                                 className="form-control d-inline-block  mx-1"
                                 style={{ width: '60px' }} // Reduced width
+                                required
                             />
 
                             <label className="mx-2">No. Intermediate:</label>
                             <input
                                 type="number"
+                                min={0}
                                 name="intermediate"
                                 value={inputs.intermediate || ""}
                                 onChange={handleChange}
                                 className="form-control d-inline-block  mx-1"
                                 style={{ width: '60px' }} // Reduced width
+                                required
                             />
 
                             <label className="mx-2">No. Advanced:</label>
                             <input
+                                min={0}
                                 type="number"
                                 name="advanced"
                                 value={inputs.advanced || ""}
                                 onChange={handleChange}
                                 className="form-control d-inline-block  mx-1"
                                 style={{ width: '60px' }} // Reduced width
+                                required
                             />
                         </div>
                         <div className="text-center">

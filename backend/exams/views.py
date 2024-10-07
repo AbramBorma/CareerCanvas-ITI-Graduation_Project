@@ -86,8 +86,8 @@ class SubjectListView(APIView):
     )
     def get(self, request):
         subjects = Subject.objects.all()
-        subject_names = subjects.values_list('name', flat=True)
-        return Response(subject_names)
+        serializer = SubjectSerializer(subjects, many=True)  # Serialize the queryset
+        return Response(serializer.data) 
 
 
 class UserExamScoresView(APIView):
@@ -232,6 +232,7 @@ class RemoveAssignedUsersToSubjectByTrackView(APIView):
 
 
 
+
 class SupervisorExamListView(APIView):
     def get(self, request, user_id):
         try:
@@ -241,6 +242,61 @@ class SupervisorExamListView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class CreateSupervisorExamView(APIView):
+    def post(self, request):
+        # Extract data from the request
+        name = request.data.get('name')
+        subject_name = request.data.get('subject')
+        user_id = request.data.get('user')
+        number_of_questions = request.data.get('number_of_questions')
+
+        # Validate that all required fields are present
+        if not all([name, subject_name, user_id, number_of_questions]):
+            return Response(
+                {"error": "All fields (name, subject_name, user, number_of_questions) are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Get the Subject object by name
+        try:
+            subject = Subject.objects.get(name=subject_name)
+        except Subject.DoesNotExist:
+            return Response(
+                {"error": f"Subject with name '{subject_name}' does not exist."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Get the User object by ID
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {"error": f"User with id '{user_id}' does not exist."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Check if a SupervisorExam with the same name and user already exists
+        if SupervisorExam.objects.filter(name=name, user=user).exists():
+            return Response(
+                {"error": "An exam with this name already exists for the specified user."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Create the new SupervisorExam object
+        supervisor_exam = SupervisorExam.objects.create(
+            name=name,
+            subject=subject,
+            user=user,
+            number_of_questions=number_of_questions
+        )
+
+        # Serialize the created object
+        serializer = SupervisorExamSerializer(supervisor_exam)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
 
 
 class DeleteSupervisorExamView(APIView):

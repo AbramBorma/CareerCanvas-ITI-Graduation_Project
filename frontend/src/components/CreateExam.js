@@ -13,6 +13,7 @@ const CreateExam = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [selectedSubjectchanged, setSelectedSubjectchanged] = useState(false)
+    const [realSelectedSubject, setRealSelectedSubject] = useState();
     const [showModal, setShowModal] = useState(false);
 
 
@@ -42,6 +43,7 @@ const CreateExam = () => {
         const fetchSubjects = async () => {
             try {
                 const response = await getSupervisorExams(user.user_id);
+                console.log(response)
                 setSubjects(response);
             } catch (error) {
                 console.error('Error fetching subjects:', error);
@@ -92,6 +94,7 @@ const CreateExam = () => {
         }
         fetchAllQuestions()
         fetchSelectedQuestions()
+        setRealSelectedSubject(selectedSubject);
     };
 
     const addQuestions = async () => {
@@ -99,12 +102,15 @@ const CreateExam = () => {
             alert('Please select some questions first.');
             return;
         }
+
         try {
-            const response = await addSupervisorQuestions(JSON.parse(selectedSubject).id, { questions: selectedQuestions });
+            const response = await addSupervisorQuestions(JSON.parse(realSelectedSubject).id, { questions: selectedQuestions });
             console.log(response);
         } catch (error) {
             console.error('Error adding questions:', error);
         }
+        setQuestions([]);
+        setSelectedQuestions([]);
     };
 
     // Filter questions based on search term
