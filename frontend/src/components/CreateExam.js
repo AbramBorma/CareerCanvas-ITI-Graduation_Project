@@ -187,8 +187,8 @@ const CreateExam = () => {
                         </option>
                     ))}
                 </select>
-                <button onClick={addTheExam} className="add-btn">Add subject</button>
-                <button onClick={deleteTheExam} className="delete-btn">Delete subject</button>
+                <button onClick={addTheExam} className="add-btn">Add Exam</button>
+                <button onClick={deleteTheExam} className="delete-btn">Remove Exam</button>
             </div>
             {showModal && (
                       <SupervisorAddExam  onClose={() => { setShowModal(false); setSelectedSubjectchanged(state => !state); }} />

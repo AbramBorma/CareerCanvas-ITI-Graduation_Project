@@ -10,6 +10,7 @@ const Exams = () => {
     const { user } = React.useContext(AuthContext); 
     const [subjects, setSubjects] = useState([]);
     const [loading, setLoading] = useState(true);
+    
 
     useEffect(() => {
         const getSub = async () => {
@@ -27,7 +28,8 @@ const Exams = () => {
 
     const handleStartExam = () => {
         if (selectedSubject) {
-            navigate(`/exams/${JSON.parse(selectedSubject).subject.toLowerCase()}`);
+            const examData = JSON.parse(selectedSubject)
+            navigate(`/exams/${JSON.parse(selectedSubject).subject.toLowerCase()}`,{ state: { examData }});
         }
     };
 

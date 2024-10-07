@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams ,useNavigate} from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import '../static/styles/ExamStyles.css';
-import { getQuestions,submitExam } from '../services/api';
+import { getExamQuestions, submitExam } from '../services/api';
 import AuthContext from '../context/AuthContext';
 
 
@@ -17,7 +17,7 @@ const coding = {
     php: "php",
     laravel: "php",
     linux: "bash",
-  };
+};
 
 
 const Exam = () => {
@@ -25,17 +25,30 @@ const Exam = () => {
     const [timeLeft, setTimeLeft] = useState(900); // 15 minutes = 900 seconds
     const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
-    const [cheat,setCheat] = useState(false);
+    const [cheat, setCheat] = useState(false);
     const navigate = useNavigate();
-    const { user, logoutUser } = React.useContext(AuthContext); 
+    const location = useLocation();
+    const { user, logoutUser } = React.useContext(AuthContext);
+    const { examData } = location.state || {};
+    const [codingQuestionsLength, setCodingQuestionsLength] = useState(0)
+    const [questionsNumber, setQuestionsNumber] = useState(0)
+
+
 
 
     useEffect(() => {
+        console.log(examData)
         const getRandomQuestions = async () => {
-            const reseasy = await getQuestions(subject, "easy");
-            const resmed = await getQuestions(subject, "intermediate");
-            const reshard = await getQuestions(subject, "advanced");
-            console.log(reseasy)
+            const reseasy = await getExamQuestions(examData.id, "easy");
+            const resmed = await getExamQuestions(examData.id, "intermediate");
+            const reshard = await getExamQuestions(examData.id, "advanced");
+            // console.log(reseasy)
+            const no_of_questions = examData.number_of_questions.split(",")
+            // console.log(no_of_questions)
+            const noOfEasy = no_of_questions[0]
+            const noOfmedium = no_of_questions[1]
+            const noOfhard = no_of_questions[2]
+
 
             const subjectQuestions = {
                 easy: reseasy,
@@ -52,25 +65,26 @@ const Exam = () => {
             const allQuestions = [];
 
             // Randomly select questions
-            for (let i = 0; i < 10 && easy.length > 0; i++) {
+            for (let i = 0; i < noOfEasy && easy.length > 0; i++) {
                 const randomIndex = Math.floor(Math.random() * easy.length);
                 allQuestions.push(easy[randomIndex]);
                 easy.splice(randomIndex, 1);
             }
 
-            for (let i = 0; i < 10 && medium.length > 0; i++) {
+            for (let i = 0; i < noOfmedium && medium.length > 0; i++) {
                 const randomIndex = Math.floor(Math.random() * medium.length);
                 allQuestions.push(medium[randomIndex]);
                 medium.splice(randomIndex, 1);
             }
 
-            for (let i = 0; i < 5 && hard.length > 0; i++) {
+            for (let i = 0; i < noOfhard && hard.length > 0; i++) {
                 const randomIndex = Math.floor(Math.random() * hard.length);
                 allQuestions.push(hard[randomIndex]);
                 hard.splice(randomIndex, 1);
             }
 
             console.log("Selected Questions:", allQuestions); // Log selected questions
+            setQuestionsNumber(allQuestions.length)
             return allQuestions;
         };
 
@@ -79,8 +93,11 @@ const Exam = () => {
             setQuestions(allQuestions);
         };
 
-        fetchQuestions();
-
+        try {
+            fetchQuestions();
+        } catch (error) {
+            console.error('Error fetching questions:', error);
+        }
 
 
 
@@ -99,23 +116,36 @@ const Exam = () => {
         return () => clearInterval(timer);
     }, [subject]);
 
-function Cheating (){
-    console.log(cheat)
-    if (cheat){
-        handleSubmit();
-    }else{
-        setCheat(true);
-        alert('Warning: No Cheating!');
+    function Cheating() {
+        console.log(cheat)
+        if (cheat) {
+            handleSubmit();
+        } else {
+            setCheat(true);
+            alert('Warning: No Cheating!');
+        }
     }
-}
 
     useEffect(() => {
         if (window) {
             window.onblur = () => Cheating();
-          }
+        }
 
-          return () => {window.onblur = null;  };
+        return () => { window.onblur = null; };
     }, [cheat]);
+
+
+    useEffect(() => {
+        const fetchcoding = async () => {
+            try {
+                const codeQ = await getExamQuestions(examData.id, "coding");
+                setCodingQuestionsLength(codeQ.length)
+            } catch (error) {
+                console.error('Error fetching questions:', error);
+            }
+        }
+        fetchcoding()
+    }, [])
 
 
     const handleAnswerChange = (questionId, answerId) => {
@@ -125,36 +155,45 @@ function Cheating (){
         }));
     };
 
+
     const handleSubmit = async () => {
-        const userAnswers = {
-            subject_id: subject,
-            answers: selectedAnswers,
-            user_email:user.email
-        };
-        
-        const code=coding[subject]
-        if(code){
-            navigate(`/monaco/${code}`, { state: { userAnswers } });
-        }else{
-        try {
-            console.log(userAnswers);
-            // const response = await fetch('http://127.0.0.1:8000/exams/submit/', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(userAnswers),
-            // });
-            const response=await submitExam(JSON.stringify(userAnswers))
-            console.log(response)
-            const result = await response.data;
-            window.onblur = null;
-            alert(`Exam submitted! Your score: ${result.score}`);
-            navigate(`/exams`);
-        } catch (error) {
-            console.error('Error submitting exam:', error);
+        let totalQNumber=0
+        if(codingQuestionsLength >0){
+             totalQNumber =questionsNumber+4;
+        }else{            
+             totalQNumber =questionsNumber;
         }
-    }
+
+        const userAnswers = {
+            exam_id: examData.id,
+            answers: selectedAnswers,
+            user_email: user.email,
+            totalNumber:totalQNumber  
+        };
+
+        const code = coding[subject]
+        if (code && codingQuestionsLength >0) {
+            navigate(`/monaco/${code}`, { state: { userAnswers } });
+        } else {
+            try {
+                console.log(userAnswers);
+                // const response = await fetch('http://127.0.0.1:8000/exams/submit/', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify(userAnswers),
+                // });
+                const response = await submitExam(JSON.stringify(userAnswers))
+                console.log(response)
+                const result = await response;
+                window.onblur = null;
+                alert(`Exam submitted! Your score: ${result.score}`);
+                navigate(`/exams`);
+            } catch (error) {
+                console.error('Error submitting exam:', error);
+            }
+        }
     };
 
     return (

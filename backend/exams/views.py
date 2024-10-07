@@ -48,14 +48,15 @@ class SubmitExam(APIView):
             return Response({"error": "Invalid JSON data"}, status=status.HTTP_400_BAD_REQUEST)
 
         user_email = data.get('user_email')
-        subject_id = data.get('subject_id')
+        subject_id = data.get('exam_id')
         answers = data.get('answers')  # {'question_id': 'selected_option', ...}
+        total = data.get('totalNumber')
 
         if not user_email or not subject_id or not isinstance(answers, dict):
             return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
 
         user = User.objects.get(email=user_email)
-        subject = Subject.objects.get(name=subject_id)
+        subject = SupervisorExam.objects.get(id=subject_id)
 
         total_questions = 0
         correct_answers = 0
@@ -72,7 +73,7 @@ class SubmitExam(APIView):
                 total_questions += 1
         
         AssignedExams.objects.filter(user=user,subject=subject).delete()
-        score = (correct_answers / 29) * 100 if total_questions > 0 else 0
+        score = (correct_answers / total) * 100 if total_questions > 0 else 0
         exam = Exam.objects.create(user=user, subject=subject, score=score)
         return Response({"score": score}, status=status.HTTP_200_OK)
     
