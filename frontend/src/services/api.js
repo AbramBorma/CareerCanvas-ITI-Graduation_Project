@@ -236,12 +236,12 @@ export const deleteSupervisor = async(id) => {
     }
 };
 
-export const getStudents = async() => {
+export const getStudents = async (page = 1, search = '') => {
     const token = getAuthToken(); // Ensure this retrieves the correct token
     console.log("Using Access Token for Supervisors Request:", token); // Log token to verify
 
     try {
-        const response = await axios.get(`${API_URL}/users/students/`, {
+        const response = await axios.get(`${API_URL}/users/students/?page=${page}&search=${search}`, {
             headers: {
                 Authorization: `Bearer ${token}`, // Include the token correctly
             }

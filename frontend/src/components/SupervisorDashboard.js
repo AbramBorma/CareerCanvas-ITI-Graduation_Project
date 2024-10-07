@@ -11,7 +11,8 @@ import {
   removeTrackStudentsExam 
 } from '../services/api'; 
 import AuthContext from '../context/AuthContext'; 
-import Dialog from './Dialog'; // Import the Dialog component
+import Dialog from './Dialog'; 
+import PaginationRounded from './PaginationComponent'; // Import the pagination component
 
 const SupervisorDashboard = () => {
   const { user } = useContext(AuthContext); 
@@ -21,31 +22,46 @@ const SupervisorDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [dialogOpen, setDialogOpen] = useState(false); // Dialog open state
-  const [errorDialogOpen, setErrorDialogOpen] = useState(false); // Error dialog open state
-  const [currentAction, setCurrentAction] = useState(null); // Track current action
+  const [dialogOpen, setDialogOpen] = useState(false); 
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false); 
+  const [currentAction, setCurrentAction] = useState(null); 
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const navigate = useNavigate(); 
-  const [successDialogOpen, setSuccessDialogOpen] = useState(false); 
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0); 
+  const itemsPerPage = 5;  // Number of students per page
 
-  // Fetch students and subjects when the component mounts
-useEffect(() => {
-  const fetchStudents = async () => {
-    setLoading(true); // Start loading
-    try {
-      const response = await fetchStudentsFromApi(); 
-      if (response.students.length === 0) {
-        setError("There are no students available."); // Set error message if no students
-      } else {
-        setStudents(response.students); // Set students if available
-        setError(null); // Clear error message
+  // Fetch students and subjects when the component mounts or when currentPage changes
+  useEffect(() => {
+    const fetchStudents = async () => {
+      setLoading(true); 
+      try {
+        const response = await fetchStudentsFromApi(currentPage, searchQuery);  // Pass currentPage and searchQuery to API
+        console.log('API response:', response); 
+  
+        if (response && response.results && response.results.length === 0) {
+          setError("There are no students available."); 
+        } else if (response && response.results) {
+          setStudents(response.results); 
+          setTotalItems(response.count);  // Total number of students for pagination
+          setError(null); 
+        }
+      } catch (err) {
+        console.error('Error fetching students:', err);
+        setError('There are no students available.');
+      } finally {
+        setLoading(false); 
       }
-    } catch (err) {
-      console.error('Error fetching students:', err);
-      setError('There are no students available.');
-    } finally {
-      setLoading(false); // End loading
-    }
+    };
+  
+    fetchStudents();
+  }, [currentPage, searchQuery]); // Fetch students when currentPage changes
+
+  // Handle pagination page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   const fetchExamsSubjects = async () => {
@@ -60,10 +76,9 @@ useEffect(() => {
     }
   };
 
-  fetchStudents();
-  fetchExamsSubjects();
-}, []);
-
+  useEffect(() => {
+    fetchExamsSubjects();
+  }, []);
 
   // Filter students based on search query
   const filteredStudents = searchQuery
@@ -75,20 +90,19 @@ useEffect(() => {
   // Handle actions for approving and deleting
   const handleAction = (action, id) => {
     setCurrentAction({ type: action, id });
-    setDialogOpen(true); // Open dialog
+    setDialogOpen(true); 
   };
 
-  // Confirm action from dialog
   const confirmAction = async () => {
     if (currentAction.type === 'approve') {
       await handleApprove(currentAction.id);
     } else if (currentAction.type === 'delete') {
       await handleDelete(currentAction.id);
     } else if (currentAction.type === 'remove_exam') {
-      await handleRemoveExam(); // Handle removing exam
+      await handleRemoveExam(); 
     }
-    setDialogOpen(false); // Close dialog after action
-    setCurrentAction(null); // Reset current action
+    setDialogOpen(false); 
+    setCurrentAction(null); 
   };
 
   const handleApprove = async (id) => {
@@ -165,7 +179,6 @@ useEffect(() => {
       console.error("Error removing the exam:", error);
     }
   };
-  
 
   return (
     <div className="supervisor-dashboard">
@@ -255,13 +268,13 @@ useEffect(() => {
                         <>
                           <button
                             className="approve-btn"
-                            onClick={() => handleAction('approve', student.id)} // Use the dialog
+                            onClick={() => handleAction('approve', student.id)} 
                           >
                             Approve
                           </button>
                           <button
                             className="delete-btn"
-                            onClick={() => handleAction('delete', student.id)} // Use the dialog
+                            onClick={() => handleAction('delete', student.id)} 
                           >
                             Delete Student
                           </button>
@@ -269,7 +282,7 @@ useEffect(() => {
                       ) : (
                         <button
                           className="delete-btn"
-                          onClick={() => handleAction('delete', student.id)} // Use the dialog
+                          onClick={() => handleAction('delete', student.id)} 
                         >
                           Delete Student
                         </button>
@@ -290,6 +303,14 @@ useEffect(() => {
           </table>
         </div>
       </div>
+            {/* Add Pagination */}
+      <PaginationRounded
+        className="pagination"
+        totalItems={totalItems}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
 
       {/* Confirmation Dialog */}
       <Dialog
@@ -312,19 +333,17 @@ useEffect(() => {
         title="Error"
         message="Please select an exam to proceed."
         onClose={() => setErrorDialogOpen(false)}
-        onConfirm={() => setErrorDialogOpen(false)} // Close the error dialog
+        onConfirm={() => setErrorDialogOpen(false)} 
       />
 
       {/* Success Dialog */}
        <Dialog
-        isOpen={successDialogOpen}  // Ensure this uses successDialogOpen
+        isOpen={successDialogOpen}  
         title="Success"
         message="Exam removed successfully."
         onClose={() => setSuccessDialogOpen(false)}
-        onConfirm={() => setSuccessDialogOpen(false)} // Close the success dialog
+        onConfirm={() => setSuccessDialogOpen(false)} 
       />
-
-      
     </div>
   );
 };

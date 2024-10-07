@@ -49,9 +49,9 @@ urlpatterns = [
     path('delete_supervisor/<int:user_id>/', views.delete_supervisor, name='delete_supervisor'),
 
     # View and approve students for a supervisor
-    path('students/', views.get_students, name='get_students'),
-    path('approve-student/<int:student_id>/', views.approve_student, name='approve_student'),
-    path('delete-student/<int:student_id>/', views.delete_student, name='delete_student'),
+    path('students/', views.StudentListAPIView.as_view(), name='get_students'),
+    path('approve-student/<int:student_id>/', views.ApproveStudentAPIView.as_view(), name='approve_student'),
+    path('delete-student/<int:student_id>/', views.DeleteStudentAPIView.as_view(), name='delete_student'),
 
 
     # Organization, branch, and track routes

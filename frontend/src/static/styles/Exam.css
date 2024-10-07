@@ -64,14 +64,15 @@
 .start-exam-button {
     background-color: #1d3557;
     color: white;
-    padding: 10px 16px; /* Reduced padding */
+    padding: 15px 24px; /* Increased padding */
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1em; /* Smaller font size */
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Added box-shadow transition */
-    width: auto; /* Button will now size according to content */
+    font-size: 1.2em; /* Increased font size */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    width: auto;
 }
+
 
 .start-exam-button:hover {
     background-color: #457b9d;
