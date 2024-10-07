@@ -33,7 +33,7 @@ function App() {
           <Route path="/portfolio/form" element={<PortfolioForm />} />
           <Route path="/portfolio" 
                  element={
-                   user && user.role === 'student' && user.is_authorized === false ? (
+                   user && user.role === 'student' && user.is_authorized === true ? (
                      <PortfolioPage />
                    ) : (
                      <LoginPage />
