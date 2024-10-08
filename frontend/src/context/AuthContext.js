@@ -108,8 +108,7 @@ const registerUser = async (
       });
   
       if (response.ok) {
-        toast.success('Registration successful! Redirecting to login...');
-        navigate('/login');  // Redirect to login after successful registration
+        navigate('/activate-email');  // Redirect to activate email
       } else {
         const data = await response.json();
         if (data.detail) {
