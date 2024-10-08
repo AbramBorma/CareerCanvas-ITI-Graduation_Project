@@ -77,9 +77,11 @@ const registerUser = async (
       return;
     }
   
-    if (!isValidURL(linkedin) || !isValidURL(github) || !isValidURL(hackerrank) || !isValidURL(leetcode)) {
-      toast.error('Please enter valid URLs for LinkedIn, GitHub, HackerRank, and LeetCode.');
-      return;
+    if (role === 'student') {
+      if (!isValidURL(linkedin) || !isValidURL(github) || !isValidURL(hackerrank) || !isValidURL(leetcode)) {
+          toast.error('Please enter valid URLs for LinkedIn, GitHub, HackerRank, and LeetCode.');
+          return;
+      }
     }
   
     try {

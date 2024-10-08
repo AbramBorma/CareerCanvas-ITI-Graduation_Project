@@ -13,7 +13,7 @@ const StudentApprovalMessage = () => {
         <div style={styles.contact}>
           <p>
             Supervisor Email: 
-            <a href="mailto:supervisor@example.com" style={styles.link}>
+            <a href="mailto:minanagy@hotmail.com" style={styles.link}>
               supervisor@example.com
             </a>
           </p>
