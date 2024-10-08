@@ -1,6 +1,7 @@
+// App.js
+
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
-import ClipLoader from 'react-spinners/ClipLoader';  // Spinner from react-spinners
 import Home from './components/Home';
 import NavBar from './components/NavBar';
 import PortfolioForm from './components/PortfolioForm';
@@ -26,43 +27,46 @@ import AdminApprovalMessage from './components/AdminApprovalMessage';
 import ActivateEmail from './components/ActivateEmail';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './App.css'; // Ensure to include your CSS file for the loading spinner
+import './App.css';
 
 function App() {
-  const { user } = useContext(AuthContext);  // Get the user context
-  const location = useLocation();  // Get the current location
-  const [loading, setLoading] = useState(false);  // Manage loading state
+  const { user } = useContext(AuthContext);
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
 
-  // Trigger loading state on route changes
   useEffect(() => {
-    setLoading(true);  // Start loading when location changes
+    setLoading(true);
     const timeout = setTimeout(() => {
-      setLoading(false);  // Stop loading after a short delay
-    }, 800);  // Adjust the delay as needed
+      setLoading(false);
+    }, 500);  // Adjust the delay as needed
 
-    return () => clearTimeout(timeout); // Cleanup timeout on unmount
+    return () => clearTimeout(timeout);
   }, [location]);
 
   return (
     <>
-      <NavBar />  {/* Render the NavBar */}
+      <NavBar />
       <div className="App">
         <ToastContainer />
 
         {loading ? (
           <div className="loading-container">
-            <ClipLoader color={"#3498db"} loading={loading} size={50} />
+            <div className="loading-animation">
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
+            </div>
+            <div className="loading-text">Loading...</div>
           </div>
         ) : (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/portfolio/form" element={<PortfolioForm />} />
-            {/* Portfolio Route */}
             <Route 
               path="/portfolio" 
               element={
                 user && user.role === 'student' ? (
-                  user.is_authorized === true ? (
+                  user.is_authorized ? (
                     <PortfolioPage />
                   ) : (
                     <StudentApprovalMessage />
@@ -79,12 +83,11 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
             
-            {/* Exams Route */}
             <Route 
               path="/exams" 
               element={
                 user && user.role === 'student' ? (
-                  user.is_authorized === true ? (
+                  user.is_authorized ? (
                     <Exams />
                   ) : (
                     <StudentApprovalMessage />
@@ -97,7 +100,6 @@ function App() {
             <Route path="/exams/:subject" element={<Exam />} />
             <Route path="/monaco/:subject" element={<CodeEditor />} />
             
-            {/* Edit Profile Route */}
             <Route 
               path="/edit-profile" 
               element={
@@ -109,12 +111,11 @@ function App() {
               } 
             />
             
-            {/* Conditional rendering of dashboard routes based on user role */}
             <Route 
               path="/branch-admin-dashboard" 
               element={
                 user && user.role === 'admin' ? (
-                  user.is_authorized === true ? (
+                  user.is_authorized ? (
                     <BranchAdminDashboard />
                   ) : (
                     <AdminApprovalMessage />
@@ -128,7 +129,7 @@ function App() {
               path="/SDashboard" 
               element={
                 user && user.role === 'supervisor' ? (
-                  user.is_authorized === true ? (
+                  user.is_authorized ? (
                     <SupervisorDashboard />
                   ) : (
                     <SupervisorApprovalMessage />
@@ -142,7 +143,7 @@ function App() {
               path="/SCreateExam" 
               element={
                 user && user.role === 'supervisor' ? (
-                  user.is_authorized === true ? (
+                  user.is_authorized ? (
                     <CreateExam />
                   ) : (
                     <SupervisorApprovalMessage />
@@ -156,8 +157,9 @@ function App() {
             <Route path="*" element={<h1>404 - Page Not Found</h1>} />
           </Routes>
         )}
-
-        <Footer />
+        
+        {/* Render Footer only if not loading */}
+        {!loading && <Footer />}
       </div>
     </>
   );

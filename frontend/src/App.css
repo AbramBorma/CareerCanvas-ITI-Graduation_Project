@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Ensure full viewport height */
+    background: linear-gradient(135deg, #f4f4f4, #e1e5ea); /* Enhanced light gradient background */
+    transition: background 0.5s ease; /* Smooth transition for background */
 }
 
 .App-logo {
@@ -29,30 +31,72 @@
 
 .App-link {
     color: #61dafb;
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+.App-link:hover {
+    color: #21a1f1; /* Change link color on hover */
 }
 
 /* Loader styles */
 .loading-container {
     display: flex;
+    flex-direction: column; /* Stack spinner and text */
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
-    height: calc(100vh - 68px); /* Adjust height to account for NavBar */
-    background-color: rgba(255, 255, 255, 0.9); /* Slight overlay */
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(236, 240, 241, 0.9)); /* Subtle gradient */
     position: fixed; /* Fixed position to cover the entire screen */
     top: 0;
     left: 0;
-    right: 0; /* Ensure it covers the full width */
     z-index: 999; /* Ensure it's on top of other content */
+    transition: opacity 0.3s ease; /* Smooth transition for visibility */
 }
 
 /* Spinner styles */
 .spinner {
-    border: 8px solid rgba(255, 255, 255, 0.3); /* Light border */
+    border: 8px solid rgba(255, 255, 255, 0.5); /* Lighter border for better visibility */
     border-top: 8px solid #3498db; /* Spinner color */
     border-radius: 50%; /* Circular shape */
-    width: 50px; /* Spinner width */
-    height: 50px; /* Spinner height */
+    width: 70px; /* Increased spinner width */
+    height: 70px; /* Increased spinner height */
     animation: spin 1s linear infinite; /* Animation */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+}
+
+/* Loading text styles */
+.loading-text {
+    margin-top: 20px; /* Space between spinner and text */
+    font-size: 20px; /* Text size */
+    color: #34495e; /* Text color */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for coding effect */
+    opacity: 0.8; /* Slightly transparent */
+    transition: opacity 0.3s ease; /* Smooth transition for text */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow */
+    animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite; /* Typing effect */
+}
+
+/* Typing animation */
+@keyframes typing {
+    from {
+        width: 0; /* Start from no width */
+    }
+    to {
+        width: 100%; /* End at full width */
+    }
+}
+
+/* Caret blinking animation */
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent; /* Caret invisible */
+    }
+    50% {
+        border-color: #3498db; /* Caret visible */
+    }
 }
 
 /* Spinner animation */
@@ -77,4 +121,24 @@ footer {
     background-color: #282c34; /* Match header background */
     color: white; /* Footer text color */
     text-align: center; /* Center the text */
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    opacity: 1;
+    transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+footer.hidden {
+    opacity: 0; /* Hide the footer */
+    visibility: hidden; /* Ensure it's not interactable */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .loading-container {
+        height: 100vh; /* Ensure loading spinner works on smaller screens */
+    }
+
+    footer {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
 }
