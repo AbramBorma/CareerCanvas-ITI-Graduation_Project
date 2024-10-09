@@ -42,7 +42,6 @@ from users.permissions import IsAdmin, IsSupervisor, IsStudent
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
     
-    
     @swagger_auto_schema(operation_summary="Generate JWT Token", tags=['Auth'])
     def post(self, request, *args, **kwargs):
         user = User.objects.get(email=request.data['email'])
