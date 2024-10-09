@@ -28,6 +28,7 @@ import ActivateEmail from './components/ActivateEmail';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import Loading from './components/Loading';
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -38,7 +39,7 @@ function App() {
     setLoading(true);
     const timeout = setTimeout(() => {
       setLoading(false);
-    }, 750);  // Adjust the delay as needed
+    }, 900); // Adjust the delay as needed
 
     return () => clearTimeout(timeout);
   }, [location]);
@@ -49,21 +50,14 @@ function App() {
       <div className="App">
         <ToastContainer />
 
-        {loading ? (
-          <div className="loading-container">
-            <div className="loading-animation">
-              <div className="dot"></div>
-              <div className="dot"></div>
-              <div className="dot"></div>
-            </div>
-            <div className="loading-text">Loading...</div>
-          </div>
+          {loading ? (
+            <Loading />  // Use Loading component
         ) : (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/portfolio/form" element={<PortfolioForm />} />
-            <Route 
-              path="/portfolio" 
+            <Route
+              path="/portfolio"
               element={
                 user && user.role === 'student' ? (
                   user.is_authorized ? (
@@ -82,9 +76,9 @@ function App() {
             <Route path="/activate-email" element={<ActivateEmail />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
-            
-            <Route 
-              path="/exams" 
+
+            <Route
+              path="/exams"
               element={
                 user && user.role === 'student' ? (
                   user.is_authorized ? (
@@ -95,24 +89,24 @@ function App() {
                 ) : (
                   <LoginPage />
                 )
-              } 
+              }
             />
             <Route path="/exams/:subject" element={<Exam />} />
             <Route path="/monaco/:subject" element={<CodeEditor />} />
-            
-            <Route 
-              path="/edit-profile" 
+
+            <Route
+              path="/edit-profile"
               element={
                 user ? (
                   <EditProfile />
                 ) : (
                   <LoginPage />
                 )
-              } 
+              }
             />
-            
-            <Route 
-              path="/branch-admin-dashboard" 
+
+            <Route
+              path="/branch-admin-dashboard"
               element={
                 user && user.role === 'admin' ? (
                   user.is_authorized ? (
@@ -123,10 +117,10 @@ function App() {
                 ) : (
                   <LoginPage />
                 )
-              } 
+              }
             />
-            <Route 
-              path="/SDashboard" 
+            <Route
+              path="/SDashboard"
               element={
                 user && user.role === 'supervisor' ? (
                   user.is_authorized ? (
@@ -137,10 +131,10 @@ function App() {
                 ) : (
                   <LoginPage />
                 )
-              } 
+              }
             />
-            <Route 
-              path="/SCreateExam" 
+            <Route
+              path="/SCreateExam"
               element={
                 user && user.role === 'supervisor' ? (
                   user.is_authorized ? (
@@ -151,13 +145,13 @@ function App() {
                 ) : (
                   <LoginPage />
                 )
-              } 
+              }
             />
             <Route path="/github-stats" element={<GitHubStats />} />
             <Route path="*" element={<h1>404 - Page Not Found</h1>} />
           </Routes>
         )}
-        
+
         {/* Render Footer only if not loading */}
         {!loading && <Footer />}
       </div>

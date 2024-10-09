@@ -10,6 +10,7 @@
 .App-logo {
     height: 40vmin;
     pointer-events: none;
+    animation: App-logo-move 2s ease-in-out infinite alternate; /* Animation for moving logo */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -55,64 +56,22 @@
     transition: opacity 0.3s ease; /* Smooth transition for visibility */
 }
 
-/* Spinner styles */
-.spinner {
-    border: 8px solid rgba(255, 255, 255, 0.5); /* Lighter border for better visibility */
-    border-top: 8px solid #3498db; /* Spinner color */
-    border-radius: 50%; /* Circular shape */
-    width: 70px; /* Increased spinner width */
-    height: 70px; /* Increased spinner height */
-    animation: spin 1s linear infinite; /* Animation */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+.loading-logo {
+    width: 400px;
+    animation: loading-logo-move 1.5s ease-in infinite alternate; /* Animation for moving logo */
+    position: relative; /* To allow movement */
 }
 
-/* Loading text styles */
-.loading-text {
-    margin-top: 20px; /* Space between spinner and text */
-    font-size: 20px; /* Text size */
-    color: #34495e; /* Text color */
-    font-family: 'Courier New', Courier, monospace; /* Monospace font for coding effect */
-    opacity: 0.8; /* Slightly transparent */
-    transition: opacity 0.3s ease; /* Smooth transition for text */
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide overflow */
-    animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite; /* Typing effect */
-}
-
-/* Typing animation */
-@keyframes typing {
-    from {
-        width: 0; /* Start from no width */
+/* Keyframes for moving the loading logo */
+@keyframes loading-logo-move {
+    0% {
+        transform: translateX(0);
     }
-    to {
-        width: 100%; /* End at full width */
+    100% {
+        transform: translateX(calc(100vw - 400px)); /* Move across the screen, adjusting for the logo width */
     }
 }
 
-/* Caret blinking animation */
-@keyframes blink-caret {
-    from, to {
-        border-color: transparent; /* Caret invisible */
-    }
-    50% {
-        border-color: #3498db; /* Caret visible */
-    }
-}
-
-/* Spinner animation */
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
 
 /* Footer styling to keep it at the bottom */
 footer {
@@ -140,5 +99,15 @@ footer.hidden {
 
     footer {
         padding: 15px; /* Reduce padding on smaller screens */
+    }
+}
+
+/* Keyframes for moving the logo */
+@keyframes App-logo-move {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(100vw - 40vmin)); /* Adjust for logo width */
     }
 }
