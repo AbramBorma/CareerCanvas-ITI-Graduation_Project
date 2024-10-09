@@ -54,7 +54,7 @@ const SupervisorAddExam = ({ onClose }) => {
     };
 
     return (
-        <div className="position-fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-20 d-flex justify-content-center align-items-center z-index-1050 w-30">
+        <div  style={{ width: '30%' }} className="position-fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-75 d-flex justify-content-center align-items-center z-index-1050">
             <div
                 onClick={(event) => event.stopPropagation()}
                 className="w-100 bg-white rounded p-3 position-relative"
@@ -118,8 +118,8 @@ const SupervisorAddExam = ({ onClose }) => {
                                     className="form-control"
                                 />
                             </div> */}
-                        <div className="mb-3 text-center">
-                            <label className="mx-2">No. Easy:</label>
+                        <div className="mb-3 text-center d-flex align-content-center">
+                            <label className="mx-2 mt-2">No. Easy:</label>
                             <input
                                 type="number"
                                 min={0}
@@ -131,7 +131,7 @@ const SupervisorAddExam = ({ onClose }) => {
                                 required
                             />
 
-                            <label className="mx-2">No. Intermediate:</label>
+                            <label className="mx-2 mt-2">No. Intermediate:</label>
                             <input
                                 type="number"
                                 min={0}
@@ -143,7 +143,7 @@ const SupervisorAddExam = ({ onClose }) => {
                                 required
                             />
 
-                            <label className="mx-2">No. Advanced:</label>
+                            <label className="mx-2 mt-2">No. Advanced:</label>
                             <input
                                 min={0}
                                 type="number"

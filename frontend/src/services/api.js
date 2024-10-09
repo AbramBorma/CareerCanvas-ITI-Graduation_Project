@@ -130,12 +130,12 @@ export default useApi;
 
 
 
-export const getQuestions = async(subject, level) => {
+export const getQuestions = async(page = 1,search = '',subject, level) => {
     const token = getAuthToken(); // Ensure this retrieves the correct token
     console.log("Using Access Token for Questions Request:", token); // Log token to verify
 
     try {
-        const response = await axios.get(`${API_URL}/exams/fetchQuestions/${subject}/${level}`, {
+        const response = await axios.get(`${API_URL}/exams/fetchQuestions/${subject}/${level}/?page=${page}&search=${search}`, {
             headers: {
                 Authorization: `Bearer ${token}`, // Include the token correctly
             },
