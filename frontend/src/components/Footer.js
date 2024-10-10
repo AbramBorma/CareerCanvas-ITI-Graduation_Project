@@ -1,3 +1,5 @@
+// Footer.js
+
 import React from 'react';
 import '../static/styles/footer.css';
 import logo from '../static/imgs/careercanvas-high-resolution-logo-white-transparent.png';
@@ -6,11 +8,9 @@ import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import XIcon from '@mui/icons-material/X';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
-
 const Footer = () => {
     return (
         <footer className="footer-container">
-            {/* Branding */}
             <div className="footer-section logo">
                 <img
                     src={logo}
@@ -18,8 +18,6 @@ const Footer = () => {
                     className="footer-logo"
                 />
             </div>
-
-            {/* Internal Links */}
             <div className="footer-section internal-links">
                 <h4>CAREERCANVAS FEATURES</h4>
                 <ul>
@@ -28,8 +26,6 @@ const Footer = () => {
                     <li><a href="/exams">Examination</a></li>
                 </ul>
             </div>
-
-            {/* Social Media Links */}
             <div className="footer-section external-links">
                 <h4>FOLLOW US</h4>
                 <ul>
@@ -50,8 +46,6 @@ const Footer = () => {
                     </li>
                 </ul>
             </div>
-
-            {/* Newsletter Subscription */}
             <div className="footer-section subscribe">
                 <h4>SUBSCRIBE TO OUR NEWSLETTER</h4>
                 <form action="">
@@ -65,7 +59,6 @@ const Footer = () => {
                         type="submit"
                         className="cta-button"
                         variant="contained"
-                        color="primary"
                     >
                         Subscribe
                     </Button>
@@ -73,6 +66,6 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
+}
 
 export default Footer;

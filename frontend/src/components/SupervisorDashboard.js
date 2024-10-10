@@ -109,7 +109,7 @@ const SupervisorDashboard = () => {
     try {
       await approveStudentFromAPI(id); 
       setStudents(students.map(student =>
-        student.id === id ? { ...student, is_active: true } : student
+        student.id === id ? { ...student, is_authorized: true } : student
       ));
     } catch (error) {
       console.error('Error approving student:', error);
@@ -262,9 +262,9 @@ const SupervisorDashboard = () => {
                     <td>{student.branch}</td>
                     <td>{student.track}</td>
                     <td>{student.exams && student.exams.length > 0 ? student.exams[0] : 'No Exams'}</td>
-                    <td>{student.is_active ? 'Active' : 'Inactive'}</td>
+                    <td>{student.is_authorized ? 'Approved' : 'Unapproved'}</td>
                     <td>
-                      {!student.is_active ? (
+                      {!student.is_authorized ? (
                         <>
                           <button
                             className="approve-btn"

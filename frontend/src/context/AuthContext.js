@@ -77,9 +77,11 @@ const registerUser = async (
       return;
     }
   
-    if (!isValidURL(linkedin) || !isValidURL(github) || !isValidURL(hackerrank) || !isValidURL(leetcode)) {
-      toast.error('Please enter valid URLs for LinkedIn, GitHub, HackerRank, and LeetCode.');
-      return;
+    if (role === 'student') {
+      if (!isValidURL(linkedin) || !isValidURL(github) || !isValidURL(hackerrank) || !isValidURL(leetcode)) {
+          toast.error('Please enter valid URLs for LinkedIn, GitHub, HackerRank, and LeetCode.');
+          return;
+      }
     }
   
     try {
@@ -108,8 +110,7 @@ const registerUser = async (
       });
   
       if (response.ok) {
-        toast.success('Registration successful! Redirecting to login...');
-        navigate('/login');  // Redirect to login after successful registration
+        navigate('/activate-email');  // Redirect to activate email
       } else {
         const data = await response.json();
         if (data.detail) {

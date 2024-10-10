@@ -59,7 +59,7 @@ const OrganizationDashboard = () => {
         try {
           await approveSupervisorFromApi(id); 
           setSupervisors(supervisors.map(supervisor =>
-            supervisor.id === id ? { ...supervisor, is_active: true } : supervisor
+            supervisor.id === id ? { ...supervisor, is_authorized: true } : supervisor
           ));
         } catch (error) {
           console.error('Error approving supervisor:', error);
@@ -130,9 +130,9 @@ const OrganizationDashboard = () => {
                       <td>{supervisor.id}</td>
                       <td>{`${supervisor.first_name} ${supervisor.last_name}`}</td>
                       <td>{supervisor.branch}</td>
-                      <td>{supervisor.is_active ? 'Active' : 'Inactive'}</td>
+                      <td>{supervisor.is_authorized ? 'Approved' : 'Unapproved'}</td>
                       <td>
-                        {!supervisor.is_active && (
+                        {!supervisor.is_authorized && (
                           <button className="btn-approve" onClick={() => handleApprove(supervisor.id)}>
                             Approve
                           </button>
