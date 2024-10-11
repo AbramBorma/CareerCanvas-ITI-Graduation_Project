@@ -25,28 +25,34 @@ SECRET_KEY = 'django-insecure-_ihnt$vpp671vk8naw39$qr%rgo#!2^c=%w5dg==+6*hxhz^=&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] 
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # 'jazzmin',
+    'django_extensions',
+    'drf_yasg',
     'django.contrib.admin',
+    'django_rest_passwordreset',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
     'exams.apps.ExamsConfig',
     'portfolio.apps.PortfolioConfig',
-    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -58,6 +64,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'career_canvas.urls'
 
 import os
+import sys
 
 # Templates
 TEMPLATES = [
@@ -78,16 +85,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'career_canvas.wsgi.application'
 
+sys.path.append(os.path.join(BASE_DIR, 'career_scraper'))
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -114,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Cairo'
 
 USE_I18N = True
 
@@ -135,3 +143,84 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+from datetime import timedelta
+
+
+SIMPLE_JWT = {
+'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+'REFRESH_TOKEN_LIFETIME': timedelta(days=50),
+'ROTATE_REFRESH_TOKENS': True,
+'BLACKLIST_AFTER_ROTATION': True,
+'UPDATE_LAST_LOGIN': False,
+
+'ALGORITHM': 'HS256',
+
+'VERIFYING_KEY': None,
+'AUDIENCE': None,
+'ISSUER': None,
+'JWK_URL': None,
+'LEEWAY': 0,
+
+'AUTH_HEADER_TYPES': ('Bearer',),
+'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+'USER_ID_FIELD': 'id',
+'USER_ID_CLAIM': 'user_id',
+'USER_AUTHENTICATION_RULE':
+'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+'TOKEN_TYPE_CLAIM': 'token_type',
+'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+'JTI_CLAIM': 'jti',
+
+'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',  # Trust requests from your frontend running on localhost
+# ]
+
+CORS_ALLOW_CREDENTIALS = True
+
+
+AUTH_USER_MODEL = 'users.User'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Redis DB 1 for caching
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+# Development-specific email backend, caching, etc.
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mariamabdalmageid@gmail.com'  
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', '')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  
+FRONTEND_URL = 'http://localhost:3000' 
+

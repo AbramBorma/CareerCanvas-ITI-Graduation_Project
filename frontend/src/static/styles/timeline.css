@@ -71,3 +71,45 @@
     font-weight: 600;
     letter-spacing: 2px;
 }
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .MuiTimelineContent-root {
+        font-size: 1.5rem !important; /* Smaller font size for mobile */
+        width: 80%; /* Increase width for better fit */
+        padding: 5px; /* Less padding */
+    }
+
+    .process-header {
+        font-size: 2rem; /* Smaller header size */
+        margin-top: 8rem; /* Adjust margin for better spacing */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .timeline {
+        max-width: 95%; /* Full width for mobile devices */
+        margin: 20px auto; /* Adjust margin */
+        padding: 5px; /* Less padding */
+    }
+
+    .MuiTimelineContent-root {
+        font-size: 1.25rem !important; /* Further smaller font size */
+        width: 100%; /* Full width for content */
+        padding: 3px; /* Reduce padding */
+    }
+
+    .process-header {
+        font-size: 1.5rem; /* Further reduce header size */
+        margin-top: 5rem; /* Adjust top margin */
+    }
+
+    .MuiTimelineConnector-root {
+        height: 60px; /* Reduce connector height */
+    }
+
+    .MuiTimelineDot-root {
+        width: 10px; /* Smaller bullet size */
+        height: 10px; /* Smaller bullet height */
+    }
+}

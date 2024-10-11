@@ -1,0 +1,278 @@
+.portfolio-page {
+    padding: 70px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 60%;
+    margin: 20px auto;
+}
+
+.box {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    position: relative;
+}
+
+.box-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+}
+.welcome h1 {
+    color: #164475;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+h3 {
+    margin-bottom: 30px;
+    text-align: left;
+    color: #002346;
+}
+
+.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-pic-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.change-photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.change-photo-text {
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.profile-pic-container:hover .change-photo-overlay {
+    opacity: 1;
+}
+
+.user-name {
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #164475;
+}
+
+.social-icon {
+    width: 350px;
+    height: 250px;
+    object-fit: contain;
+    margin-right: 20px;
+}
+
+.enhanced-text p {
+    font-size: 18px;
+    color: #244464;
+    font-weight: 500;
+    margin: 8px 0;
+}
+
+.enhanced-text span {
+    color: #002346;
+    font-weight: bold;
+}
+
+.box-divider {
+    width: 3px;
+    background-color: #000;
+    height: 100%;
+    margin: 0 30px;
+    opacity: 1;
+}
+
+.dummy-data {
+    margin-left: 20px;
+    font-size: 20px;
+    color: #002346;
+}
+
+/* .github-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+} */
+
+.github-box h2 {
+    color: #108ea1;
+    font-style: italic;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-align: center;
+    margin: 2rem auto;
+}
+
+.github-stats-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+    margin-bottom: 20px;
+    min-width: 80%;
+}
+.stat-box img {
+    width: 100%;
+    height: 40%;
+}
+
+.stat-box label {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #244464;
+    margin-bottom: 10px;
+    align-self: left;
+}
+
+.exams-progress-box h2 {
+    color: #108ea1;
+    font-style: italic;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+    margin: 2rem auto;
+  }
+  
+  .exam-card {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .MuiTypography-root {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #053f79;
+    margin-bottom: 10px;
+  }
+  
+  .css-ihhumc-MuiTypography-root {
+    font-size: 1.25rem !important;
+    color: #550606 !important;
+    margin-bottom: 15px !important;
+  }
+  
+  /* Dynamic Progress Bar Colors */
+  .progress-high .MuiLinearProgress-bar {
+    background-color: #4caf50 !important; /* Green for high scores */
+  }
+  
+  .progress-medium .MuiLinearProgress-bar {
+    background-color: #ffeb3b !important; /* Yellow for medium scores */
+  }
+  
+  .progress-low .MuiLinearProgress-bar {
+    background-color: #f44336 !important; /* Red for low scores */
+  }
+  
+  @media screen and (max-width: 768px) {
+    .portfolio-page {
+      width: 90%;
+    }
+  
+    .exam-card {
+      padding: 15px;
+    }
+  }
+
+@media screen and (max-width: 768px) {
+    .portfolio-page {
+        width: 90%; /* Full width on smaller screens */
+    }
+    .social-icon {
+        width: 80px; /* Smaller icons for better fit */
+        height: 80px; /* Maintain aspect ratio */
+    }
+    .dummy-data {
+        font-size: 16px; /* Adjust font size for better readability */
+    }
+
+    .box {
+        margin-bottom: 15px; /* Reduce margin between boxes */
+    }
+
+    h3 {
+        font-size: 24px; /* Adjust heading size for smaller screens */
+    }
+
+    .user-name {
+        font-size: 24px; /* Adjust user name size */
+    }
+
+    .profile-pic {
+        width: 150px; /* Smaller profile picture */
+        height: 150px; /* Maintain aspect ratio */
+    }
+}
+
+.leetcode-box {
+    background-color: white;
+    width: 100%;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+.leetcode-box .iframe-container {
+    width: 250% !important;
+
+}
+.leetcode-box h2 {
+    color: #108ea1;
+    font-style: italic;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    letter-spacing: 2px;
+}
