@@ -7,8 +7,15 @@ from .models import Subject, Question, Exam, AssignedExams,SupervisorQuestion,Su
 from .serializers import SubjectSerializer, ExamSerializer,SupervisorQuestionSerializer,SupervisorExamSerializer,SupervisorExamSerializer
 from users.models import User, Role
 import json
+from rest_framework.pagination import PageNumberPagination
+from django.db.models import Q
+
+
+class QuestionsPagination(PageNumberPagination):
+    page_size = 5  
 
 class FetchQuestions(APIView):
+    pagination_class = QuestionsPagination
     @swagger_auto_schema(
         operation_summary="Fetch Questions",
         operation_description="Retrieve a list of questions for a given subject and level.",
@@ -16,8 +23,11 @@ class FetchQuestions(APIView):
     )
     def get(self, request, subject_name, level):
         try:
+            search_query = request.GET.get('search', '') 
             subject = Subject.objects.get(name=subject_name)
-            questions = Question.objects.filter(subject=subject, level=level)
+            questions = Question.objects.filter(subject=subject, level=level).filter(Q(question_text__icontains=search_query))
+            paginator = QuestionsPagination()
+            paginated_questions = paginator.paginate_queryset(questions, request)
             data = [
                 {
                     "id": question.id,
@@ -27,9 +37,10 @@ class FetchQuestions(APIView):
                     "correct_answer":question.correct_answer,
                     "options": [question.option1, question.option2, question.option3, question.option4],
                 }
-                for question in questions
+                for question in paginated_questions
             ]
-            return Response(data, status=status.HTTP_200_OK)
+            # return Response(data, status=status.HTTP_200_OK)
+            return paginator.get_paginated_response(data)
         except Subject.DoesNotExist:
             return Response({"error": "Subject not found"}, status=status.HTTP_404_NOT_FOUND)
 

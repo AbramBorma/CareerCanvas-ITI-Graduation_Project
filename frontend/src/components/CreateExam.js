@@ -4,6 +4,7 @@ import AuthContext from '../context/AuthContext';
 import SupervisorAddExam from './SupervisorAddExam'
 import '../static/styles/CreateExam.css';
 
+
 const CreateExam = () => {
     const { user } = useContext(AuthContext);
     const [subjects, setSubjects] = useState([]);
@@ -22,6 +23,8 @@ const CreateExam = () => {
     const [questionsPerPage, setQuestionsPerPage] = useState(5); // Number of questions per page
     const [currentPageSelected, setCurrentPageSelected] = useState(1);
     const [selectedPerPage, setSelectedPerPage] = useState(5); // Number of selected questions per page
+    const [totalItems, setTotalItems] = useState(0); 
+
 
     const difficultyLevels = ['easy', 'intermediate', 'advanced', 'coding'];
 
@@ -55,16 +58,17 @@ const CreateExam = () => {
 
     // Fetch questions based on selected subject and difficulty
 
-    const fetchAllQuestions = async () => {
+    const fetchAllQuestions = async (pageNumber = currentPageQuestions,search) => {
         try {
-            const response = await getQuestions(JSON.parse(selectedSubject).subject, difficulty);
-            setQuestions(response);
-            setCurrentPageQuestions(1); // Reset to first page when fetching new questions
+            const response = await getQuestions(pageNumber,search,JSON.parse(selectedSubject).subject, difficulty);
+            console.log(response)
+            setTotalItems(response.count)
+            setQuestions(response.results);
+            // setCurrentPageQuestions(1); // Reset to first page when fetching new questions
         } catch (error) {
             console.error('Error fetching questions:', error);
         }
     }
-
     const fetchSelectedQuestions = async () => {
         try {
             const response = await getExamQuestions(JSON.parse(selectedSubject).id, difficulty);
@@ -85,14 +89,15 @@ const CreateExam = () => {
         }
 
 
-        if (difficulty === "coding") {
-            setQuestionsPerPage(2);
-            setSelectedPerPage(2);
-        } else {
-            setQuestionsPerPage(5);
-            setSelectedPerPage(5);
-        }
-        fetchAllQuestions()
+        // if (difficulty === "coding") {
+        //     setQuestionsPerPage(2);
+        //     setSelectedPerPage(2);
+        // } else {
+        //     setQuestionsPerPage(5);
+        //     setSelectedPerPage(5);
+        // }
+        setCurrentPageQuestions(1);
+        fetchAllQuestions(1,searchTerm)
         fetchSelectedQuestions()
         setRealSelectedSubject(selectedSubject);
     };
@@ -156,9 +161,10 @@ const CreateExam = () => {
     // Pagination logic for questions
     const indexOfLastQuestion = currentPageQuestions * questionsPerPage;
     const indexOfFirstQuestion = indexOfLastQuestion - questionsPerPage;
-    const currentQuestions = filteredQuestions.slice(indexOfFirstQuestion, indexOfLastQuestion);
+    const currentQuestions = filteredQuestions;
+    // const currentQuestions = filteredQuestions.slice(indexOfFirstQuestion, indexOfLastQuestion);
 
-    const paginateQuestions = (pageNumber) => setCurrentPageQuestions(pageNumber);
+    const paginateQuestions = (pageNumber) => {setCurrentPageQuestions(pageNumber); fetchAllQuestions(pageNumber,searchTerm);};
 
     // Pagination logic for selected questions
     const indexOfLastSelected = currentPageSelected * selectedPerPage;
@@ -222,7 +228,7 @@ const CreateExam = () => {
                     type="text"
                     placeholder="Search questions..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {setSearchTerm(e.target.value);setCurrentPageQuestions(1);fetchAllQuestions(1,e.target.value);}}
                     className="search-input"
                 />
             </div>
@@ -248,7 +254,8 @@ const CreateExam = () => {
                 {/* Pagination for Questions */}
                 <Pagination
                     itemsPerPage={questionsPerPage}
-                    totalItems={filteredQuestions.length}
+                    // totalItems={filteredQuestions.length}
+                    totalItems={totalItems}
                     paginate={paginateQuestions}
                     currentPage={currentPageQuestions}
                 />

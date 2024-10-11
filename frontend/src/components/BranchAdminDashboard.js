@@ -5,6 +5,8 @@ import Footer from './Footer';
 import Dialog from './Dialog'; // Import Dialog component
 import { getSupervisors as fetchSupervisorsFromApi, approveSupervisor as approveSupervisorFromApi, deleteSupervisor as deleteSupervisorFromApi } from "../services/api"; 
 import AuthContext from '../context/AuthContext';  // Import AuthContext
+import { toast, ToastContainer } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
 
 const OrganizationDashboard = () => {
   const { user } = useContext(AuthContext);  // Get user from context
@@ -14,6 +16,7 @@ const OrganizationDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState({ title: '', message: '', onConfirm: null });
+  const [currentAction, setCurrentAction] = useState(null); // New state for current action
 
   // Fetch supervisors on component mount
   useEffect(() => {
@@ -50,24 +53,47 @@ const OrganizationDashboard = () => {
     setDialogOpen(false);
   };
 
+  // Optimistic approval of the supervisor
+  const confirmAction = async () => {
+    if (currentAction.type === 'approve') {
+      // Optimistically update the supervisor's approval status
+      setSupervisors(prevSupervisors => 
+        prevSupervisors.map(supervisor =>
+          supervisor.id === currentAction.id ? { ...supervisor, is_authorized: true } : supervisor
+        )
+      );
+
+      // Show success notification immediately
+      toast.success('Supervisor approved successfully!'); // Notify admin of success
+
+      // Make the API call without waiting for its completion
+      handleApprove(currentAction.id).catch(error => {
+        console.error('Error approving supervisor:', error);
+        // Optionally, handle error by reverting the state if needed
+        setSupervisors(prevSupervisors =>
+          prevSupervisors.map(supervisor =>
+            supervisor.id === currentAction.id ? { ...supervisor, is_authorized: false } : supervisor
+          )
+        );
+      });
+    } else if (currentAction.type === 'delete') {
+      // Handle delete action without loading
+      handleDelete(currentAction.id);
+    }
+
+    closeDialog(); // Close the dialog immediately
+    setCurrentAction(null); 
+  };
+
   // Approve supervisor
-  const handleApprove = (id) => {
-    openDialog(
-      "Approve Supervisor",
-      "Are you sure you want to approve this supervisor?",
-      async () => {
-        try {
-          await approveSupervisorFromApi(id); 
-          setSupervisors(supervisors.map(supervisor =>
-            supervisor.id === id ? { ...supervisor, is_authorized: true } : supervisor
-          ));
-        } catch (error) {
-          console.error('Error approving supervisor:', error);
-        } finally {
-          closeDialog();
-        }
-      }
-    );
+  const handleApprove = async (id) => {
+    try {
+      await approveSupervisorFromApi(id); 
+      // No need to update the state here since it's done in confirmAction
+    } catch (error) {
+      console.error('Error approving supervisor:', error);
+      throw error; // Throw error to handle it in confirmAction
+    }
   };
 
   // Delete supervisor
@@ -79,10 +105,12 @@ const OrganizationDashboard = () => {
         try {
           await deleteSupervisorFromApi(id); 
           setSupervisors(supervisors.filter(supervisor => supervisor.id !== id));
+          toast.success('Supervisor deleted successfully!'); // Notify admin of deletion success
         } catch (error) {
           console.error('Error deleting supervisor:', error);
+          toast.error('Failed to delete supervisor!'); // Notify admin of deletion failure
         } finally {
-          closeDialog();
+          closeDialog();  // Close the dialog after deleting
         }
       }
     );
@@ -133,11 +161,25 @@ const OrganizationDashboard = () => {
                       <td>{supervisor.is_authorized ? 'Approved' : 'Unapproved'}</td>
                       <td>
                         {!supervisor.is_authorized && (
-                          <button className="btn-approve" onClick={() => handleApprove(supervisor.id)}>
+                          <button
+                            className="btn-approve"
+                            onClick={() => {
+                              setCurrentAction({ type: 'approve', id: supervisor.id });
+                              openDialog(
+                                "Approve Supervisor",
+                                "Are you sure you want to approve this supervisor?",
+                                confirmAction // Set confirm action to the dialog
+                              );
+                            }}
+                          >
                             Approve
                           </button>
                         )}
-                        <button className="btn-delete" onClick={() => handleDelete(supervisor.id)} style={{ backgroundColor: 'red', color: 'white' }}>
+                        <button
+                          className="btn-delete"
+                          onClick={() => handleDelete(supervisor.id)}
+                          style={{ backgroundColor: 'red', color: 'white' }}
+                        >
                           Delete
                         </button>
                       </td>
@@ -153,15 +195,20 @@ const OrganizationDashboard = () => {
           )}
         </section>
       </div>
-      
+
       {/* Dialog Component */}
       <Dialog
         isOpen={dialogOpen}
         title={dialogContent.title}
         message={dialogContent.message}
-        onConfirm={dialogContent.onConfirm}
+        onConfirm={confirmAction} // Confirm action
         onClose={closeDialog}
       />
+
+      {/* Toast Container for Notifications */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick draggable pauseOnHover />
+      
+      <Footer />
     </>
   );
 };
