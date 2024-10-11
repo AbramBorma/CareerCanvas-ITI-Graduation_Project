@@ -247,7 +247,7 @@ class RemoveAssignedUsersToSubjectByTrackView(APIView):
 
 class SupervisorExamListView(APIView):
     @swagger_auto_schema(
-        operation_summary="Created Exams by a User",
+        operation_summary="Show created Exams by a User",
         operation_description="Retrieve All the created exams for this supervisor.",
         tags=["Exams"]
     )
@@ -262,6 +262,11 @@ class SupervisorExamListView(APIView):
 
 
 class CreateSupervisorExamView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Create an Exams by a User",
+        operation_description="Create a new exams for this supervisor.",
+        tags=["Exams"]
+    )
     def post(self, request):
         # Extract data from the request
         name = request.data.get('name')
@@ -317,6 +322,11 @@ class CreateSupervisorExamView(APIView):
 
 
 class DeleteSupervisorExamView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Delete a Created Exam by the User",
+        operation_description="Remove an exam for this supervisor.",
+        tags=["Exams"]
+    )
     def delete(self, request, exam_id):
         try:
             # Fetch the SupervisorExam object by its ID
@@ -333,6 +343,11 @@ class DeleteSupervisorExamView(APIView):
         
 
 class AddSupervisorQuestionsView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Add Exam questions for an exam",
+        operation_description="Add Exam questions from the QuestionBank for an exam of a supervisor",
+        tags=["Exams"]
+    )
     def post(self, request, exam_id):
         questions_data = request.data.get('questions', [])
 
