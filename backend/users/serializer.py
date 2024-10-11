@@ -50,6 +50,7 @@ class UserSerializer(serializers.ModelSerializer):
             hackerrank=validated_data.get('hackerrank'),
         )
         user.set_password(validated_data['password'])
+        user.is_verified = False
         user.is_active = False  # User needs approval by an admin or superuser
         user.save()  # Save the user with the track
         return user
@@ -57,15 +58,23 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Custom Token Serializer for adding custom claims to the JWT token
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    
+    def validate(self, attrs):
+        print(attrs)  # Check what attributes are being passed here
+        data = super().validate(attrs)
+        # Add any custom logic here
+        return data
+    
     @classmethod
     def get_token(cls, user):
+        print(user)
         token = super().get_token(user)
         
         token['first_name'] = user.first_name
         token['last_name'] = user.last_name
         token['email'] = user.email
         token['role'] = user.role
-        
+        token['is_authorized'] = user.is_authorized
         # Add organization ID or name
         token['organization'] = str(user.organization) if user.organization else None
         # Add branch ID or name

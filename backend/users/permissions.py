@@ -14,21 +14,21 @@ class IsAdmin(BasePermission):
     """
     def has_permission(self, request, view):
         # Check if the user is authenticated, active, and has the admin role
-        return request.user.is_authenticated and request.user.is_active and request.user.role == Role.ADMIN
+        return request.user.is_authenticated and request.user.is_active and request.user.role == Role.ADMIN and request.user.is_authorized
 
 class IsSupervisor(BasePermission):
     """
     Allows access only to supervisors.
     """
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role == Role.SUPERVISOR and request.user.is_active
+        return request.user.is_authenticated and request.user.role == Role.SUPERVISOR and request.user.is_active and request.user.is_authorized
 
 class IsStudent(BasePermission):
     """
     Allows access only to students.
     """
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role == Role.STUDENT and request.user.is_active
+        return request.user.is_authenticated and request.user.role == Role.STUDENT and request.user.is_active and request.user.is_authorized
 
 class IsAdminOrSupervisor(BasePermission):
     """
@@ -36,5 +36,5 @@ class IsAdminOrSupervisor(BasePermission):
     """
     def has_permission(self, request, view):
         return request.user and request.user.is_authenticated and (
-            request.user.role in [Role.ADMIN, Role.SUPERVISOR] and request.user.is_active
+            request.user.role in [Role.ADMIN, Role.SUPERVISOR] and request.user.is_active 
         )

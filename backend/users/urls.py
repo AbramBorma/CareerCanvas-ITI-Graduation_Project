@@ -6,6 +6,8 @@ from drf_yasg import openapi
 from rest_framework_simplejwt.views import TokenRefreshView
 
 
+
+
 # OpenAPI/Swagger configuration for API documentation
 schema_view = get_schema_view(
     openapi.Info(
@@ -29,6 +31,9 @@ urlpatterns = [
 
     # Function-based View (FBV) for user registration (optional, for more control)
     path('api/register/', views.register_user, name='register_user'),
+    path('verify-email/<uidb64>/<token>/', views.verify_email, name='verify_email'),  # For email verification
+    
+  
 
     # Password reset paths
     path('send-reset-password/', views.send_password_reset_email, name='send-reset-password'),
