@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Subject, Question, Exam, AssignedExams,SupervisorQuestion,SupervisorExam
-from .serializers import SubjectSerializer, ExamSerializer,SupervisorQuestionSerializer,SupervisorExamSerializer,SupervisorExamSerializer
+from .serializers import SubjectSerializer, ExamSerializer,SupervisorQuestionSerializer,SupervisorExamSerializer,SupervisorExamSerializer,QuestionSerializer
 from users.models import User, Role
 import json
 from rest_framework.pagination import PageNumberPagination
@@ -414,3 +414,55 @@ class FetchExamQuestions(APIView):
             return Response({"error": "Exam not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class CreateQuestionView(APIView):
+    def post(self, request):
+        # Extract data from the request body
+        subject_name = request.data.get('subject_name')
+        question_text = request.data.get('question_text')
+        level = request.data.get('level')
+        option1 = request.data.get('option1')
+        option2 = request.data.get('option2')
+        option3 = request.data.get('option3')
+        option4 = request.data.get('option4')
+        correct_answer = request.data.get('correct_answer')
+
+        # Validate that all required fields are present
+        if not all([subject_name, question_text, level, option1, option2, option3, option4, correct_answer]):
+            return Response(
+                {"error": "All fields (subject_name, question_text, level, option1, option2, option3, option4, correct_answer) are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validate subject
+        try:
+            subject = Subject.objects.get(name=subject_name)
+        except Subject.DoesNotExist:
+            return Response(
+                {"error": f"Subject with name '{subject_name}' does not exist."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validate level
+        if level not in [choice[0] for choice in Question.LEVEL_CHOICES]:
+            return Response(
+                {"error": f"Invalid level '{level}', must be one of: {', '.join([choice[0] for choice in Question.LEVEL_CHOICES])}."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Create the new Question object
+        question = Question.objects.create(
+            subject=subject,
+            question_text=question_text,
+            level=level,
+            option1=option1,
+            option2=option2,
+            option3=option3,
+            option4=option4,
+            correct_answer=correct_answer
+        )
+
+        # Serialize the created question object
+        serializer = QuestionSerializer(question)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import FetchQuestions, SubmitExam,SubjectListView,UserExamScoresView,AssignedSubjectsForUserView,AssignUsersToSubjectByTrackView,RemoveAssignedUsersToSubjectByTrackView
-from .views import AddSupervisorQuestionsView,SupervisorExamListView,FetchExamQuestions,DeleteSupervisorExamView,CreateSupervisorExamView
+from .views import AddSupervisorQuestionsView,SupervisorExamListView,FetchExamQuestions,DeleteSupervisorExamView,CreateSupervisorExamView,CreateQuestionView
 
 urlpatterns = [
     path('fetchQuestions/<str:subject_name>/<str:level>/', FetchQuestions.as_view(), name='fetch_questions'),
@@ -15,6 +15,8 @@ urlpatterns = [
     path('exam-questions/<int:exam_id>/<str:level>/', FetchExamQuestions.as_view(), name='fetch_exam_questions'),
     path('delete-exam/<int:exam_id>/', DeleteSupervisorExamView.as_view(), name='delete_supervisor_exam'),
     path('create-supervisor-exam/', CreateSupervisorExamView.as_view(), name='create_supervisor_exam'),
+    path('create-question/', CreateQuestionView.as_view(), name='create-question'),
+
 
 
 
