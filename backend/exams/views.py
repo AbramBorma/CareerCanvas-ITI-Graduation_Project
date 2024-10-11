@@ -18,7 +18,7 @@ class FetchQuestions(APIView):
     pagination_class = QuestionsPagination
     @swagger_auto_schema(
         operation_summary="Fetch Questions",
-        operation_description="Retrieve a list of questions for a given subject and level.",
+        operation_description="Retrieve a list of All questions for a given subject and level.",
         tags=["Exams"]
     )
     def get(self, request, subject_name, level):
@@ -246,6 +246,11 @@ class RemoveAssignedUsersToSubjectByTrackView(APIView):
 
 
 class SupervisorExamListView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Created Exams by a User",
+        operation_description="Retrieve All the created exams for this supervisor.",
+        tags=["Exams"]
+    )
     def get(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
@@ -367,7 +372,7 @@ class AddSupervisorQuestionsView(APIView):
 class FetchExamQuestions(APIView):
     @swagger_auto_schema(
         operation_summary="Fetch Questions",
-        operation_description="Retrieve a list of questions for a given subject and level.",
+        operation_description="Retrieve a list of questions for a given exam and level.",
         tags=["Exams"]
     )
     def get(self, request, exam_id, level):

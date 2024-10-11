@@ -3,6 +3,8 @@ import { getQuestions, addSupervisorQuestions, getSupervisorExams, getExamQuesti
 import AuthContext from '../context/AuthContext';
 import SupervisorAddExam from './SupervisorAddExam'
 import '../static/styles/CreateExam.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const CreateExam = () => {
@@ -84,7 +86,10 @@ const CreateExam = () => {
     const fetchQuestions = async () => {
         // console.log(JSON.parse(selectedSubject).id)
         if (!selectedSubject || !difficulty) {
-            alert('Please select both a subject and difficulty level.');
+            // alert('Please select both a subject and difficulty level.');
+            // toast.error('Passwords do not match');
+            toast.error('Please select both a subject and difficulty level.');
+
             return;
         }
 
@@ -104,7 +109,8 @@ const CreateExam = () => {
 
     const addQuestions = async () => {
         if (selectedQuestions.length === 0) {
-            alert('Please select some questions first.');
+            // alert('Please select some questions first.');
+            toast.error('Please select some questions first');
             return;
         }
 
@@ -144,7 +150,8 @@ const CreateExam = () => {
 
     const deleteTheExam = async () => {
         if (!selectedSubject) {
-            alert('Please select an Exam first.');
+            // alert('Please select an Exam first.');
+            toast.error('Please select an Exam first.');
             return;
         }
         const response = await deleteExam(JSON.parse(selectedSubject).id);
@@ -281,6 +288,7 @@ const CreateExam = () => {
             <button onClick={addQuestions} className="fetch-btn">
                 Add Questions
             </button>
+            <ToastContainer />
 
         </div>
     );
