@@ -165,6 +165,14 @@ function ResponsiveAppBar() {
                     >
                       Exams
                     </Button>
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      component={Link}
+                      to="/CustomQuestion"
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      Custom-Question
+                    </Button>
                   </>
 
                 )}

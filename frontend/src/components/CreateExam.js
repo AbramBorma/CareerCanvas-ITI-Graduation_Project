@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { getQuestions, addSupervisorQuestions, getSupervisorExams, getExamQuestions, deleteExam } from '../services/api';
+import { getQuestions, addSupervisorQuestions, getSupervisorExams, getExamQuestions, deleteExam,deleteQuestion } from '../services/api';
 import AuthContext from '../context/AuthContext';
 import SupervisorAddExam from './SupervisorAddExam'
 import '../static/styles/CreateExam.css';
@@ -160,7 +160,16 @@ const CreateExam = () => {
         setSelectedSubjectchanged(state => !state)
     }
 
-
+    const deletequestion  = async (qId) => {
+        try{
+        const response = await deleteQuestion(qId);
+        toast.success("removed")
+        setCurrentPageQuestions(1);
+        fetchAllQuestions(1,searchTerm)
+        }catch (error) {
+            console.error('Error Deleting questions:', error);
+        }
+    }
 
 
 
@@ -253,6 +262,7 @@ const CreateExam = () => {
                                     onChange={() => handleQuestionSelect(question)}
                                 />
                                 {question.question_text}
+                                {(! question.is_general)&&(<button onClick={()=>deletequestion(question.id)} className="delete-btn1">Delete</button>)}
                             </label>
                         </li>
                     ))}

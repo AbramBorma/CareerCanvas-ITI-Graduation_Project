@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import '../static/styles/CustomQuestion.css';
 import { examSubjects,addCustomQuestion } from '../services/api.js';
+import AuthContext from '../context/AuthContext'; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const CustomQuestion = () => {
+    const { user } = useContext(AuthContext); 
     const [activeTab, setActiveTab] = useState(1);
     const [selectedSubject, setSelectedSubject] = useState('');
     const [difficulty, setDifficulty] = useState('easy');
@@ -68,6 +71,7 @@ const CustomQuestion = () => {
             }
             // Collect data for Tab 1 (Multiple Choice Tab)
              data = {
+                user:user.user_id,
                 subject_name :selectedSubject,
                 question_text:question,
                 level:difficulty,
@@ -88,6 +92,7 @@ const CustomQuestion = () => {
                     return;
             }
             data= {
+                user:user.user_id,
                 subject_name :selectedSubject,
                 question_text:question,
                 level : "coding",

@@ -1,11 +1,14 @@
 from django.db import models
 from users.models import User
+from django.core.exceptions import ValidationError
+
 
 class Subject(models.Model):
     name = models.CharField(max_length=100,unique=True)
 
     def __str__(self):
         return self.name
+
 
 class Question(models.Model):
     LEVEL_CHOICES = [
@@ -23,9 +26,25 @@ class Question(models.Model):
     option4 = models.CharField(max_length=200)
     correct_answer = models.CharField(max_length=200)
 
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    is_general = models.BooleanField(default=True)
+
+    def clean(self):
+        if self.user and self.is_general:
+            raise ValidationError("A question cannot be both assigned to a user and general.")
+
+    def save(self, *args, **kwargs):
+        self.clean()  # Call the clean method to validate
+        super().save(*args, **kwargs)
+
+
     def __str__(self):
         return self.question_text[:50]
     
+
+
+
 
 
 class SupervisorExam(models.Model):
