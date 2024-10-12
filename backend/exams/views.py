@@ -18,7 +18,7 @@ class FetchQuestions(APIView):
     pagination_class = QuestionsPagination
     @swagger_auto_schema(
         operation_summary="Fetch Questions",
-        operation_description="Retrieve a list of questions for a given subject and level.",
+        operation_description="Retrieve a list of All questions for a given subject and level.",
         tags=["Exams"]
     )
     def get(self, request, subject_name, level):
@@ -246,6 +246,11 @@ class RemoveAssignedUsersToSubjectByTrackView(APIView):
 
 
 class SupervisorExamListView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Show created Exams by a User",
+        operation_description="Retrieve All the created exams for this supervisor.",
+        tags=["Exams"]
+    )
     def get(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
@@ -257,6 +262,11 @@ class SupervisorExamListView(APIView):
 
 
 class CreateSupervisorExamView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Create an Exams by a User",
+        operation_description="Create a new exams for this supervisor.",
+        tags=["Exams"]
+    )
     def post(self, request):
         # Extract data from the request
         name = request.data.get('name')
@@ -312,6 +322,11 @@ class CreateSupervisorExamView(APIView):
 
 
 class DeleteSupervisorExamView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Delete a Created Exam by the User",
+        operation_description="Remove an exam for this supervisor.",
+        tags=["Exams"]
+    )
     def delete(self, request, exam_id):
         try:
             # Fetch the SupervisorExam object by its ID
@@ -328,6 +343,11 @@ class DeleteSupervisorExamView(APIView):
         
 
 class AddSupervisorQuestionsView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Add Exam questions for an exam",
+        operation_description="Add Exam questions from the QuestionBank for an exam of a supervisor",
+        tags=["Exams"]
+    )
     def post(self, request, exam_id):
         questions_data = request.data.get('questions', [])
 
@@ -367,7 +387,7 @@ class AddSupervisorQuestionsView(APIView):
 class FetchExamQuestions(APIView):
     @swagger_auto_schema(
         operation_summary="Fetch Questions",
-        operation_description="Retrieve a list of questions for a given subject and level.",
+        operation_description="Retrieve a list of questions for a given exam and level.",
         tags=["Exams"]
     )
     def get(self, request, exam_id, level):

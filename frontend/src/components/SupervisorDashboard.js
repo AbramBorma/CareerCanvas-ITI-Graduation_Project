@@ -161,7 +161,6 @@ const SupervisorDashboard = () => {
     try {
         await deleteStudentFromApi(id);
         setStudents(students.filter(student => student.id !== id));
-        toast.success('Student deleted successfully!'); // Show success toast
     } catch (error) {
         console.error('Error deleting student:', error);
         toast.error('Failed to delete student.'); // Show error toast

@@ -4,10 +4,11 @@
     justify-content: space-around;
     max-width: 80%;
     margin: 40px auto;
-    padding: 10px;
-    background-color: #f4f7f8;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Subtle transparent background for elegance */
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Increased shadow for better contrast */
+    backdrop-filter: blur(8px); /* Added backdrop blur effect */
 }
 
 .MuiTimelineItem-root {
@@ -15,38 +16,44 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 10px 0; /* Reduced padding to reduce space between bullets */
+    padding: 15px 0; /* Increased padding for better spacing */
     position: relative;
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px; /* Rounded corners for a smoother appearance */
+    background-color: rgba(240, 240, 240, 0.6); /* Light background for each item */
+    backdrop-filter: blur(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .MuiTimelineDot-root {
-    width: 15px; /* Reduce bullet size */
-    height: 15px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    width: 20px; /* Increased bullet size for better visibility */
+    height: 20px;
+    background-color: #ff6347; /* More vibrant color for bullets */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Stronger shadow for better depth */
+    border-radius: 50%; /* Circular bullets */
 }
 
 .MuiTimelineConnector-root {
-    background-color: #dd0c0c;
-    height: 80px; /* Height of the connector */
-    width: 5px; /* Slightly thinner line */
+    background-color: #007bff;
+    height: 100px; /* Increased height for the connector */
+    width: 4px;
+    border-radius: 2px; /* Slight rounding for smoother edges */
 }
 
 .MuiTimelineContent-root {
-    font-size: 2rem !important; /* Set font size to 2rem */
+    font-size: 1.8rem !important; /* Adjusted font size for consistency */
     color: #00468B;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-    font-weight: bolder;
-    letter-spacing: 1.5px;
-    text-transform: capitalize;
-    width: 40%;
-    padding: 5px 10px; /* Adjust padding to fine-tune spacing */
-    transition: all 0.8s ease;
+    font-weight: 700; /* Bold for stronger emphasis */
+    letter-spacing: 1px;
+    padding: 10px 20px; /* Increased padding for better alignment */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s ease, color 0.4s ease;
     cursor: pointer;
 }
 
 .MuiTimelineContent-root:hover {
-    color: #ff4107;
-    transform: scale(1.05);
+    color: #e63946; /* Changed hover color for better contrast */
+    transform: translateX(5px); /* Subtle movement effect on hover */
 }
 
 .left-content {
@@ -57,59 +64,66 @@
     text-align: left;
 }
 
-/* Style for the one-line header */
 .process-header {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: #108ea1;
     text-align: center;
-    margin-top: 12rem;
-    margin-bottom: 20px;
-    font-style: italic;
+    margin-top: 10rem;
+    margin-bottom: 30px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-transform: uppercase;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    font-weight: 600;
-    letter-spacing: 2px;
+    text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    letter-spacing: 3px;
 }
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
     .MuiTimelineContent-root {
-        font-size: 1.5rem !important; /* Smaller font size for mobile */
-        width: 80%; /* Increase width for better fit */
-        padding: 5px; /* Less padding */
+        font-size: 1.5rem !important;
+        width: 70%;
+        padding: 8px;
     }
 
     .process-header {
-        font-size: 2rem; /* Smaller header size */
-        margin-top: 8rem; /* Adjust margin for better spacing */
+        font-size: 2.3rem;
+        margin-top: 6rem;
+    }
+
+    .MuiTimelineDot-root {
+        width: 15px;
+        height: 15px;
+    }
+
+    .MuiTimelineConnector-root {
+        height: 80px;
     }
 }
 
 @media screen and (max-width: 480px) {
     .timeline {
-        max-width: 95%; /* Full width for mobile devices */
-        margin: 20px auto; /* Adjust margin */
-        padding: 5px; /* Less padding */
+        max-width: 95%;
+        margin: 10px auto;
+        padding: 10px;
     }
 
     .MuiTimelineContent-root {
-        font-size: 1.25rem !important; /* Further smaller font size */
-        width: 100%; /* Full width for content */
-        padding: 3px; /* Reduce padding */
+        font-size: 1.25rem !important;
+        width: 100%;
+        padding: 5px;
     }
 
     .process-header {
-        font-size: 1.5rem; /* Further reduce header size */
-        margin-top: 5rem; /* Adjust top margin */
-    }
-
-    .MuiTimelineConnector-root {
-        height: 60px; /* Reduce connector height */
+        font-size: 1.8rem;
+        margin-top: 5rem;
     }
 
     .MuiTimelineDot-root {
-        width: 10px; /* Smaller bullet size */
-        height: 10px; /* Smaller bullet height */
+        width: 12px;
+        height: 12px;
+    }
+
+    .MuiTimelineConnector-root {
+        height: 60px;
     }
 }
