@@ -11,7 +11,16 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['id', 'subject', 'question_text', 'level', 'option1', 'option2', 'option3', 'option4', 'correct_answer']
+        fields = ['id', 'subject', 'question_text', 'level', 'option1', 'option2', 'option3', 'option4', 'correct_answer' ,'user','is_general',]
+
+    def validate(self, data):
+        """
+        Check that either 'user' is set or 'is_general' is True, but not both.
+        """
+        if data.get('user') and data.get('is_general'):
+            raise serializers.ValidationError("A question cannot be both assigned to a user and general.")
+        return data
+
 
 class ExamSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer()

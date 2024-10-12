@@ -173,7 +173,23 @@
     height: 40px;
 }
 
+.delete-btn1 {
+    background-color: #e63946; 
+    color: white;
+    border: none;
+    border-radius: 50px; 
+    padding: 8px 16px; 
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; 
+    font-size: small;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    margin-left: 40px;
+}
 
+.delete-btn1:hover {
+    background-color: #d62839; 
+    transform: scale(1.05); 
+}
 /* Keyframes for Spinner Animation */
 @keyframes spin {
     0% { transform: rotate(0deg); }

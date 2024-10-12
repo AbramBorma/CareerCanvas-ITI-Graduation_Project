@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Subject, Question, Exam, AssignedExams,SupervisorQuestion,SupervisorExam
-from .serializers import SubjectSerializer, ExamSerializer,SupervisorQuestionSerializer,SupervisorExamSerializer,SupervisorExamSerializer
+from .serializers import SubjectSerializer, ExamSerializer,SupervisorQuestionSerializer,SupervisorExamSerializer,SupervisorExamSerializer,QuestionSerializer
 from users.models import User, Role
 import json
 from rest_framework.pagination import PageNumberPagination
@@ -23,9 +23,10 @@ class FetchQuestions(APIView):
     )
     def get(self, request, subject_name, level):
         try:
+            user= request.user
             search_query = request.GET.get('search', '') 
             subject = Subject.objects.get(name=subject_name)
-            questions = Question.objects.filter(subject=subject, level=level).filter(Q(question_text__icontains=search_query))
+            questions = Question.objects.filter(subject=subject, level=level).filter(Q(user=user) | Q(is_general=True)).filter(Q(question_text__icontains=search_query))
             paginator = QuestionsPagination()
             paginated_questions = paginator.paginate_queryset(questions, request)
             data = [
@@ -36,6 +37,7 @@ class FetchQuestions(APIView):
                     "question_text": question.question_text,
                     "correct_answer":question.correct_answer,
                     "options": [question.option1, question.option2, question.option3, question.option4],
+                    "is_general":question.is_general,
                 }
                 for question in paginated_questions
             ]
@@ -414,3 +416,95 @@ class FetchExamQuestions(APIView):
             return Response({"error": "Exam not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class CreateQuestionView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Create Custom questions for an exam",
+        operation_description="Create Custom questions for the QuestionBank that can be accessed only by the given supervisor",
+        tags=["Exams"]
+    )
+    def post(self, request):
+        # Extract data from the request body
+        subject_name = request.data.get('subject_name')
+        question_text = request.data.get('question_text')
+        level = request.data.get('level')
+        option1 = request.data.get('option1')
+        option2 = request.data.get('option2')
+        option3 = request.data.get('option3')
+        option4 = request.data.get('option4')
+        correct_answer = request.data.get('correct_answer')
+        user_id = request.data.get('user')
+
+        
+
+        # Validate that all required fields are present
+        if not all([subject_name, question_text, level, option1, option2, option3, option4, correct_answer]):
+            return Response(
+                {"error": "All fields (subject_name, question_text, level, option1, option2, option3, option4, correct_answer) are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validate subject
+        try:
+            subject = Subject.objects.get(name=subject_name)
+        except Subject.DoesNotExist:
+            return Response(
+                {"error": f"Subject with name '{subject_name}' does not exist."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {"error": f"User with id '{user_id}' does not exist."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Validate level
+        if level not in [choice[0] for choice in Question.LEVEL_CHOICES]:
+            return Response(
+                {"error": f"Invalid level '{level}', must be one of: {', '.join([choice[0] for choice in Question.LEVEL_CHOICES])}."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Create the new Question object
+        question = Question.objects.create(
+            subject=subject,
+            question_text=question_text,
+            level=level,
+            option1=option1,
+            option2=option2,
+            option3=option3,
+            option4=option4,
+            correct_answer=correct_answer,
+            user=user,
+            is_general=False
+        )
+
+        # Serialize the created question object
+        serializer = QuestionSerializer(question)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class DeleteQuestion(APIView):
+    @swagger_auto_schema(
+        operation_summary="Delete a Created Question by the User",
+        operation_description="Remove a question that was created by this supervisor.",
+        tags=["Exams"]
+    )
+    def delete(self, request, question_id):
+        try:
+            user= request.user
+            # Find the question with the given ID and created by the same user
+            question = Question.objects.get(id=question_id, user=user, is_general=False)
+
+            # Delete the question
+            question.delete()
+
+            return Response({"message": "Question deleted successfully"}, status=status.HTTP_200_OK)
+
+        except Question.DoesNotExist:
+            return Response({"error": "Question not found or cannot be deleted"}, status=status.HTTP_404_NOT_FOUND)
