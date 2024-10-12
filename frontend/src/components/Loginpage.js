@@ -11,7 +11,7 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordShown, setPasswordShown] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [message, setMessage] = useState('');
   
   const navigate = useNavigate(); 
 
@@ -33,8 +33,9 @@ function LoginPage() {
     if (success) {
       navigate('/'); // Redirect to home page on successful login
     } else {
-      setErrorMessage('Invalid email or password. Please try again.');
-      toast.error(errorMessage); // Show error message
+      const message = 'Invalid email or password. Please try again.';
+      setMessage(message); // Set the error message state
+      toast.error(message); // Show the new error message
     }
   };
 
@@ -77,7 +78,7 @@ function LoginPage() {
             </div>
 
             {/* Display error message if login fails */}
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {message && <p style={{ color: 'red' }}>{message}</p>}
 
             <div className="form-row-forgotten">
               <Link to="/ForgotPassword" className="forgot-password-link">
