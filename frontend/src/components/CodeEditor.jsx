@@ -157,7 +157,7 @@ const CodeEditor = () => {
         console.log(res);
         const newOutput = res.data.run.output.split("\n");
         setOutput(newOutput);
-        console.log(eval(newOutput[0]))
+        // console.log(eval(newOutput[0]))
         setIsLoading(false);
         // console.log(outp)
         // const outtest= output[0].replace(/\s/g, '');
