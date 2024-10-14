@@ -243,13 +243,32 @@ function ResponsiveAppBar() {
           </Box>
 
           {/* User Avatar and Logout Button */}
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
             {user ? (
-              <Button sx={{ color: 'white' }} onClick={logoutUser}>Logout</Button>
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt={user.name} src={user.profilePicture} />
+                  </IconButton>
+                </Tooltip>
+                <Button sx={{ color: 'white' }} onClick={logoutUser}>Logout</Button>
+              </>
             ) : (
-              <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px', display: { xs: 'none', md: 'flex' } }}>
-                <Button sx={{ color: 'white' }} component={Link} to="/register">Register</Button>
-                <Button sx={{ color: 'white' }} component={Link} to="/login">Login</Button>
+              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                <Button
+                  component={Link}
+                  to="/login"
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Login
+                </Button>
+                <Button
+                  component={Link}
+                  to="/register"
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Register
+                </Button>
               </Box>
             )}
           </Box>
