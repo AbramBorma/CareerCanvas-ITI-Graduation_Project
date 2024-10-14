@@ -290,63 +290,55 @@ const SupervisorDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan="8">Loading students...</td>
-                </tr>
-              ) : error ? (
-                <tr>
-                  <td colSpan="8">{error}</td>
-                </tr>
-              ) : (
-                filteredStudents.map((student, index) => (
-                  <tr key={index}>
-                    <td>{student.id}</td>
-                    <td>{student.full_name}</td>
-                    <td>{student.branch}</td>
-                    <td>{student.track}</td>
-                    <td>{student.exams && student.exams.length > 0 ? student.exams[0] : 'No Exams'}</td>
-                    <td>{student.is_authorized ? 'Approved' : 'Unapproved'}</td>
-                    <td>
-                      {!student.is_authorized ? (
-                        <>
-                          <button
-                            className="approve-btn"
-                            onClick={() => handleAction('approve', student.id)} 
-                          >
-                            Approve
-                          </button>
-                          <button
-                            className="delete-btn"
-                            onClick={() => handleAction('delete', student.id)} 
-                          >
-                            Delete Student
-                          </button>
-                        </>
-                      ) : (
-                        <button
-                          className="delete-btn"
-                          onClick={() => handleAction('delete', student.id)} 
-                        >
+            {loading ? (
+              <tr>
+                <td colSpan="8">Loading students...</td>
+              </tr>
+            ) : error ? (
+              <tr>
+                <td colSpan="8">{error}</td>
+              </tr>
+            ) : (
+              filteredStudents.map((student, index) => (
+                <tr key={index}>
+                  <td data-label="ID">{student.id}</td>
+                  <td data-label="Student Name">{student.full_name}</td>
+                  <td data-label="Branch">{student.branch}</td>
+                  <td data-label="Track">{student.track}</td>
+                  <td data-label="Assigned Exam">
+                    {student.exams && student.exams.length > 0 ? student.exams[0] : 'No Exams'}
+                  </td>
+                  <td data-label="Status">{student.is_authorized ? 'Approved' : 'Unapproved'}</td>
+                  <td data-label="Actions">
+                    {!student.is_authorized ? (
+                      <>
+                        <button className="approve-btn" onClick={() => handleAction('approve', student.id)}>
+                          Approve
+                        </button>
+                        <button className="delete-btn" onClick={() => handleAction('delete', student.id)}>
                           Delete Student
                         </button>
-                      )}
-                    </td>
-                    <td>
-                      <button
-                        className="view-portfolio-btn"
-                        onClick={() => handleVisit(student.id)}
-                      >
-                        View
+                      </>
+                    ) : (
+                      <button className="delete-btn" onClick={() => handleAction('delete', student.id)}>
+                        Delete Student
                       </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
+                    )}
+                  </td>
+                  <td data-label="Portfolio">
+                    <button className="view-portfolio-btn" onClick={() => handleVisit(student.id)}>
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+
           </table>
         </div>
       </div>
+      
 
       {/* Add Pagination */}
       <PaginationRounded

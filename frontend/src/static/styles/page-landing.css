@@ -189,106 +189,88 @@ pre {
   word-wrap: break-word;
 }
 
-/* Responsive Styles */
-@media (max-width: 1200px) {
-  .editor-output {
-    flex-direction: column;
-  }
+/* Responsive Styles for PageLanding and CodeEditor */
 
-  .editor-container,
-  .output-container {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-
-  .intro h1 {
-    font-size: 2rem;
-  }
-
-  .intro-paragraph,
-  .code-paragraph {
-    font-size: 1.2rem;
-  }
-
-  .cta-button,
-  .run-code-btn {
-    font-size: 1rem;
-    padding: 10px 20px;
-    align-self: center; 
-  }
-}
-
+/* Tablet and smaller screens */
 @media (max-width: 768px) {
-  .intro h1 {
-    font-size: 1.8rem;
-  }
-
-  .intro-paragraph,
-  .code-paragraph {
-    font-size: 1rem;
-  }
-
-  .cta-button {
-    font-size: 0.8rem;
-    padding: 7px 12px; /* Smaller button for mobile */
-  }
-  .editor-output {
-    flex-direction: column; /* Stack vertically on smaller screens */
-  }
-
-  .editor-container,
-  .output-container {
-    width: 100%; /* Full width on smaller screens */
-    margin-right: 0; /* Remove right margin */
-    margin-bottom: 1rem; /* Spacing between stacked elements */
-  }
-
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start; /* Align items to the left */
-    padding: 15px; /* Additional padding for better spacing */
-  }
-
-  .nav-links {
-    flex-direction: column;
-    align-items: flex-start; /* Align items to the left */
-    gap: 1rem;
-    display: none; /* Hidden initially on mobile */
-    width: 100%; /* Full width for mobile */
-  }
-
-  .burger-menu {
-    display: block; /* Show burger menu on mobile */
-  }
-
-  .burger-menu.active + .nav-links {
-    display: flex; /* Show nav links when burger menu is active */
-  }
-
-  .navbar a {
-    padding: 10px 0; /* Adjust padding for mobile */
-    width: 100%; /* Make links full width */
-    text-align: center; /* Center text in mobile links */
-  }
-}
-
-@media (max-width: 480px) {
-  .intro h1 {
-    font-size: 1.5rem;
-  }
-
-  .intro-paragraph,
-  .code-paragraph {
-    font-size: 0.9rem;
-  }
-
-  .cta-button,
-  .run-code-btn {
-    font-size: 0.75rem;
-    padding: 6px 10px; /* Smaller button for smaller screens */
+  .page-landing-with-editor {
+    padding: 0 3%; /* Reduce side padding */
+    gap: 1.5rem; /* Reduce gap between elements */
   }
 
   .page-landing {
-    padding: 20px;
+    margin-top: 50px; /* Adjust margin */
+    padding: 0 15px; /* Reduce padding */
+  }
+
+  .intro h1 {
+    font-size: 2rem; /* Smaller heading */
+  }
+
+  .intro-paragraph,
+  .code-paragraph {
+    font-size: 1.2rem; /* Adjust paragraph font size */
+  }
+
+  .cta-button {
+    padding: 8px 16px; /* Smaller button padding */
+    font-size: 0.9rem; /* Adjust font size */
+  }
+
+  .navbar {
+    padding: 10px 15px; /* Smaller padding */
+  }
+
+  .nav-links {
+    gap: 1rem; /* Smaller gap */
+  }
+
+  .burger-menu {
+    display: block; /* Show burger menu on smaller screens */
+  }
+
+  .editor-output {
+    flex-direction: column; /* Stack elements vertically */
+    margin-bottom: 2rem; /* Adjust margin */
+  }
+
+  .editor-container,
+  .output-container {
+    height: 250px; /* Adjust height */
+    margin-right: 0; /* Remove margin */
+    margin-bottom: 20px; /* Add spacing */
+  }
+
+  .run-code-btn {
+    padding: 8px 15px; /* Smaller button padding */
+    font-size: 0.9rem; /* Adjust button font size */
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 480px) {
+  .intro h1 {
+    font-size: 1.5rem; /* Further reduce heading size */
+  }
+
+  .intro-paragraph,
+  .code-paragraph {
+    font-size: 1rem; /* Smaller paragraph font size */
+  }
+
+  .cta-button {
+    padding: 6px 12px; /* Adjust padding */
+    font-size: 0.8rem; /* Adjust font size */
+  }
+
+  .editor-container,
+  .output-container {
+    min-width: 100%; /* Full-width containers */
+    height: 200px; /* Adjust height for mobile */
+  }
+
+  .run-code-btn {
+    padding: 6px 12px; /* Smaller padding */
+    font-size: 0.8rem; /* Adjust font size */
   }
 }

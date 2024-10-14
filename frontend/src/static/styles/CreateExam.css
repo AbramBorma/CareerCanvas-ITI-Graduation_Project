@@ -252,4 +252,63 @@
   }
   
 
-  
+  /* General Styling for smaller tablets and below */
+@media screen and (max-width: 768px) {
+    .exam-question-fetcher {
+        padding: 10px;
+        max-width: 100%; /* Full width on smaller screens */
+    }
+
+    .fetch-btn, .dropdown, .search-input {
+        font-size: 0.85rem;
+        padding: 8px;
+    }
+
+    .question-item input[type="checkbox"] {
+        margin-bottom: 10px;
+    }
+    
+    .subject-div {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .subject-div label, 
+    .subject-div select, 
+    .subject-div button {
+        width: 100%;
+    }
+}
+
+/* For mobile screens, further reduce sizes and padding */
+@media screen and (max-width: 480px) {
+    .exam-question-fetcher {
+        padding: 5px;
+    }
+
+    .fetch-btn, .dropdown, .search-input {
+        font-size: 0.75rem;
+        padding: 6px;
+    }
+
+    .subject-div {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .subject-div label, 
+    .subject-div select, 
+    .subject-div button {
+        width: 100%;
+        font-size: 0.75rem;
+    }
+
+    .question-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pagination .page-link {
+        padding: 6px 8px;
+    }
+}

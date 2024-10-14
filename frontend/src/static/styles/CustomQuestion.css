@@ -168,3 +168,42 @@ textarea:focus, input[type="text"]:focus {
         padding: 8px;
     }
 }
+
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .tab-form-container {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .tab-navigation button {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    textarea, input[type="text"] {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .options-container, .input-expected-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .tab-form-container {
+        padding: 10px;
+    }
+
+    .tab-navigation button {
+        font-size: 0.85rem;
+        padding: 8px;
+    }
+
+    textarea, input[type="text"] {
+        font-size: 0.85rem;
+        padding: 8px;
+    }
+}

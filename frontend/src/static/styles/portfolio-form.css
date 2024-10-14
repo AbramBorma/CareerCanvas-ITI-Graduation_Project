@@ -55,17 +55,26 @@
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-    .portfolio-form form {
-        width: 90%; /* Adjust width for smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
     .portfolio-form {
-        margin: 4rem 0 2rem 0; /* Optional adjustment to margins */
+        margin: 4rem 0; /* Reduce margins on mobile */
     }
-    
+
     .portfolio-form form {
-        width: 90%; /* Ensure full width on mobile */
+        width: 90%; /* Increase width for smaller screens */
+        padding: 20px; /* Reduce padding on mobile */
+    }
+
+    .portfolio-form form h1 {
+        font-size: 2.5rem; /* Decrease font size for mobile */
+        margin-bottom: 1rem; /* Reduce margin on mobile */
+    }
+
+    .MuiFormControl-root {
+        width: 100%; /* Full width for input fields */
+    }
+
+    .cta-button {
+        padding: 10px 2rem; /* Adjust button padding for mobile */
+        font-size: 1.2rem; /* Decrease font size for mobile */
     }
 }

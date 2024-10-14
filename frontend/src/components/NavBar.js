@@ -15,10 +15,10 @@ import logo from '../static/imgs/careercanvas-high-resolution-logo-white-transpa
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
-const settings = ['Profile', 'Logout'];
+const settings = ['Profile'];
 
 function ResponsiveAppBar() {
-  const { user, logoutUser } = React.useContext(AuthContext); // Access user data from context
+  const { user, logoutUser } = React.useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -38,8 +38,6 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  console.log(user);
-
   return (
     <AppBar position="fixed" sx={{ backgroundColor: '#002346' }}>
       <Container maxWidth="xl">
@@ -50,6 +48,7 @@ function ResponsiveAppBar() {
             style={{ width: '350px', height: '40px', marginRight: '16px' }}
           />
 
+          {/* Mobile Burger Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -78,17 +77,17 @@ function ResponsiveAppBar() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography component={Link} to="/" sx={{ textAlign: 'center' }}>Home</Typography>
+                <Typography component={Link} to="/" sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}>Home</Typography>
               </MenuItem>
               {user && user.role === 'admin' && (
                 <>
                   <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography component={Link} to="/branch-admin-dashboard" sx={{ textAlign: 'center' }}>Dashboard</Typography>
+                    <Typography component={Link} to="/branch-admin-dashboard" sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}>Dashboard</Typography>
                   </MenuItem>
                   <MenuItem onClick={handleCloseNavMenu}>
                     <Typography
                       href="http://localhost:8000/swagger/"
-                      sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }}
+                      sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
                       component="a"
                     >
                       Endpoints
@@ -97,25 +96,33 @@ function ResponsiveAppBar() {
                 </>
               )}
               {user && user.role === 'supervisor' && (
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography component={Link} to="/SDashboard" sx={{ textAlign: 'center' }}>Track Supervisor Dashboard</Typography>
-                </MenuItem>
-
+                <>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/SDashboard" sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}>Dashboard</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/SCreateExam" sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}>Exams</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography component={Link} to="/CustomQuestion" sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}>Custom-Question</Typography>
+                  </MenuItem>
+                </>
               )}
               {(!user || user.role === 'student') && (
                 <>
                   <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography component={Link} to="/portfolio" sx={{ textAlign: 'center' }}>Portfolio</Typography>
+                    <Typography component={Link} to="/portfolio" sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}>Portfolio</Typography>
                   </MenuItem>
                   <MenuItem onClick={handleCloseNavMenu}>
-                    <Typography component={Link} to="/exams" sx={{ textAlign: 'center' }}>Examine</Typography>
+                    <Typography component={Link} to="/exams" sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}>Examine</Typography>
                   </MenuItem>
                 </>
               )}
+              {/* Remove Logout from Burger Menu */}
             </Menu>
           </Box>
 
-          {/* Desktop Menu (Left-aligned) */}
+          {/* Desktop Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button
               onClick={handleCloseNavMenu}
@@ -174,7 +181,6 @@ function ResponsiveAppBar() {
                       Custom-Question
                     </Button>
                   </>
-
                 )}
                 {user.role === 'student' && (
                   <>
@@ -194,8 +200,6 @@ function ResponsiveAppBar() {
                     >
                       Examine
                     </Button>
-
-                    {/* Add the Edit Profile Button only for students */}
                     <Button
                       onClick={handleCloseNavMenu}
                       component={Link}
@@ -229,6 +233,7 @@ function ResponsiveAppBar() {
             )}
           </Box>
 
+          {/* User Avatar and Logout Button */}
           <Box sx={{ flexGrow: 0 }}>
             {user ? (
               <Button sx={{ color: 'white' }} onClick={logoutUser}>Logout</Button>
@@ -243,7 +248,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Avatar" src="/static/images/avatar/placeholder.jpg" /> {/* Use a valid avatar image path */}
+                <Avatar />
               </IconButton>
             </Tooltip>
             <Menu
@@ -264,9 +269,14 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                  <Typography textAlign="center" component={Link} to="/edit-profile">
+                    {setting}
+                  </Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={() => { logoutUser(); handleCloseUserMenu(); }}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

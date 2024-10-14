@@ -58,7 +58,7 @@
 .search-filter-section {
     width: 100%; /* Responsive width */
     max-width: 600px; /* Set a maximum width */
-    margin: 0 ; /* Center align */
+    margin: 0; /* Center align */
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
@@ -106,7 +106,6 @@
     color: white;
 }
 
-
 .unset-exam-btn:hover {
     background-color: #df2626;
     color: white;
@@ -132,6 +131,7 @@
     border-collapse: collapse;
 }
 
+/* Cell Padding */
 .student-list th, .student-list td {
     text-align: center;
     padding: 8px;
@@ -143,53 +143,50 @@
     min-width: 80px; /* Set a minimum width for table cells */
 }
 
+/* Loading Spinner */
 .loading-spinner {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+}
   
-  .spinner {
+.spinner {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid #3498db; /* Blue */
     border-radius: 50%;
     width: 40px;
     height: 40px;
     animation: spin 1s linear infinite;
-  }
+}
 
-/* Responsive columns */
+/* Responsive Columns */
 @media screen and (max-width: 768px) {
-    .student-list th, .student-list td {
-        display: block; /* Make table cells block for better stacking */
-        width: 100%; /* Full width for table cells */
-        box-sizing: border-box; /* Include padding and borders in width */
-        position: relative; /* Position relative for better layout */
-    }
-    
     .student-list th {
-        position: absolute; /* Position absolute for headings */
-        left: 10px; /* Slight offset for headings */
-        top: 0;
-        background: #f9f9f9; /* Background color for heading */
-        font-weight: bold; /* Bold headings */
-        color: #333; /* Dark color for readability */
-        z-index: 1; /* Ensure headings are above cells */
-        padding-top: 10px;
-    }
-
-    .student-list td {
-        padding-top: 20px;
-        padding-left: 50%; /* Add left padding for text alignment */
-        text-align: left; /* Align text to the left */
+        display: none; /* Hide headers for mobile view */
     }
 
     .student-list td::before {
         content: attr(data-label); /* Display the heading as a label */
-        position: absolute; /* Position absolute for labels */
-        left: 10px; /* Left offset for labels */
         font-weight: bold; /* Bold labels */
         color: #666; /* Lighter color for labels */
+        display: inline-block; /* Make label inline */
+        margin-right: 5px; /* Space between label and value */
+    }
+
+    .student-list td {
+        display: block; /* Make table cells block for better stacking */
+        width: 100%; /* Full width for table cells */
+        box-sizing: border-box; /* Include padding and borders in width */
+        position: relative; /* Position relative for better layout */
+        padding: 10px; /* Add padding for touch targets */
+        text-align: left; /* Align text to the left */
+        border: none; /* Remove border in mobile view for cleaner look */
+        border-bottom: 1px solid #ddd; /* Add a bottom border for separation */
+    }
+
+    .student-list td[data-label="ID"],
+    .student-list td[data-label="Student Name"] {
+        margin-bottom: 10px; /* Space between ID and name */
     }
 }
 
@@ -229,31 +226,7 @@
     background-color: #09417c;
 }
 
-/* Media Queries for Smaller Screens */
-@media screen and (max-width: 768px) {
-    .top-navbar h2 {
-        font-size: 1.2rem;
-    }
-
-    .welcome-message h2 {
-        font-size: 1.5rem;
-    }
-
-    .search-filter-section, .student-list {
-        padding: 15px;
-    }
-
-    .student-list th, .student-list td {
-        padding: 6px;
-        font-size: 0.75rem; /* Smaller font for better fit */
-    }
-
-    .fetch-students-btn, .set-exam-btn, .delete-btn, .approve-btn, .visit-btn {
-        font-size: 0.75rem;
-        padding: 6px;
-    }
-}
-
+/* Small Screen Adjustments */
 @media screen and (max-width: 480px) {
     .top-navbar {
         flex-direction: column; /* Stack items */
@@ -278,14 +251,8 @@
     }
 }
 
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-
-  .pagination {
+/* Pagination Styles */
+.pagination {
     margin: 2rem auto;
     display: flex;
     justify-content: center;
@@ -314,4 +281,10 @@
 
 .pagination .MuiPaginationItem-root.Mui-selected:hover {
     background-color: #002244; /* Selected hover color */
+}
+
+/* Animation for Spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
