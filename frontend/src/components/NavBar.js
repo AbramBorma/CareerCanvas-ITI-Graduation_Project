@@ -118,7 +118,6 @@ function ResponsiveAppBar() {
                   </MenuItem>
                 </>
               )}
-              {/* Remove Logout from Burger Menu */}
             </Menu>
           </Box>
 
@@ -212,7 +211,7 @@ function ResponsiveAppBar() {
                 )}
               </>
             ) : (
-              <>
+              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <Button
                   onClick={handleCloseNavMenu}
                   component={Link}
@@ -229,7 +228,7 @@ function ResponsiveAppBar() {
                 >
                   Examine
                 </Button>
-              </>
+              </Box>
             )}
           </Box>
 
@@ -238,7 +237,7 @@ function ResponsiveAppBar() {
             {user ? (
               <Button sx={{ color: 'white' }} onClick={logoutUser}>Logout</Button>
             ) : (
-              <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px' }}>
+              <Box sx={{ flexGrow: 0, display: 'flex', gap: '15px', marginRight: '20px', display: { xs: 'none', md: 'flex' } }}>
                 <Button sx={{ color: 'white' }} component={Link} to="/register">Register</Button>
                 <Button sx={{ color: 'white' }} component={Link} to="/login">Login</Button>
               </Box>
@@ -248,7 +247,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar />
+                <Avatar alt={user?.name} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -269,14 +268,9 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" component={Link} to="/edit-profile">
-                    {setting}
-                  </Typography>
+                  <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
-              <MenuItem onClick={() => { logoutUser(); handleCloseUserMenu(); }}>
-                <Typography textAlign="center">Logout</Typography>
-              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
@@ -284,5 +278,4 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-
 export default ResponsiveAppBar;
