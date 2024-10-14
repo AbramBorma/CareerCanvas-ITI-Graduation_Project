@@ -301,15 +301,15 @@ const SupervisorDashboard = () => {
             ) : (
               filteredStudents.map((student, index) => (
                 <tr key={index}>
-                  <td data-label="ID">{student.id}</td>
-                  <td data-label="Student Name">{student.full_name}</td>
-                  <td data-label="Branch">{student.branch}</td>
-                  <td data-label="Track">{student.track}</td>
-                  <td data-label="Assigned Exam">
+                  <td data-label="ID: ">{student.id}</td>
+                  <td data-label="Student Name: ">{student.full_name}</td>
+                  <td data-label="Branch: ">{student.branch}</td>
+                  <td data-label="Track: ">{student.track}</td>
+                  <td data-label="Assigned Exam: ">
                     {student.exams && student.exams.length > 0 ? student.exams[0] : 'No Exams'}
                   </td>
-                  <td data-label="Status">{student.is_authorized ? 'Approved' : 'Unapproved'}</td>
-                  <td data-label="Actions">
+                  <td data-label="Status: ">{student.is_authorized ? 'Approved' : 'Unapproved'}</td>
+                  <td data-label="Actions: ">
                     {!student.is_authorized ? (
                       <>
                         <button className="approve-btn" onClick={() => handleAction('approve', student.id)}>

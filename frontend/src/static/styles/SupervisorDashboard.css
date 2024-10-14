@@ -138,9 +138,79 @@
     border: 1px solid #ddd; /* Border for clarity */
 }
 
-/* Responsive table cells */
-.student-list th, .student-list td {
-    min-width: 80px; /* Set a minimum width for table cells */
+/* Responsive Table Cells */
+.student-list th,
+.student-list td {
+    min-width: 80px; /* Minimum width for table cells */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .student-list h3 {
+        font-size: 24px; /* Smaller heading size */
+        margin-bottom: 15px; /* Reduced margin */
+    }
+
+    .student-list th,
+    .student-list td {
+        font-size: 14px; /* Larger font size for table */
+        padding: 10px; /* Reduced padding */
+        font-weight: bold; /* Make text bold */
+    }
+}
+
+@media (max-width: 480px) {
+    .top-navbar {
+        flex-direction: column; /* Stack items */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    .welcome-message h2 {
+        font-size: 1.2rem; /* Smaller header */
+    }
+
+    .search-filter-section, .student-list {
+        padding: 10px;
+    }
+
+    .student-search input,
+    .exam-selection select {
+        font-size: 0.75rem; /* Smaller input size */
+    }
+
+    .student-list h3 {
+        font-size: 20px; /* Further reduced heading size */
+    }
+
+    .student-list th {
+        display: none; /* Hide headers for mobile view */
+    }
+
+    .student-list td::before {
+        content: attr(data-label); /* Display the heading as a label */
+        font-weight: bold; /* Bold labels */
+        color: #666; /* Lighter color for labels */
+        display: block; /* Make label a block element */
+        margin-bottom: 5px; /* Space between label and value */
+        font-size: 16px; /* Larger font size for labels */
+    }
+
+    .student-list td {
+        display: block; /* Make table cells block for better stacking */
+        width: 100%; /* Full width for table cells */
+        box-sizing: border-box; /* Include padding and borders in width */
+        position: relative; /* Position relative for better layout */
+        padding: 10px; /* Add padding for touch targets */
+        text-align: left; /* Align text to the left */
+        border: none; /* Remove border in mobile view for cleaner look */
+        border-bottom: 1px solid #ddd; /* Add a bottom border for separation */
+        font-size: 16px; /* Larger font size for values */
+        font-weight: bold; /* Make text bold */
+    }
+
+    .student-list td[data-label] {
+        margin-bottom: 20px; /* Space between each label-value pair */
+    }
 }
 
 /* Loading Spinner */
@@ -157,37 +227,6 @@
     width: 40px;
     height: 40px;
     animation: spin 1s linear infinite;
-}
-
-/* Responsive Columns */
-@media screen and (max-width: 768px) {
-    .student-list th {
-        display: none; /* Hide headers for mobile view */
-    }
-
-    .student-list td::before {
-        content: attr(data-label); /* Display the heading as a label */
-        font-weight: bold; /* Bold labels */
-        color: #666; /* Lighter color for labels */
-        display: inline-block; /* Make label inline */
-        margin-right: 5px; /* Space between label and value */
-    }
-
-    .student-list td {
-        display: block; /* Make table cells block for better stacking */
-        width: 100%; /* Full width for table cells */
-        box-sizing: border-box; /* Include padding and borders in width */
-        position: relative; /* Position relative for better layout */
-        padding: 10px; /* Add padding for touch targets */
-        text-align: left; /* Align text to the left */
-        border: none; /* Remove border in mobile view for cleaner look */
-        border-bottom: 1px solid #ddd; /* Add a bottom border for separation */
-    }
-
-    .student-list td[data-label="ID"],
-    .student-list td[data-label="Student Name"] {
-        margin-bottom: 10px; /* Space between ID and name */
-    }
 }
 
 /* Buttons in Table */
@@ -224,31 +263,6 @@
 .visit-btn:hover {
     color: white;
     background-color: #09417c;
-}
-
-/* Small Screen Adjustments */
-@media screen and (max-width: 480px) {
-    .top-navbar {
-        flex-direction: column; /* Stack items */
-        align-items: flex-start; /* Align items to the left */
-    }
-
-    .welcome-message h2 {
-        font-size: 1.2rem; /* Smaller header */
-    }
-
-    .search-filter-section, .student-list {
-        padding: 10px;
-    }
-
-    .student-search input,
-    .exam-selection select {
-        font-size: 0.75rem; /* Smaller input size */
-    }
-
-    .student-list th, .student-list td {
-        font-size: 0.7rem; /* Further reduce font size for very small screens */
-    }
 }
 
 /* Pagination Styles */

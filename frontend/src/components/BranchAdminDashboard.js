@@ -134,7 +134,7 @@ const OrganizationDashboard = () => {
         </section>
 
         {/* Supervisors Table */}
-        <section className="admin-table">
+        <div className="admin-table">
           <h2>Supervisors</h2>
           {loading ? (
             <p>Loading supervisors...</p>
@@ -155,11 +155,11 @@ const OrganizationDashboard = () => {
                 {filteredSupervisors.length > 0 ? (
                   filteredSupervisors.map(supervisor => (
                     <tr key={supervisor.id}>
-                      <td>{supervisor.id}</td>
-                      <td>{`${supervisor.first_name} ${supervisor.last_name}`}</td>
-                      <td>{supervisor.branch}</td>
-                      <td>{supervisor.is_authorized ? 'Approved' : 'Unapproved'}</td>
-                      <td>
+                      <td data-label="ID: ">{supervisor.id}</td>
+                      <td data-label="Full Name: ">{`${supervisor.first_name} ${supervisor.last_name}`}</td>
+                      <td data-label="Branch: ">{supervisor.branch}</td>
+                      <td data-label="Status: ">{supervisor.is_authorized ? 'Approved' : 'Unapproved'}</td>
+                      <td data-label="Actions: ">
                         {!supervisor.is_authorized && (
                           <button
                             className="btn-approve"
@@ -193,7 +193,7 @@ const OrganizationDashboard = () => {
               </tbody>
             </table>
           )}
-        </section>
+        </div>
       </div>
 
       {/* Dialog Component */}
@@ -208,7 +208,6 @@ const OrganizationDashboard = () => {
       {/* Toast Container for Notifications */}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick draggable pauseOnHover />
       
-      <Footer />
     </>
   );
 };

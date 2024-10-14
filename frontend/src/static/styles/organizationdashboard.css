@@ -62,12 +62,20 @@ body {
   text-transform: uppercase;
 }
 
+.admin-table {
+  width: 100%;
+  margin: 20px 0;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden; /* Ensures no overflow from the table */
+}
+
 .admin-table table {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
 }
 
+/* Cell Padding */
 .admin-table th,
 .admin-table td {
   padding: 14px;
@@ -76,6 +84,7 @@ body {
   font-size: 14px;
 }
 
+/* Header Styles */
 .admin-table th {
   background-color: #f0f0f0;
   font-weight: bold;
@@ -84,6 +93,71 @@ body {
 .admin-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+
+/* Responsive Table Cells */
+.admin-table th,
+.admin-table td {
+  min-width: 80px; /* Minimum width for table cells */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .admin-table h2 {
+      font-size: 24px; /* Smaller heading size */
+      margin-bottom: 15px; /* Reduced margin */
+  }
+
+  .admin-table th,
+  .admin-table td {
+      font-size: 14px; /* Larger font size for table */
+      padding: 10px; /* Reduced padding */
+      font-weight: bold; /* Make text bold */
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-table h2 {
+      font-size: 20px; /* Further reduced heading size */
+  }
+
+  .admin-table th {
+      display: none; /* Hide headers for mobile view */
+  }
+
+  .admin-table td::before {
+      content: attr(data-label); /* Display the heading as a label */
+      font-weight: bold; /* Bold labels */
+      color: #666; /* Lighter color for labels */
+      display: block; /* Make label a block element */
+      margin-bottom: 5px; /* Space between label and value */
+      font-size: 16px; /* Larger font size for labels */
+  }
+
+  .admin-table td {
+      display: block; /* Make table cells block for better stacking */
+      width: 100%; /* Full width for table cells */
+      box-sizing: border-box; /* Include padding and borders in width */
+      position: relative; /* Position relative for better layout */
+      padding: 10px; /* Add padding for touch targets */
+      text-align: left; /* Align text to the left */
+      border: none; /* Remove border in mobile view for cleaner look */
+      border-bottom: 1px solid #ddd; /* Add a bottom border for separation */
+      font-size: 16px; /* Larger font size for values */
+      font-weight: bold; /* Make text bold */
+  }
+
+  /* New styles for mobile layout */
+  .admin-table td {
+      display: flex; /* Use flexbox for layout */
+      flex-direction: column; /* Stack label and value vertically */
+      justify-content: flex-start; /* Align items to the left */
+  }
+
+  .admin-table td[data-label] {
+      margin-bottom: 20px; /* Space between each label-value pair */
+  }
+}
+
 
 /* Buttons */
 button {
@@ -153,68 +227,4 @@ button:hover {
 .admin-table td {
   vertical-align: middle;
   line-height: 1.5;
-}
-
-
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .welcome-message {
-    font-size: 32px; /* Adjusted font size for mobile */
-    margin: 20px 0; /* Reduced margin */
-  }
-
-  .search-bar {
-    flex-direction: column; /* Stack input and button vertically */
-    align-items: center; /* Center align items */
-  }
-
-  .input-field {
-    width: 80%; /* Adjust input field width for smaller screens */
-    margin-bottom: 15px; /* Space below input field */
-  }
-
-  .admin-table h2 {
-    font-size: 24px; /* Smaller heading size */
-    margin-bottom: 15px; /* Reduced margin */
-  }
-
-  .admin-table th,
-  .admin-table td {
-    font-size: 12px; /* Smaller font size for table */
-    padding: 10px; /* Reduced padding */
-  }
-
-  button {
-    padding: 8px 15px; /* Smaller button padding */
-    font-size: 14px; /* Adjust button text size */
-  }
-}
-
-@media (max-width: 480px) {
-  .dashboard {
-    padding: 10px; /* Reduced padding for mobile */
-  }
-
-  .welcome-message {
-    font-size: 28px; /* Further reduced font size */
-  }
-
-  .input-field {
-    width: 90%; /* Further adjusted width */
-  }
-
-  .admin-table h2 {
-    font-size: 20px; /* Further reduced heading size */
-  }
-
-  .admin-table th,
-  .admin-table td {
-    font-size: 10px; /* Further reduced table font size */
-    padding: 8px; /* Reduced padding */
-  }
-
-  button {
-    padding: 6px 12px; /* Smaller button padding */
-    font-size: 12px; /* Smaller font size */
-  }
 }
