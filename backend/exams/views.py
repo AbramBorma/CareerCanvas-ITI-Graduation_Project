@@ -417,7 +417,6 @@ class FetchExamQuestions(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
 class CreateQuestionView(APIView):
     @swagger_auto_schema(
         operation_summary="Create Custom questions for an exam",
@@ -436,12 +435,10 @@ class CreateQuestionView(APIView):
         correct_answer = request.data.get('correct_answer')
         user_id = request.data.get('user')
 
-        
-
         # Validate that all required fields are present
-        if not all([subject_name, question_text, level, option1, option2, option3, option4, correct_answer]):
+        if not all([subject_name, question_text, level, option1, option2, option3, option4, correct_answer, user_id]):
             return Response(
-                {"error": "All fields (subject_name, question_text, level, option1, option2, option3, option4, correct_answer) are required."},
+                {"error": "All fields (subject_name, question_text, level, option1, option2, option3, option4, correct_answer, user) are required."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -454,6 +451,7 @@ class CreateQuestionView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        # Validate user
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -461,11 +459,18 @@ class CreateQuestionView(APIView):
                 {"error": f"User with id '{user_id}' does not exist."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         # Validate level
         if level not in [choice[0] for choice in Question.LEVEL_CHOICES]:
             return Response(
                 {"error": f"Invalid level '{level}', must be one of: {', '.join([choice[0] for choice in Question.LEVEL_CHOICES])}."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Check if a similar question already exists for the same user and subject
+        if Question.objects.filter(subject=subject, user=user, question_text=question_text).exists():
+            return Response(
+                {"error": "A similar question already exists for this user and subject."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -480,13 +485,14 @@ class CreateQuestionView(APIView):
             option4=option4,
             correct_answer=correct_answer,
             user=user,
-            is_general=False
+            is_general=False  # The question is not general
         )
 
         # Serialize the created question object
         serializer = QuestionSerializer(question)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 
 class DeleteQuestion(APIView):
