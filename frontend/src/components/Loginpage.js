@@ -73,6 +73,7 @@ function LoginPage() {
               />
               <i
                 className={passwordShown ? 'fa fa-eye-slash' : 'fa fa-eye'}
+                style={{ top: '70%' }}
                 onClick={togglePasswordVisibility}
               ></i>
             </div>
