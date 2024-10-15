@@ -1,0 +1,87 @@
+.component-bg {
+  background-color: #343a40;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+}
+
+.component-header {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #212529;
+
+}
+
+.component-header button {
+  margin: 0 0.5rem;
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.success-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.outline-success-button {
+  background-color: transparent;
+  border: 1px solid #28a745;
+  color: #28a745;
+}
+
+.code-container {
+  display: flex;
+  flex-grow: 1;
+  padding: 1rem;
+ 
+  justify-content: space-between;
+}
+
+.editor-container {
+  width:48%;
+  background-color: #1e1e1e;
+  border: 1px solid #28a745;
+  border-radius: 0.25rem;
+}
+
+.output-container {
+  width: 48%;
+  padding: 1rem;
+  background-color: #f8f9fa; /* Light background */
+  color: #000; /* Dark text */
+  border: 1px solid #28a745;
+  border-radius: 0.25rem;
+  overflow-y: auto;
+}
+
+.alert {
+  margin: 1rem;
+}
+
+
+
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+  .flex-space-between {
+    flex-direction: column; /* Stack elements vertically */
+  }
+
+  
+  .editor-container,
+  .output-container {
+    width: 100%; /* Take up full width on smaller screens */
+    height: 500px;
+  }
+
+  .component-header {
+    flex-direction: column;
+    align-items: center;
+  }
+}
