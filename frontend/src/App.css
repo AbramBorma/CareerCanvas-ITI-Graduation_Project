@@ -10,7 +10,7 @@
 .App-logo {
     height: 40vmin;
     pointer-events: none;
-    animation: App-logo-move 2s ease-in-out infinite alternate; /* Animation for moving logo */
+    animation: App-logo-move 2s ease-in-out infinite alternate; 
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -32,28 +32,28 @@
 
 .App-link {
     color: #61dafb;
-    text-decoration: none; /* Remove underline */
-    transition: color 0.3s; /* Smooth color transition */
+    text-decoration: none; 
+    transition: color 0.3s; 
 }
 
 .App-link:hover {
-    color: #21a1f1; /* Change link color on hover */
+    color: #21a1f1; 
 }
 
 /* Loader styles */
 .loading-container {
     display: flex;
-    flex-direction: column; /* Stack spinner and text */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(236, 240, 241, 0.9)); /* Subtle gradient */
-    position: fixed; /* Fixed position to cover the entire screen */
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    width: 100vw; 
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(236, 240, 241, 0.9)); 
+    position: fixed; 
     top: 0;
     left: 0;
     z-index: 999; /* Ensure it's on top of other content */
-    transition: opacity 0.3s ease; /* Smooth transition for visibility */
+    transition: opacity 0.3s ease; 
 }
 
 .loading-logo {

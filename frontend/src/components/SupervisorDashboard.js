@@ -193,7 +193,7 @@ const SupervisorDashboard = () => {
       
       // Update the students state to reflect the assigned exam
       setStudents(students.map(student => 
-        student.is_active ? { ...student, exams: [JSON.parse(selectedSubject).name] } : student
+        student.is_authorized ? { ...student, exams: [JSON.parse(selectedSubject).name] } : student
       ));
       
     } catch (error) {
@@ -213,7 +213,7 @@ const SupervisorDashboard = () => {
       
       // Update the students state to reflect the removed exam
       setStudents(students.map(student => 
-        student.is_active ? { ...student, exams: [] } : student
+        student.is_authorized ? { ...student, exams: [] } : student
       ));
       
       setSuccessDialogOpen(true);
