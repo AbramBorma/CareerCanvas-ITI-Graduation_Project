@@ -146,18 +146,59 @@
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    .student-list h3 {
-        font-size: 24px; /* Smaller heading size */
-        margin-bottom: 15px; /* Reduced margin */
+    .student-list table,
+    .student-list table thead,
+    .student-list table tbody,
+    .student-list table th,
+    .student-list table td,
+    .student-list table tr {
+      display: block;
     }
-
-    .student-list th,
-    .student-list td {
-        font-size: 14px; /* Larger font size for table */
-        padding: 10px; /* Reduced padding */
-        font-weight: bold; /* Make text bold */
+  
+    /* Hides the table headers */
+    .student-list table thead {
+      display: none;
     }
-}
+  
+    /* Displays each row as a block */
+    .student-list table tr {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    /* Adds structure by stacking content vertically */
+    .student-list table td {
+      display: block;
+      padding: 10px;
+      text-align: right;
+      font-size: 16px;
+      position: relative;
+      padding-left: 50%;
+      border-bottom: none;
+    }
+  
+    /* Adds the labels to the data cells */
+    .student-list table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 10px;
+      width: calc(50% - 20px);
+      text-align: left;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    
+    /* Adds padding for visual clarity */
+    .student-list table td:last-child {
+      padding-bottom: 10px;
+    }
+  
+    /* Enhancing button size for mobile */
+    .student-list .actions button {
+      font-size: 16px;
+      padding: 12px;
+    }
+  }
 
 @media (max-width: 480px) {
     .top-navbar {
