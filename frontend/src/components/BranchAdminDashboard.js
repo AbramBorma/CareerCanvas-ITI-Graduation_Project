@@ -55,6 +55,11 @@ const OrganizationDashboard = () => {
 
   // Optimistic approval of the supervisor
   const confirmAction = async () => {
+    if (!currentAction) {
+      console.error('No action selected');
+      return;
+    }
+    
     if (currentAction.type === 'approve') {
       // Optimistically update the supervisor's approval status
       setSupervisors(prevSupervisors => 
@@ -62,10 +67,10 @@ const OrganizationDashboard = () => {
           supervisor.id === currentAction.id ? { ...supervisor, is_authorized: true } : supervisor
         )
       );
-
+  
       // Show success notification immediately
       toast.success('Supervisor approved successfully!'); // Notify admin of success
-
+  
       // Make the API call without waiting for its completion
       handleApprove(currentAction.id).catch(error => {
         console.error('Error approving supervisor:', error);
@@ -77,10 +82,19 @@ const OrganizationDashboard = () => {
         );
       });
     } else if (currentAction.type === 'delete') {
-      // Handle delete action without loading
-      handleDelete(currentAction.id);
+      // Delete supervisor
+      try {
+        await deleteSupervisorFromApi(currentAction.id);
+        setSupervisors(prevSupervisors => 
+          prevSupervisors.filter(supervisor => supervisor.id !== currentAction.id)
+        );
+        toast.success('Supervisor deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting supervisor:', error);
+        toast.error('Failed to delete supervisor.');
+      }
     }
-
+  
     closeDialog(); // Close the dialog immediately
     setCurrentAction(null); 
   };
@@ -98,21 +112,11 @@ const OrganizationDashboard = () => {
 
   // Delete supervisor
   const handleDelete = (id) => {
+    setCurrentAction({ type: 'delete', id });  // Set current action as delete
     openDialog(
       "Delete Supervisor",
       "Are you sure you want to delete this supervisor?",
-      async () => {
-        try {
-          await deleteSupervisorFromApi(id); 
-          setSupervisors(supervisors.filter(supervisor => supervisor.id !== id));
-          toast.success('Supervisor deleted successfully!'); // Notify admin of deletion success
-        } catch (error) {
-          console.error('Error deleting supervisor:', error);
-          toast.error('Failed to delete supervisor!'); // Notify admin of deletion failure
-        } finally {
-          closeDialog();  // Close the dialog after deleting
-        }
-      }
+      confirmAction  // Pass the confirm action
     );
   };
 
