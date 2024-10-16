@@ -1,0 +1,276 @@
+/* Merged PageLanding and CodeEditor styles */
+
+/* Container for the entire page */
+.page-landing-with-editor {
+  max-width: 1200px;
+  width: 100%;
+  margin: 5rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 5%; /* More flexible padding */
+}
+
+/* Page Landing styles */
+.page-landing {
+  width: 100%;
+  min-height: 80vh;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 20px; /* Padding added */
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  padding: 40px 5%; /* More responsive padding */
+  background-color: #f4f7f8;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.intro h1 {
+  font-size: 2.5rem;
+  color: #00468B;
+  margin-bottom: 20px;
+}
+
+.intro-paragraph,
+.code-paragraph {
+  font-size: 1.5rem;
+  line-height: 2;
+  letter-spacing: 2px;
+  color: #555555;
+  text-transform: capitalize;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  font-style: italic;
+  font-family: fantasy;
+}
+
+.code-paragraph {
+  font-size: 2.5rem;
+  color: #108ea1;
+  text-align: center;
+  margin-bottom: 20px;
+  font-style: italic;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+/* CTA Button (Get Started) */
+.cta-button {
+  margin: 10px auto; /* Center the button with auto margins */
+  padding: 10px 20px; /* Increased padding for a larger button */
+  font-size: 1rem; /* Set a readable font size */
+  color: white;
+  background-color: #007BFF; /* Changed to a bright blue for visibility */
+  border-radius: 25px; /* Increased border radius for a rounded look */
+  text-decoration: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Softer shadow for depth */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform transition for hover effect */
+  display: block; /* Ensure the button takes up full width for centering */
+  text-align: center; /* Center the text */
+  width: fit-content; /* Adjust width to fit content */
+}
+
+.cta-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
+}
+
+/* Navbar Styles */
+.navbar {
+  width: 100%;
+  background-color: #00468B;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.navbar a {
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+.navbar a:hover {
+  background-color: #003366;
+  border-radius: 5px;
+}
+
+.burger-menu {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+/* Code Editor styles */
+.editor-output {
+  display: flex;
+  flex-direction: row; /* Use row layout by default */
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap; /* Allow wrapping for responsiveness */
+}
+
+.editor-container {
+  flex: 1; /* Allow this to take available space */
+  min-width: 300px; /* Minimum width for smaller screens */
+  height: 300px; /* Adjust height if needed */
+  margin-right: 1rem; /* Spacing between elements */
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Run Code Button styles */
+.run-code-btn {
+  background-color: #4CAF50;
+  margin-top: 30px;
+  padding: 10px 20px; /* Adjusted padding */
+  font-size: 1rem; /* Adjusted font size */
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.run-code-btn:hover {
+  background-color: #45a049;
+}
+
+.output-container {
+  background-color: #f4f4f4;
+  flex: 1; /* Allow this to take available space */
+  min-width: 300px; /* Minimum width for smaller screens */
+  height: 300px; /* Keep height consistent */
+  overflow-y: auto;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  padding-left: 10px;
+}
+
+.output-container h3 {
+  margin: 10px;
+  text-align: left;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Responsive Styles for PageLanding and CodeEditor */
+
+/* Tablet and smaller screens */
+@media (max-width: 768px) {
+  .page-landing-with-editor {
+    padding: 0 3%; /* Reduce side padding */
+    gap: 1.5rem; /* Reduce gap between elements */
+  }
+
+  .page-landing {
+    margin-top: 50px; /* Adjust margin */
+    padding: 0 15px; /* Reduce padding */
+  }
+
+  .intro h1 {
+    font-size: 2rem; /* Smaller heading */
+  }
+
+  .intro-paragraph,
+  .code-paragraph {
+    font-size: 1.2rem; /* Adjust paragraph font size */
+  }
+
+  .cta-button {
+    padding: 8px 16px; /* Smaller button padding */
+    font-size: 0.9rem; /* Adjust font size */
+  }
+
+  .navbar {
+    padding: 10px 15px; /* Smaller padding */
+  }
+
+  .nav-links {
+    gap: 1rem; /* Smaller gap */
+  }
+
+  .burger-menu {
+    display: block; /* Show burger menu on smaller screens */
+  }
+
+  .editor-output {
+    flex-direction: column; /* Stack elements vertically */
+    margin-bottom: 2rem; /* Adjust margin */
+  }
+
+  .editor-container,
+  .output-container {
+    height: 250px; /* Adjust height */
+    margin-right: 0; /* Remove margin */
+    margin-bottom: 20px; /* Add spacing */
+  }
+
+  .run-code-btn {
+    padding: 8px 15px; /* Smaller button padding */
+    font-size: 0.9rem; /* Adjust button font size */
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 480px) {
+  .intro h1 {
+    font-size: 1.5rem; /* Further reduce heading size */
+  }
+
+  .intro-paragraph,
+  .code-paragraph {
+    font-size: 1rem; /* Smaller paragraph font size */
+  }
+
+  .cta-button {
+    padding: 6px 12px; /* Adjust padding */
+    font-size: 0.8rem; /* Adjust font size */
+  }
+
+  .editor-container,
+  .output-container {
+    min-width: 100%; /* Full-width containers */
+    height: 200px; /* Adjust height for mobile */
+  }
+
+  .run-code-btn {
+    padding: 6px 12px; /* Smaller padding */
+    font-size: 0.8rem; /* Adjust font size */
+  }
+}

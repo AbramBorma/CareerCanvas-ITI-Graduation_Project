@@ -1,0 +1,80 @@
+.portfolio-form {
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8rem 0 4rem 0;
+}
+
+.portfolio-form form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%; 
+    max-width: 100%; /* Allow full width on smaller screens */
+    text-align: center;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: #f4f7f8;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-form form h1 {
+    font-size: 4rem; /* Keep original size */
+    color: #108ea1;
+    text-transform: uppercase;
+    font-family: cursive;
+    margin-bottom: 2rem;
+}
+
+.MuiFormControl-root {
+    margin-bottom: 1.5rem;
+    width: 80%; /* Keep original width */
+}
+
+.MuiInputBase-root {
+    padding: 10px 12px;
+}
+
+.cta-button {
+    padding: 15px 3rem;
+    font-size: 1.5rem; /* Keep original size */
+    color: white;
+    background-color: #00468B;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #003366;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .portfolio-form {
+        margin: 4rem 0; /* Reduce margins on mobile */
+    }
+
+    .portfolio-form form {
+        width: 90%; /* Increase width for smaller screens */
+        padding: 20px; /* Reduce padding on mobile */
+    }
+
+    .portfolio-form form h1 {
+        font-size: 2.5rem; /* Decrease font size for mobile */
+        margin-bottom: 1rem; /* Reduce margin on mobile */
+    }
+
+    .MuiFormControl-root {
+        width: 100%; /* Full width for input fields */
+    }
+
+    .cta-button {
+        padding: 10px 2rem; /* Adjust button padding for mobile */
+        font-size: 1.2rem; /* Decrease font size for mobile */
+    }
+}

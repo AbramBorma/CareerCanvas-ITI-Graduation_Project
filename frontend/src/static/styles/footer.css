@@ -1,0 +1,210 @@
+/* Main Footer Container */
+.footer-container {
+    background-color: #002346;
+    color: white;
+    padding: 20px 20px; /* Reduced padding */
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start; /* Align items to the start */
+    flex-wrap: nowrap; /* Ensure no wrapping to next line */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Branding Section */
+.footer-section.logo h4 {
+    font-size: 1.2rem;
+    margin-bottom: 5px; /* Reduced margin */
+    color: white;
+}
+
+.footer-logo {
+    width: 350px; /* Reduced logo size */
+    height: auto;
+    margin-bottom: 0; /* Removed bottom margin to reduce height */
+}
+
+/* Internal Links Styling */
+.footer-section.internal-links h4 {
+    margin-bottom: 5px; /* Reduced margin */
+    color: white;
+    font-size: 1.2rem;
+
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0; /* Removed padding and margin */
+}
+
+.footer-section ul li {
+    margin-bottom: 4px; /* Reduced space between list items */
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.footer-section ul li a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem; /* Slightly smaller text */
+}
+
+.footer-section ul li a:hover {
+    color: #51a6fc;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Social Media Icons */
+.external-links {
+    margin-top: 0; /* Removed margin */
+}
+
+.external-links h4 {
+    font-size: 1.2rem;
+
+}
+
+.external-links ul {
+    display: flex;
+    justify-content: flex-start; /* Align to the start */
+    align-items: center;
+    flex-direction: row; /* Set icons in a row */
+    flex-direction: column;
+}
+
+.external-links ul li {
+    list-style: none;
+}
+
+.external-links ul li a {
+    display: inline-block;
+    width: 35px; /* Reduced size of icons */
+    height: 35px;
+    background-color: #51a6fc;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.external-links ul li a:hover {
+    background-color: #4097e1;
+    transition: background-color 0.3s ease-in-out;
+    color: white;
+}
+
+/* Newsletter Subscription Styling */
+.subscribe {
+    margin-bottom: 0;
+}
+
+.subscribe h4 {
+    margin-bottom: 5px;
+    color: white;
+    width: 100%; /* Ensure h4 takes the full width */
+    font-size: 1.2rem;
+
+}
+
+.subscribe form {
+    display: flex;
+    flex-direction: column; /* Align input and button vertically */
+    gap: 10px; /* Add gap between input and button */
+    width: 100%; /* Ensure form takes the full width */
+}
+
+.subscribe form input {
+    padding: 5px;
+    border-radius: 6px;
+    border: none;
+    width: 100%; /* Input will now match the width of h4 */
+    font-size: 0.9rem;
+}
+
+.subscribe form input::placeholder {
+    color: #aaa;
+    font-size: 0.85rem;
+}
+
+.cta-button {
+    padding: 8px;
+    background-color: #51a6fc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    width: 100%; /* Button now takes the full width */
+}
+
+.cta-button:hover {
+    background-color: #4097e1;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center align items */
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+
+    .footer-section {
+        margin-bottom: 20px; /* Add space between sections */
+        text-align: center; /* Center text in each section */
+    }
+
+    .footer-section.logo h4,
+    .footer-section.internal-links h4,
+    .external-links h4,
+    .subscribe h4 {
+        font-size: 1.1rem; /* Slightly smaller font size */
+    }
+
+    .footer-section ul li a {
+        font-size: 0.85rem; /* Adjust link font size */
+    }
+
+    .external-links ul {
+        flex-direction: row; /* Keep icons in a row */
+        flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    }
+
+    .external-links ul li a {
+        width: 30px; /* Reduce icon size */
+        height: 30px; /* Adjust height */
+        font-size: 1rem; /* Smaller font size for icons */
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-container {
+        padding: 10px; /* Further reduce padding */
+    }
+
+    .footer-section {
+        width: 100%; /* Ensure sections take full width */
+    }
+
+    .footer-section.logo h4,
+    .footer-section.internal-links h4,
+    .external-links h4,
+    .subscribe h4 {
+        font-size: 1rem; /* Further decrease font size */
+    }
+
+    .footer-section ul li {
+        margin-bottom: 2px; /* Reduce space between list items */
+    }
+
+    .subscribe form input,
+    .cta-button {
+        font-size: 0.8rem; /* Adjust button and input font size */
+    }
+}
