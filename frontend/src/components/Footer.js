@@ -1,6 +1,8 @@
+// Footer.js
+
 import React from 'react';
-import '../static/styles/footer.css'
-import logo from '../static/imgs/careercanvas-high-resolution-logo-white-transparent.png'
+import '../static/styles/footer.css';
+import logo from '../static/imgs/careercanvas-high-resolution-logo-white-transparent.png';
 import Button from '@mui/material/Button';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import XIcon from '@mui/icons-material/X';
@@ -8,51 +10,62 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 
 const Footer = () => {
     return (
-        <>
-            <div className="container">
-                <div className="logo">
-                    <p>CareerCanvas</p>
-                    <img
+        <footer className="footer-container">
+            <div className="footer-section logo">
+                <img
                     src={logo}
-                    alt="Logo"
-                    style={{width: '350px', height:'40px', marginRight: '16px'}}
-                    />
-                </div>
-                <div className="internal-links">
-                    <p>CareerCanvas Features</p>
-                    <ul>
-                        <li>
-                            <a href="register.html">Register</a>
-                        </li>
-                        <li>
-                            <a href="login.html">Login</a>
-                        </li>
-                        <li>
-                            <a href="portfolio.html">Portfolio</a>
-                        </li>
-                        <li>
-                            <a href="examination.html">Examination</a>
-                        </li>
-                    </ul>
-                </div>
-                <div className="external-links">
-                    <p>Follow Us</p>
-                    <ul>
-                        <li>< FacebookRoundedIcon/></li>
-                        <li><XIcon /></li>
-                        <li><InstagramIcon /></li>
-                    </ul>
-                </div>
-                <div className="subscribe">
-                    <p>Subscribe to our Newsletter</p>
-                    <form action="">
-                        <input type="email" name="email" id="email" placeholder='Enter Email Address' />
-                        <Button type='submit' className='cta-button'>Subscribe</Button>
-                    </form>
-                </div>
+                    alt="CareerCanvas Logo"
+                    className="footer-logo"
+                />
             </div>
-        </>
+            <div className="footer-section internal-links">
+                <h4>CAREERCANVAS FEATURES</h4>
+                <ul>
+                    <li><a href="/register">Register</a></li>
+                    <li><a href="/portfolio">Portfolio</a></li>
+                    <li><a href="/exams">Examination</a></li>
+                </ul>
+            </div>
+            <div className="footer-section external-links">
+                <h4>FOLLOW US</h4>
+                <ul>
+                    <li>
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                            <FacebookRoundedIcon />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://x.com" target="_blank" rel="noopener noreferrer">
+                            <XIcon />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                            <InstagramIcon />
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div className="footer-section subscribe">
+                <h4>SUBSCRIBE TO OUR NEWSLETTER</h4>
+                <form action="">
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Enter Email Address"
+                    />
+                    <Button
+                        type="submit"
+                        className="cta-button"
+                        variant="contained"
+                    >
+                        Subscribe
+                    </Button>
+                </form>
+            </div>
+        </footer>
     );
 }
- 
+
 export default Footer;

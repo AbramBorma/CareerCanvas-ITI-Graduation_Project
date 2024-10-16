@@ -1,0 +1,130 @@
+.exam-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align items */
+    padding: 20px;
+    max-width: 800px; /* Limit max width of the container */
+    margin: auto; /* Center the container */
+    background-color: #f9f9f9; /* Light background color */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.exam-container h2 {
+    color: #002346; /* Main color */
+    font-size: 2em; /* Larger font size */
+    margin-bottom: 10px; /* Space below the title */
+}
+
+.exam-container h4 {
+    color: #d9534f; /* Red color for the timer */
+    font-size: 1.2em; /* Slightly larger font size */
+    margin-bottom: 20px; /* Space below the timer */
+}
+
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    width: 100%; /* Full width for the list */
+}
+
+ul li {
+    margin-bottom: 20px; /* Space between questions */
+    background-color: #ffffff; /* White background for each question */
+    padding: 15px; /* Padding for questions */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+ul li p {
+    margin: 0; /* Remove default margin */
+    font-size: 1.1em; /* Slightly larger font size for questions */
+}
+
+ul li ul {
+    margin-top: 10px; /* Space above answers */
+}
+
+ul li ul li {
+    margin-bottom: 10px; /* Space between answers */
+}
+
+input[type="radio"] {
+    margin-right: 10px; /* Space between radio button and label */
+}
+
+p {
+    color: #333; /* Darker text for readability */
+    font-size: 1em; /* Standard font size for text */
+}
+
+p:empty {
+    display: none; /* Hide empty paragraphs */
+}
+
+/* Style for time's up message */
+.time-up {
+    color: #d9534f; /* Red color for time's up */
+    font-weight: bold; /* Bold text */
+    font-size: 1.5em; /* Larger font size */
+    margin-top: 20px; /* Space above message */
+}
+
+/* Submit button styling */
+.submit-button {
+    background-color: #28a745; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding for button */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1.2em; /* Larger font size */
+    transition: background-color 0.3s; /* Transition for hover effect */
+    margin-top: 20px; /* Space above button */
+}
+
+.submit-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .exam-container {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+
+    .exam-container h2 {
+        font-size: 1.8em; /* Slightly smaller font size */
+    }
+
+    .exam-container h4 {
+        font-size: 1.1em; /* Adjust font size */
+    }
+
+    ul li {
+        padding: 10px; /* Reduce padding for questions */
+    }
+
+    .submit-button {
+        font-size: 1em; /* Adjust font size for smaller screens */
+        padding: 8px 15px; /* Adjust padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .exam-container {
+        max-width: 95%; /* Increase the width for very small screens */
+    }
+
+    .exam-container h2 {
+        font-size: 1.5em; /* Further decrease font size */
+    }
+
+    .exam-container h4 {
+        font-size: 1em; /* Adjust font size for timer */
+    }
+
+    ul li {
+        margin-bottom: 15px; /* Reduce margin between questions */
+    }
+}

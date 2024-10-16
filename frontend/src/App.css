@@ -1,38 +1,113 @@
 .App {
-  text-align: center;
+    margin-top: 68px; /* Space for the NavBar */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure full viewport height */
+    background: linear-gradient(135deg, #f4f4f4, #e1e5ea); /* Enhanced light gradient background */
+    transition: background 0.5s ease; /* Smooth transition for background */
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
+    animation: App-logo-move 2s ease-in-out infinite alternate; /* Animation for moving logo */
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Smooth color transition */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-link:hover {
+    color: #21a1f1; /* Change link color on hover */
+}
+
+/* Loader styles */
+.loading-container {
+    display: flex;
+    flex-direction: column; /* Stack spinner and text */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(236, 240, 241, 0.9)); /* Subtle gradient */
+    position: fixed; /* Fixed position to cover the entire screen */
+    top: 0;
+    left: 0;
+    z-index: 999; /* Ensure it's on top of other content */
+    transition: opacity 0.3s ease; /* Smooth transition for visibility */
+}
+
+.loading-logo {
+    width: 400px;
+    animation: loading-logo-move 1.5s ease-in infinite alternate; /* Animation for moving logo */
+    position: relative; /* To allow movement */
+}
+
+/* Keyframes for moving the loading logo */
+@keyframes loading-logo-move {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(100vw - 400px)); /* Move across the screen, adjusting for the logo width */
+    }
+}
+
+
+/* Footer styling to keep it at the bottom */
+footer {
+    margin-top: auto; /* Push footer to the bottom */
+    padding: 20px; /* Add some padding */
+    background-color: #282c34; /* Match header background */
+    color: white; /* Footer text color */
+    text-align: center; /* Center the text */
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    opacity: 1;
+    transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+footer.hidden {
+    opacity: 0; /* Hide the footer */
+    visibility: hidden; /* Ensure it's not interactable */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .loading-container {
+        height: 100vh; /* Ensure loading spinner works on smaller screens */
+    }
+
+    footer {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+}
+
+/* Keyframes for moving the logo */
+@keyframes App-logo-move {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(100vw - 40vmin)); /* Adjust for logo width */
+    }
 }

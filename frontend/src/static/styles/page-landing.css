@@ -2,138 +2,293 @@
 
 /* Container for the entire page */
 .page-landing-with-editor {
-    width: 1200px; /* Fixed width for the entire container */
-    margin: 5rem auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem; /* Space between the page landing and code editor */
-  }
-  
-  /* Page Landing styles */
-  .page-landing {
-    width: 100%;
-    min-height: 80vh;
-    margin-top: 68.5px;
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  .intro {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 100%;
-    text-align: center;
-    margin: 0 auto;
-    padding: 40px 20px;
-    background-color: #f4f7f8;
-    border-radius: 15px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .intro h1 {
-    font-size: 2.5rem;
-    color: #00468B;
-    margin-bottom: 20px;
-  }
-  
-  .intro-paragraph, .code-paragraph {
-    font-size: 1.5rem;
-    line-height: 2;
-    letter-spacing: 2px;
-    color: #555555;
-    text-transform: capitalize;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    font-weight: 500;
-    font-style: italic;
-    font-family: fantasy;
-  }
-  .code-paragraph {
-    font-size: 2.5rem;
-    color: #108ea1; /* Pale blue color */
-    text-align: center;
-    margin-bottom: 20px;
-    font-style: italic;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    font-weight: 600;
-    letter-spacing: 2px;
-  }
-  
-  .cta-button {
-    margin-top: 30px;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    color: white;
-    background-color: #00468B;
-    border-radius: 10px;
-    text-decoration: none;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-  }
-  
-  .cta-button:hover {
-    background-color: #003366;
-  }
-  
-  /* Code Editor styles */
-  .editor-output {
-    display: flex;
-    justify-content: space-between;
-    height: 300px;
-    margin-top: 1.5rem;
-    margin-bottom: 3rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 5rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0 5%; /* More flexible padding */
+}
 
+/* Page Landing styles */
+.page-landing {
+  width: 100%;
+  min-height: 80vh;
+  margin-top: 68.5px;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 20px; /* Padding added */
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  padding: 40px 5%; /* More responsive padding */
+  background-color: #f4f7f8;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.intro h1 {
+  font-size: 2.5rem;
+  color: #00468B;
+  margin-bottom: 20px;
+}
+
+.intro-paragraph,
+.code-paragraph {
+  font-size: 1.5rem;
+  line-height: 2;
+  letter-spacing: 2px;
+  color: #555555;
+  text-transform: capitalize;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  font-style: italic;
+  font-family: fantasy;
+}
+
+.code-paragraph {
+  font-size: 2.5rem;
+  color: #108ea1;
+  text-align: center;
+  margin-bottom: 20px;
+  font-style: italic;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+/* CTA Button (Get Started) */
+.cta-button {
+  margin: 10px auto; /* Center the button with auto margins */
+  padding: 10px 20px; /* Increased padding for a larger button */
+  font-size: 1rem; /* Set a readable font size */
+  color: white;
+  background-color: #007BFF; /* Changed to a bright blue for visibility */
+  border-radius: 25px; /* Increased border radius for a rounded look */
+  text-decoration: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Softer shadow for depth */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform transition for hover effect */
+  display: block; /* Ensure the button takes up full width for centering */
+  text-align: center; /* Center the text */
+  width: fit-content; /* Adjust width to fit content */
+}
+
+.cta-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
+}
+
+/* Navbar Styles */
+.navbar {
+  width: 100%;
+  background-color: #00468B;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.navbar a {
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+.navbar a:hover {
+  background-color: #003366;
+  border-radius: 5px;
+}
+
+.burger-menu {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+/* Code Editor styles */
+.editor-output {
+  display: flex;
+  flex-direction: row; /* Use row layout by default */
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap; /* Allow wrapping for responsiveness */
+}
+
+.editor-container {
+  flex: 1; /* Allow this to take available space */
+  min-width: 300px; /* Minimum width for smaller screens */
+  height: 300px; /* Adjust height if needed */
+  margin-right: 1rem; /* Spacing between elements */
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Run Code Button styles */
+.run-code-btn {
+  background-color: #4CAF50;
+  margin-top: 30px;
+  padding: 10px 20px; /* Adjusted padding */
+  font-size: 1rem; /* Adjusted font size */
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.run-code-btn:hover {
+  background-color: #45a049;
+}
+
+.output-container {
+  background-color: #f4f4f4;
+  flex: 1; /* Allow this to take available space */
+  min-width: 300px; /* Minimum width for smaller screens */
+  height: 300px; /* Keep height consistent */
+  overflow-y: auto;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  padding-left: 10px;
+}
+
+.output-container h3 {
+  margin: 10px;
+  text-align: left;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .editor-output {
+    flex-direction: column;
   }
-  
-  .editor-container {
-    width: 48%;
-    height: 100%;
-    border-radius: 15px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .run-code-btn {
-    background-color: #4CAF50;
-    margin-top: 30px;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .run-code-btn:hover {
-    background-color: #45a049;
-  }
-  
+
+  .editor-container,
   .output-container {
-    background-color: #f4f4f4;
-    height: 100%; /* Adjust as necessary */
-    width: 48%;
-    overflow-y: auto;
-    border-radius: 15px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    padding-left: 10px;
+    width: 100%;
+    margin-bottom: 1rem;
   }
-  
-  .output-container h3 {
-    margin: 10px;
-    text-align: left;
+
+  .intro h1 {
+    font-size: 2rem;
   }
-  
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
+
+  .intro-paragraph,
+  .code-paragraph {
+    font-size: 1.2rem;
   }
-  
+
+  .cta-button,
+  .run-code-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    align-self: center; 
+  }
+}
+
+@media (max-width: 768px) {
+  .intro h1 {
+    font-size: 1.8rem;
+  }
+
+  .intro-paragraph,
+  .code-paragraph {
+    font-size: 1rem;
+  }
+
+  .cta-button {
+    font-size: 0.8rem;
+    padding: 7px 12px; /* Smaller button for mobile */
+  }
+  .editor-output {
+    flex-direction: column; /* Stack vertically on smaller screens */
+  }
+
+  .editor-container,
+  .output-container {
+    width: 100%; /* Full width on smaller screens */
+    margin-right: 0; /* Remove right margin */
+    margin-bottom: 1rem; /* Spacing between stacked elements */
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the left */
+    padding: 15px; /* Additional padding for better spacing */
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the left */
+    gap: 1rem;
+    display: none; /* Hidden initially on mobile */
+    width: 100%; /* Full width for mobile */
+  }
+
+  .burger-menu {
+    display: block; /* Show burger menu on mobile */
+  }
+
+  .burger-menu.active + .nav-links {
+    display: flex; /* Show nav links when burger menu is active */
+  }
+
+  .navbar a {
+    padding: 10px 0; /* Adjust padding for mobile */
+    width: 100%; /* Make links full width */
+    text-align: center; /* Center text in mobile links */
+  }
+}
+
+@media (max-width: 480px) {
+  .intro h1 {
+    font-size: 1.5rem;
+  }
+
+  .intro-paragraph,
+  .code-paragraph {
+    font-size: 0.9rem;
+  }
+
+  .cta-button,
+  .run-code-btn {
+    font-size: 0.75rem;
+    padding: 6px 10px; /* Smaller button for smaller screens */
+  }
+
+  .page-landing {
+    padding: 20px;
+  }
+}
