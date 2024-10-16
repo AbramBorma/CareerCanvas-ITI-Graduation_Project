@@ -36,8 +36,8 @@ urlpatterns = [
   
 
     # Password reset paths
-    path('send-reset-password/', views.send_password_reset_email, name='send-reset-password'),
-    path('reset-password-confirm/<uidb64>/<token>/', views.reset_password_confirm, name='reset-password-confirm'),
+    # path('send-reset-password/', views.send_password_reset_email, name='send-reset-password'),
+    # path('reset-password-confirm/<uidb64>/<token>/', views.reset_password_confirm, name='reset-password-confirm'),
 
     # Admin, supervisor, student views
     path('admin/', views.admin_view, name='admin_view'),  # Admin route
