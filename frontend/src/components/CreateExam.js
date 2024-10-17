@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { getQuestions, addSupervisorQuestions, getSupervisorExams, getExamQuestions, deleteExam } from '../services/api';
+import { getQuestions, addSupervisorQuestions, getSupervisorExams, getExamQuestions, deleteExam,deleteQuestion } from '../services/api';
 import AuthContext from '../context/AuthContext';
 import SupervisorAddExam from './SupervisorAddExam'
 import '../static/styles/CreateExam.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const CreateExam = () => {
@@ -84,7 +86,10 @@ const CreateExam = () => {
     const fetchQuestions = async () => {
         // console.log(JSON.parse(selectedSubject).id)
         if (!selectedSubject || !difficulty) {
-            alert('Please select both a subject and difficulty level.');
+            // alert('Please select both a subject and difficulty level.');
+            // toast.error('Passwords do not match');
+            toast.error('Please select both a subject and difficulty level.');
+
             return;
         }
 
@@ -104,10 +109,10 @@ const CreateExam = () => {
 
     const addQuestions = async () => {
         if (selectedQuestions.length === 0) {
-            alert('Please select some questions first.');
+            // alert('Please select some questions first.');
+            toast.error('Please select some questions first');
             return;
         }
-
         try {
             const response = await addSupervisorQuestions(JSON.parse(realSelectedSubject).id, { questions: selectedQuestions });
             console.log(response);
@@ -144,7 +149,8 @@ const CreateExam = () => {
 
     const deleteTheExam = async () => {
         if (!selectedSubject) {
-            alert('Please select an Exam first.');
+            // alert('Please select an Exam first.');
+            toast.error('Please select an Exam first.');
             return;
         }
         const response = await deleteExam(JSON.parse(selectedSubject).id);
@@ -153,7 +159,16 @@ const CreateExam = () => {
         setSelectedSubjectchanged(state => !state)
     }
 
-
+    const deletequestion  = async (qId) => {
+        try{
+        const response = await deleteQuestion(qId);
+        toast.success("removed")
+        setCurrentPageQuestions(1);
+        fetchAllQuestions(1,searchTerm)
+        }catch (error) {
+            console.error('Error Deleting questions:', error);
+        }
+    }
 
 
 
@@ -246,6 +261,7 @@ const CreateExam = () => {
                                     onChange={() => handleQuestionSelect(question)}
                                 />
                                 {question.question_text}
+                                {(! question.is_general)&&(<button onClick={()=>deletequestion(question.id)} className="delete-btn1">Delete</button>)}
                             </label>
                         </li>
                     ))}
@@ -281,6 +297,7 @@ const CreateExam = () => {
             <button onClick={addQuestions} className="fetch-btn">
                 Add Questions
             </button>
+            <ToastContainer />
 
         </div>
     );

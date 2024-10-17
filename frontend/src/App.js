@@ -24,6 +24,7 @@ import CreateExam from './components/CreateExam';
 import StudentApprovalMessage from './components/StudentApprovalMessage';
 import SupervisorApprovalMessage from './components/SupervisorApprovalMessage';
 import AdminApprovalMessage from './components/AdminApprovalMessage';
+import CustomQuestion from './components/CustomQuestion';
 import ActivateEmail from './components/ActivateEmail';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -74,7 +75,7 @@ function App() {
             <Route path="/register" element={<Registerpage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/activate-email" element={<ActivateEmail />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
 
             <Route
@@ -147,6 +148,21 @@ function App() {
                 )
               }
             />
+            <Route
+              path="/CustomQuestion"
+              element={
+                user && user.role === 'supervisor' ? (
+                  user.is_authorized ? (
+                    <CustomQuestion />
+                  ) : (
+                    <SupervisorApprovalMessage />
+                  )
+                ) : (
+                  <LoginPage />
+                )
+              }
+            />
+
             <Route path="/github-stats" element={<GitHubStats />} />
             <Route path="*" element={<h1>404 - Page Not Found</h1>} />
           </Routes>

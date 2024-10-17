@@ -13,6 +13,10 @@ import {
 import AuthContext from '../context/AuthContext'; 
 import Dialog from './Dialog'; 
 import PaginationRounded from './PaginationComponent'; // Import the pagination component
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
+import { ToastContainer, toast } from 'react-toastify';
+
+
 
 const SupervisorDashboard = () => {
   const { user } = useContext(AuthContext); 
@@ -95,38 +99,76 @@ const SupervisorDashboard = () => {
 
   const confirmAction = async () => {
     if (currentAction.type === 'approve') {
-      await handleApprove(currentAction.id);
+        // Optimistically update the student's approval status
+        setStudents(prevStudents => 
+            prevStudents.map(student =>
+                student.id === currentAction.id ? { ...student, is_authorized: true } : student
+            )
+        );
+
+        // Show success notification immediately
+        toast.success('Student approved successfully!'); // Notify admin of success
+
+        // Make the API call without waiting for its completion
+        handleApprove(currentAction.id).catch(error => {
+            console.error('Error approving student:', error);
+            // Optionally, handle error by reverting the state if needed
+            setStudents(prevStudents =>
+                prevStudents.map(student =>
+                    student.id === currentAction.id ? { ...student, is_authorized: false } : student
+                )
+            );
+        });
     } else if (currentAction.type === 'delete') {
-      await handleDelete(currentAction.id);
+        // Optimistically remove student from the state
+        setStudents(prevStudents => prevStudents.filter(student => student.id !== currentAction.id));
+
+        // Show success notification immediately
+        toast.success('Student deleted successfully!'); // Notify admin of success
+
+        // Make the API call without waiting for its completion
+        handleDelete(currentAction.id).catch(error => {
+            console.error('Error deleting student:', error);
+            // Optionally, handle error by adding the student back if needed
+            setStudents(prevStudents => [...prevStudents, { id: currentAction.id }]);
+        });
     } else if (currentAction.type === 'remove_exam') {
-      await handleRemoveExam(); 
+        // Handle remove exam action without loading
+        await handleRemoveExam(); 
+
+        // Show success notification immediately
+        toast.success('Exam removed successfully!'); // Notify admin of success
     }
+
+    // Close the dialog immediately
     setDialogOpen(false); 
     setCurrentAction(null); 
-  };
+};
+
 
   const handleApprove = async (id) => {
     try {
-      await approveStudentFromAPI(id); 
-      setStudents(students.map(student =>
-        student.id === id ? { ...student, is_authorized: true } : student
-      ));
+        await approveStudentFromAPI(id); 
+        // No need to update the state here since it's done in confirmAction
     } catch (error) {
-      console.error('Error approving student:', error);
+        console.error('Error approving student:', error);
+        throw error; // Throw error to handle it in confirmAction
     }
   };
 
   const handleDelete = async (id) => {
     setLoading(true);
     try {
-      await deleteStudentFromApi(id); 
-      setStudents(students.filter(student => student.id !== id));
+        await deleteStudentFromApi(id);
+        setStudents(students.filter(student => student.id !== id));
     } catch (error) {
-      console.error('Error deleting student:', error);
+        console.error('Error deleting student:', error);
+        toast.error('Failed to delete student.'); // Show error toast
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
 
   const handleVisit = async (studentId) => {
     try {
@@ -151,7 +193,7 @@ const SupervisorDashboard = () => {
       
       // Update the students state to reflect the assigned exam
       setStudents(students.map(student => 
-        student.is_active ? { ...student, exams: [JSON.parse(selectedSubject).name] } : student
+        student.is_authorized ? { ...student, exams: [JSON.parse(selectedSubject).name] } : student
       ));
       
     } catch (error) {
@@ -171,7 +213,7 @@ const SupervisorDashboard = () => {
       
       // Update the students state to reflect the removed exam
       setStudents(students.map(student => 
-        student.is_active ? { ...student, exams: [] } : student
+        student.is_authorized ? { ...student, exams: [] } : student
       ));
       
       setSuccessDialogOpen(true);
@@ -211,7 +253,9 @@ const SupervisorDashboard = () => {
             >
               <option value="">Select Exam</option>
               {subjects.map((subject, index) => (
-                <option key={index} value={JSON.stringify(subject)}>{subject.name}</option>
+                <option key={index} value={JSON.stringify(subject)}>
+                  {subject.name}
+                </option>
               ))}
             </select>
           </div>
@@ -246,64 +290,57 @@ const SupervisorDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan="8">Loading students...</td>
-                </tr>
-              ) : error ? (
-                <tr>
-                  <td colSpan="8">{error}</td>
-                </tr>
-              ) : (
-                filteredStudents.map((student, index) => (
-                  <tr key={index}>
-                    <td>{student.id}</td>
-                    <td>{student.full_name}</td>
-                    <td>{student.branch}</td>
-                    <td>{student.track}</td>
-                    <td>{student.exams && student.exams.length > 0 ? student.exams[0] : 'No Exams'}</td>
-                    <td>{student.is_authorized ? 'Approved' : 'Unapproved'}</td>
-                    <td>
-                      {!student.is_authorized ? (
-                        <>
-                          <button
-                            className="approve-btn"
-                            onClick={() => handleAction('approve', student.id)} 
-                          >
-                            Approve
-                          </button>
-                          <button
-                            className="delete-btn"
-                            onClick={() => handleAction('delete', student.id)} 
-                          >
-                            Delete Student
-                          </button>
-                        </>
-                      ) : (
-                        <button
-                          className="delete-btn"
-                          onClick={() => handleAction('delete', student.id)} 
-                        >
+            {loading ? (
+              <tr>
+                <td colSpan="8">Loading students...</td>
+              </tr>
+            ) : error ? (
+              <tr>
+                <td colSpan="8">{error}</td>
+              </tr>
+            ) : (
+              filteredStudents.map((student, index) => (
+                <tr key={index}>
+                  <td data-label="ID: ">{student.id}</td>
+                  <td data-label="Student Name: ">{student.full_name}</td>
+                  <td data-label="Branch: ">{student.branch}</td>
+                  <td data-label="Track: ">{student.track}</td>
+                  <td data-label="Assigned Exam: ">
+                    {student.exams && student.exams.length > 0 ? student.exams[0] : 'No Exams'}
+                  </td>
+                  <td data-label="Status: ">{student.is_authorized ? 'Approved' : 'Unapproved'}</td>
+                  <td data-label="Actions: ">
+                    {!student.is_authorized ? (
+                      <>
+                        <button className="approve-btn" onClick={() => handleAction('approve', student.id)}>
+                          Approve
+                        </button>
+                        <button className="delete-btn" onClick={() => handleAction('delete', student.id)}>
                           Delete Student
                         </button>
-                      )}
-                    </td>
-                    <td>
-                      <button
-                        className="view-portfolio-btn"
-                        onClick={() => handleVisit(student.id)}
-                      >
-                        View
+                      </>
+                    ) : (
+                      <button className="delete-btn" onClick={() => handleAction('delete', student.id)}>
+                        Delete Student
                       </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
+                    )}
+                  </td>
+                  <td data-label="Portfolio">
+                    <button className="view-portfolio-btn" onClick={() => handleVisit(student.id)}>
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+
           </table>
         </div>
       </div>
-            {/* Add Pagination */}
+      
+
+      {/* Add Pagination */}
       <PaginationRounded
         className="pagination"
         totalItems={totalItems}
@@ -337,13 +374,24 @@ const SupervisorDashboard = () => {
       />
 
       {/* Success Dialog */}
-       <Dialog
+      <Dialog
         isOpen={successDialogOpen}  
         title="Success"
         message="Exam removed successfully."
         onClose={() => setSuccessDialogOpen(false)}
         onConfirm={() => setSuccessDialogOpen(false)} 
       />
+
+      <ToastContainer 
+                position="top-right" 
+                autoClose={3000} 
+                hideProgressBar={false} 
+                newestOnTop={false} 
+                closeOnClick 
+                draggable 
+                pauseOnHover 
+      />
+
     </div>
   );
 };

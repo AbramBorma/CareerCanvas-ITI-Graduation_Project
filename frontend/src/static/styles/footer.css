@@ -147,23 +147,64 @@
     transition: background-color 0.3s ease-in-out;
 }
 
-
-/* Responsive Design */
+/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     .footer-container {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center align items */
+        padding: 15px; /* Adjust padding for smaller screens */
     }
 
     .footer-section {
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 10px; /* Slightly reduced space between sections */
+        margin-bottom: 20px; /* Add space between sections */
+        text-align: center; /* Center text in each section */
+    }
+
+    .footer-section.logo h4,
+    .footer-section.internal-links h4,
+    .external-links h4,
+    .subscribe h4 {
+        font-size: 1.1rem; /* Slightly smaller font size */
+    }
+
+    .footer-section ul li a {
+        font-size: 0.85rem; /* Adjust link font size */
     }
 
     .external-links ul {
-        justify-content: center;
-        flex-direction: row; /* Ensure icons stay in a row */
+        flex-direction: row; /* Keep icons in a row */
+        flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    }
+
+    .external-links ul li a {
+        width: 30px; /* Reduce icon size */
+        height: 30px; /* Adjust height */
+        font-size: 1rem; /* Smaller font size for icons */
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-container {
+        padding: 10px; /* Further reduce padding */
+    }
+
+    .footer-section {
+        width: 100%; /* Ensure sections take full width */
+    }
+
+    .footer-section.logo h4,
+    .footer-section.internal-links h4,
+    .external-links h4,
+    .subscribe h4 {
+        font-size: 1rem; /* Further decrease font size */
+    }
+
+    .footer-section ul li {
+        margin-bottom: 2px; /* Reduce space between list items */
+    }
+
+    .subscribe form input,
+    .cta-button {
+        font-size: 0.8rem; /* Adjust button and input font size */
     }
 }

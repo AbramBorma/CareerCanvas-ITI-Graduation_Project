@@ -119,3 +119,39 @@
         font-size: 1em;
     }
 }
+
+
+
+@media (max-width: 768px) {
+    .exams-title {
+        font-size: 2.2em; /* Reduce title size on tablet screens */
+    }
+
+    .select-container {
+        max-width: 100%; /* Full width for the select container */
+    }
+
+    .exam-select,
+    .start-exam-button {
+        font-size: 1em; /* Reduce font size for better fit */
+        padding: 12px; /* Adjust padding for smaller screens */
+    }
+
+    .exam-instructions {
+        font-size: 1.1em; /* Adjust instructions font size */
+    }
+}
+
+@media (max-width: 480px) {
+    .exams-title {
+        font-size: 1.8em; /* Further reduce title size for mobile screens */
+    }
+
+    .start-exam-button {
+        padding: 10px; /* Reduce button padding */
+    }
+
+    .exam-instructions {
+        font-size: 1em; /* Smaller font size for instructions */
+    }
+}

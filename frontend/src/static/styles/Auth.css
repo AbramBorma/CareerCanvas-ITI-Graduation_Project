@@ -270,6 +270,8 @@ body {
     font-size: 18px;
 }
 
+
+
 .password-icon:hover {
     color: #002346;
 }
@@ -540,6 +542,65 @@ body {
         width: 100%;
     }
     .form-detail {
+        padding: 20px;
+    }
+}
+
+/* Adjustments for tablets and small devices (max-width: 768px) */
+@media screen and (max-width: 768px) {
+    .form-v7-content {
+        width: 100%;
+        margin: 120px 10px;
+    }
+    .form-v7-content .form-left {
+        padding: 20px;
+        font-size: 16px;
+        text-align: center;
+        background-position: top;
+    }
+    .form-v7-content .form-detail {
+        padding: 30px 15px;
+    }
+    .form-v7-content .form-detail h2 {
+        font-size: 22px;
+    }
+    .form-v7-content .form-detail .form-row input {
+        font-size: 14px;
+        padding: 10px;
+    }
+    .forgot-password-box,
+    .reset-password-box {
+        width: 90%;
+    }
+}
+
+/* Adjustments for mobile devices (max-width: 480px) */
+@media screen and (max-width: 480px) {
+    .form-v7-content {
+        flex-direction: column;
+        width: 100%;
+        margin: 100px 0;
+    }
+    .form-v7-content .form-left {
+        width: 100%;
+        padding: 15px;
+        background-size: cover;
+    }
+    .form-v7-content .form-detail {
+        padding: 20px 10px;
+        width: 100%;
+    }
+    .form-v7-content .form-detail h2 {
+        font-size: 20px;
+        margin-bottom: 40px;
+    }
+    .form-v7-content .form-detail .form-row input {
+        font-size: 13px;
+        padding: 8px;
+    }
+    .forgot-password-box,
+    .reset-password-box {
+        width: 100%;
         padding: 20px;
     }
 }

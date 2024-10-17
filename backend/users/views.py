@@ -42,7 +42,6 @@ from users.permissions import IsAdmin, IsSupervisor, IsStudent
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
     
-    
     @swagger_auto_schema(operation_summary="Generate JWT Token", tags=['Auth'])
     def post(self, request, *args, **kwargs):
         user = User.objects.get(email=request.data['email'])
@@ -281,7 +280,11 @@ def testEndPoint(request):
 
 
 # Password Reset View
+from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+
 class PasswordResetView(APIView):
+    permission_classes = [AllowAny] 
 
     def post(self, request, *args, **kwargs):
         serializer = PasswordResetSerializer(data=request.data)
@@ -302,9 +305,10 @@ class PasswordResetView(APIView):
             return Response({'message': 'Password reset email sent.'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 # Password Reset Confirmation View
 class PasswordResetConfirmView(APIView):
+    permission_classes = [AllowAny]  
+
     def post(self, request, uidb64, token, *args, **kwargs):
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
@@ -320,50 +324,50 @@ class PasswordResetConfirmView(APIView):
         return Response({'error': 'Invalid link or expired.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Send Password Reset Email
-@swagger_auto_schema(method='post', operation_summary="Send Password Reset Email", tags=['Auth'])
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def send_password_reset_email(request):
-    email = request.data.get('email')
-    try:
-        user = User.objects.get(email=email)
-        token = default_token_generator.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
+# # Send Password Reset Email
+# @swagger_auto_schema(method='post', operation_summary="Send Password Reset Email", tags=['Auth'])
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def send_password_reset_email(request):
+#     email = request.data.get('email')
+#     try:
+#         user = User.objects.get(email=email)
+#         token = default_token_generator.make_token(user)
+#         uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-        reset_url = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}"
+#         reset_url = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}"
 
-        send_mail(
-            'Reset Your Password',
-            f'Click the link to reset your password: {reset_url}',
-            settings.DEFAULT_FROM_EMAIL,
-            [email],
-            fail_silently=False,
-        )
-        return Response({'message': 'Password reset email sent.'}, status=status.HTTP_200_OK)
-    except User.DoesNotExist:
-        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+#         send_mail(
+#             'Reset Your Password',
+#             f'Click the link to reset your password: {reset_url}',
+#             settings.DEFAULT_FROM_EMAIL,
+#             [email],
+#             fail_silently=False,
+#         )
+#         return Response({'message': 'Password reset email sent.'}, status=status.HTTP_200_OK)
+#     except User.DoesNotExist:
+#         return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 
-# Confirm Password Reset 
-@swagger_auto_schema(method='post', operation_summary="Confirm Password Reset", tags=['Auth'])
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def reset_password_confirm(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
+# # Confirm Password Reset 
+# @swagger_auto_schema(method='post', operation_summary="Confirm Password Reset", tags=['Auth'])
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def reset_password_confirm(request, uidb64, token):
+#     try:
+#         uid = urlsafe_base64_decode(uidb64).decode()
+#         user = User.objects.get(pk=uid)
 
-        if default_token_generator.check_token(user, token):
-            new_password = request.data.get('new_password')
-            user.set_password(new_password)
-            user.save()
-            return Response({'message': 'Password reset successful'}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+#         if default_token_generator.check_token(user, token):
+#             new_password = request.data.get('new_password')
+#             user.set_password(new_password)
+#             user.save()
+#             return Response({'message': 'Password reset successful'}, status=status.HTTP_200_OK)
+#         else:
+#             return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
-    except User.DoesNotExist:
-        return Response({'error': 'Invalid user'}, status=status.HTTP_404_NOT_FOUND)
+#     except User.DoesNotExist:
+#         return Response({'error': 'Invalid user'}, status=status.HTTP_404_NOT_FOUND)
 
 
 # List All Roles (Admin, Supervisor, Student)

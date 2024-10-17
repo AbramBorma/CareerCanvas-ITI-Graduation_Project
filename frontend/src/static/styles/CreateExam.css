@@ -173,7 +173,23 @@
     height: 40px;
 }
 
+.delete-btn1 {
+    background-color: #e63946; 
+    color: white;
+    border: none;
+    border-radius: 50px; 
+    padding: 8px 16px; 
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; 
+    font-size: small;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    margin-left: 40px;
+}
 
+.delete-btn1:hover {
+    background-color: #d62839; 
+    transform: scale(1.05); 
+}
 /* Keyframes for Spinner Animation */
 @keyframes spin {
     0% { transform: rotate(0deg); }
@@ -236,4 +252,63 @@
   }
   
 
-  
+  /* General Styling for smaller tablets and below */
+@media screen and (max-width: 768px) {
+    .exam-question-fetcher {
+        padding: 10px;
+        max-width: 100%; /* Full width on smaller screens */
+    }
+
+    .fetch-btn, .dropdown, .search-input {
+        font-size: 0.85rem;
+        padding: 8px;
+    }
+
+    .question-item input[type="checkbox"] {
+        margin-bottom: 10px;
+    }
+    
+    .subject-div {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .subject-div label, 
+    .subject-div select, 
+    .subject-div button {
+        width: 100%;
+    }
+}
+
+/* For mobile screens, further reduce sizes and padding */
+@media screen and (max-width: 480px) {
+    .exam-question-fetcher {
+        padding: 5px;
+    }
+
+    .fetch-btn, .dropdown, .search-input {
+        font-size: 0.75rem;
+        padding: 6px;
+    }
+
+    .subject-div {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .subject-div label, 
+    .subject-div select, 
+    .subject-div button {
+        width: 100%;
+        font-size: 0.75rem;
+    }
+
+    .question-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pagination .page-link {
+        padding: 6px 8px;
+    }
+}

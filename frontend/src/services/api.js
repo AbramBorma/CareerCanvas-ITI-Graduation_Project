@@ -478,3 +478,33 @@ export const addExam = async(data) => {
         throw error;
     }
 };
+
+export const addCustomQuestion = async(data) => {
+    const token = getAuthToken(); // Retrieve the token
+    try {
+        const response = await axios.post(`${API_URL}/exams/create-question/`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the header
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error setting exam for supervisor.", error);
+        throw error;
+    }
+};
+
+export const deleteQuestion = async(question_id) => {
+    const token = getAuthToken(); // Retrieve the token
+    try {
+        const response = await axios.delete(`${API_URL}/exams/delete-question/${question_id}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the header
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting supervisor", error);
+        throw error;
+    }
+};

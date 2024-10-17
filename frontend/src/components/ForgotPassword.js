@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import '../static/styles/Auth.css'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -9,7 +11,7 @@ const ForgotPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:8000/users/send-reset-password/', { email });
+            const response = await axios.post('http://127.0.0.1:8000/users/password-reset/', { email });
             setMessage(response.data.message);
         } catch (error) {
             setMessage('Error sending reset email.');

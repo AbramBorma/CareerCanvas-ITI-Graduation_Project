@@ -79,3 +79,46 @@ select:hover {
         /* Adjust width for smaller screens */
     }
 }
+
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .edit-profile {
+        width: 90%; /* Adjust width for tablets and smaller screens */
+        padding: 40px 15px; /* Reduce padding for smaller screens */
+    }
+
+    h3 {
+        font-size: 1.3rem; /* Adjust heading size for better fit */
+    }
+
+    .input {
+        width: 100%; /* Ensure inputs take full width */
+        padding: 8px; /* Reduce padding */
+    }
+
+    .actions {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px;
+        width: 100%; /* Ensure buttons take full width */
+    }
+
+    .save-btn, .cancel-btn {
+        width: 100%; /* Full width for buttons */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .edit-profile {
+        width: 95%; /* Further adjust width for smaller mobile screens */
+        padding: 30px 10px; /* Further reduce padding */
+    }
+
+    h3 {
+        font-size: 1.2rem; /* Reduce heading size for mobile */
+    }
+
+    .actions {
+        gap: 8px; /* Adjust gap between buttons */
+    }
+}

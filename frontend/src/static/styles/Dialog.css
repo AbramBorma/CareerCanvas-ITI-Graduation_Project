@@ -91,3 +91,36 @@
     transform: scale(1);
   }
 }
+
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .dialog {
+    width: 90%; /* Make the dialog take up more width on smaller screens */
+    max-width: 90%;
+    padding: 15px; /* Reduce padding for smaller screens */
+  }
+
+  .dialog-buttons {
+    flex-direction: column; /* Stack buttons vertically on smaller screens */
+    align-items: stretch; /* Make buttons take full width */
+  }
+
+  .cancel-button,
+  .confirm-button {
+    margin: 10px 0 0 0; /* Adjust margin for vertical layout */
+    width: 100%; /* Make buttons full width */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .dialog {
+    width: 95%; /* Further increase width for very small screens */
+    padding: 10px; /* Reduce padding more for small screens */
+  }
+
+  .dialog-buttons {
+    margin-top: 10px; /* Adjust margin for buttons on very small screens */
+  }
+}
+

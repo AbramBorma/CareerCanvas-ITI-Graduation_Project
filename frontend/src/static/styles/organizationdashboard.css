@@ -62,12 +62,20 @@ body {
   text-transform: uppercase;
 }
 
+.admin-table {
+  width: 100%;
+  margin: 20px 0;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden; /* Ensures no overflow from the table */
+}
+
 .admin-table table {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
 }
 
+/* Cell Padding */
 .admin-table th,
 .admin-table td {
   padding: 14px;
@@ -76,6 +84,7 @@ body {
   font-size: 14px;
 }
 
+/* Header Styles */
 .admin-table th {
   background-color: #f0f0f0;
   font-weight: bold;
@@ -84,6 +93,118 @@ body {
 .admin-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+
+/* Responsive Table Cells */
+.admin-table th,
+.admin-table td {
+  min-width: 80px; /* Minimum width for table cells */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .admin-table h2 {
+      font-size: 24px; /* Smaller heading size */
+      margin-bottom: 15px; /* Reduced margin */
+      font-weight: bold; /* Make heading bold */
+  }
+
+  .admin-table table,
+  .admin-table table thead,
+  .admin-table table tbody,
+  .admin-table table th,
+  .admin-table table td,
+  .admin-table table tr {
+      display: block; /* Makes the table elements block for stacking */
+  }
+
+  /* Hides the table headers */
+  .admin-table table thead {
+      display: none; 
+  }
+
+  /* Displays each row as a block */
+  .admin-table table tr {
+      margin-bottom: 10px; /* Adds margin between rows */
+      border-bottom: 1px solid #ddd; /* Adds a border */
+  }
+
+  /* Adds structure by stacking content vertically */
+  .admin-table table td {
+      display: block; /* Each cell as a block */
+      padding: 10px; /* Padding for each cell */
+      text-align: right; /* Align text to the right */
+      font-size: 16px; /* Font size for better readability */
+      position: relative; /* For positioning pseudo-elements */
+      padding-left: 50%; /* Adds space for label */
+      border-bottom: none; /* Removes bottom border for last cell */
+      font-weight: bold; /* Make table cell text bold */
+  }
+
+  /* Adds the labels to the data cells */
+  .admin-table table td::before {
+      content: attr(data-label); /* Uses data-label for labels */
+      position: absolute; /* Positions label */
+      left: 10px; /* Space from left */
+      width: calc(50% - 20px); /* Width of label */
+      text-align: left; /* Align text to the left */
+      font-weight: bold; /* Makes label bold */
+      font-size: 16px; /* Font size for labels */
+  }
+
+  /* Adds padding for visual clarity */
+  .admin-table table td:last-child {
+      padding-bottom: 10px; /* Padding for last cell */
+  }
+
+  /* Enhancing button size for mobile */
+  .admin-table .actions button {
+      font-size: 16px; /* Font size for buttons */
+      padding: 12px; /* Increased padding for buttons */
+      margin-top: 10px; /* Adds space between buttons and content */
+      width: 100%; /* Makes buttons full width */
+      box-sizing: border-box; /* Ensures padding is included in width */
+      font-weight: bold; /* Make button text bold */
+  }
+}
+
+
+
+@media (max-width: 480px) {
+  .admin-table h2 {
+      font-size: 20px; /* Further reduced heading size */
+  }
+
+  .admin-table th {
+      display: none; /* Hide headers for mobile view */
+  }
+
+  .admin-table td::before {
+      content: attr(data-label); /* Display the heading as a label */
+      font-weight: bold; /* Bold labels */
+      color: #666; /* Lighter color for labels */
+      display: block; /* Make label a block element */
+      margin-bottom: 5px; /* Space between label and value */
+      font-size: 16px; /* Larger font size for labels */
+  }
+
+  .admin-table td {
+      display: block; /* Make table cells block for better stacking */
+      width: 100%; /* Full width for table cells */
+      box-sizing: border-box; /* Include padding and borders in width */
+      position: relative; /* Position relative for better layout */
+      padding: 10px; /* Add padding for touch targets */
+      text-align: left; /* Align text to the left */
+      border: none; /* Remove border in mobile view for cleaner look */
+      border-bottom: 1px solid #ddd; /* Add a bottom border for separation */
+      font-size: 16px; /* Larger font size for content */
+  }
+
+  .admin-table tr {
+      margin-bottom: 10px; /* Add margin between rows */
+      display: block; /* Make rows block for easier vertical scrolling */
+  }
+}
+
 
 /* Buttons */
 button {
@@ -153,26 +274,4 @@ button:hover {
 .admin-table td {
   vertical-align: middle;
   line-height: 1.5;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .input-field {
-    width: 80%;
-  }
-
-  .welcome-message {
-    font-size: 36px; /*font size for mobile */
-  }
-
-  .admin-table th,
-  .admin-table td {
-    font-size: 12px;
-    padding: 10px;
-  }
-
-  button {
-    padding: 8px 16px;
-    font-size: 14px;
-  }
 }

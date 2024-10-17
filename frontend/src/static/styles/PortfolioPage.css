@@ -276,3 +276,33 @@ h3 {
     font-weight: 600;
     letter-spacing: 2px;
 }
+
+@media screen and (max-width: 768px) {
+    .leetcode-box {
+        width: 100%; /* Full width on mobile */
+        height: auto; /* Allow height to adapt */
+        padding: 15px; /* Reduce padding */
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items */
+    }
+
+    .leetcode-box .iframe-container {
+        width: 100%; /* Full width of the container */
+        height: auto; /* Maintain aspect ratio */
+        max-width: 100%; /* Prevent overflow */
+    }
+
+    .leetcode-box h2 {
+        font-size: 18px; /* Adjust font size for mobile */
+        margin: 15px 0; /* Add margin for spacing */
+        text-align: center; /* Center text */
+    }
+
+    /* If there are specific elements inside the iframe-container, you can adjust their styles as needed */
+    .leetcode-box .iframe-container iframe {
+        width: 100%; /* Ensure iframe uses full width */
+        height: 300px; /* Set a suitable height for mobile; adjust as needed */
+        border: none; /* Remove borders for better appearance */
+    }
+}
