@@ -31,6 +31,7 @@ const SupervisorDashboard = () => {
   const [currentAction, setCurrentAction] = useState(null); 
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const navigate = useNavigate(); 
+  const [examChanged,setExamChanged] = useState(false)
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,7 +62,7 @@ const SupervisorDashboard = () => {
     };
   
     fetchStudents();
-  }, [currentPage, searchQuery]); // Fetch students when currentPage changes
+  }, [currentPage, searchQuery,examChanged]); // Fetch students when currentPage changes
 
   // Handle pagination page change
   const handlePageChange = (page) => {
@@ -190,7 +191,7 @@ const SupervisorDashboard = () => {
       }
       const supervisorId = user.user_id;
       await setTrackStudentsExam(supervisorId, { examID: JSON.parse(selectedSubject).id });
-      
+      setExamChanged(state => !state)
       // Update the students state to reflect the assigned exam
       setStudents(students.map(student => 
         student.is_authorized ? { ...student, exams: [JSON.parse(selectedSubject).name] } : student
@@ -210,7 +211,8 @@ const SupervisorDashboard = () => {
     try {
       const supervisorId = user.user_id;
       await removeTrackStudentsExam(supervisorId, {  examID: JSON.parse(selectedSubject).id });
-      
+      setExamChanged(state => !state)
+
       // Update the students state to reflect the removed exam
       setStudents(students.map(student => 
         student.is_authorized ? { ...student, exams: [] } : student

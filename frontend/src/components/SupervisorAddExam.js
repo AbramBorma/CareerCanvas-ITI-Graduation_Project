@@ -1,9 +1,9 @@
-import { useEffect, useState,useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle";
 import AuthContext from '../context/AuthContext';
-import { examSubjects ,addExam} from '../services/api.js';
+import { examSubjects, addExam } from '../services/api.js';
 import Spinner from './Spinner.js';
 
 const SupervisorAddExam = ({ onClose }) => {
@@ -41,11 +41,11 @@ const SupervisorAddExam = ({ onClose }) => {
         let data = {
             ...inputs,
             user: user.user_id,
-            number_of_questions: (inputs.easy+","+inputs.intermediate+","+inputs.advanced)
+            number_of_questions: (inputs.easy + "," + inputs.intermediate + "," + inputs.advanced)
         };
         // console.log(data)
         try {
-        const response = await addExam(data);
+            const response = await addExam(data);
             onClose();
         } catch (error) {
             console.log(error);
@@ -54,8 +54,9 @@ const SupervisorAddExam = ({ onClose }) => {
     };
 
     return (
-        <div  style={{ width: '30%' }} className="position-fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-75 d-flex justify-content-center align-items-center z-index-1050">
-            <div
+<div className="position-fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-75 d-flex justify-content-center align-items-center z-index-1050">
+<div className="w-100 w-md-30">
+<div
                 onClick={(event) => event.stopPropagation()}
                 className="w-100 bg-white rounded p-3 position-relative"
             >
@@ -118,7 +119,7 @@ const SupervisorAddExam = ({ onClose }) => {
                                     className="form-control"
                                 />
                             </div> */}
-                        <div className="mb-3 text-center d-flex align-content-center">
+                        <div className="mb-3 text-center d-flex align-content-center flex-wrap">
                             <label className="mx-2 mt-2">No. Easy:</label>
                             <input
                                 type="number"
@@ -163,6 +164,7 @@ const SupervisorAddExam = ({ onClose }) => {
                     </form>
                 )}
                 {error && <div className="text-danger text-center">{error}</div>}
+            </div>
             </div>
         </div>
     );

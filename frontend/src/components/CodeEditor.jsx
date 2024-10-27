@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from "react";
 import { useParams,useLocation ,useNavigate} from 'react-router-dom';
 import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle"
 import Spinner from './Spinner.js';
 import { Editor } from "@monaco-editor/react";
 import { getExamQuestions,submitExam } from '../services/api';
-import './CodeEditor.css'
 // import { LANGUAGE_VERSIONS, CODE_SNIPPETS } from "./constants";
 
 const LANGUAGE_VERSIONS = {
@@ -263,40 +264,58 @@ const CodeEditor = () => {
 
 
   return (
-    <div className="component-bg">
-    <div className="component-header">
-      <button onClick={() => run(runcase, runexpect)} className="success-button">
-        {isLoading ? <div className="custom-spinner"></div> : <span>RUN</span>}
-      </button>
-      <button onClick={submit} className="outline-success-button">
-        {isLoadings ? <div className="custom-spinner"></div> : <span>Submit</span>}
-      </button>
-    </div>
-  
-    <div className="code-container">
-      <div className="editor-container">
-        <Editor
-          options={{
-            minimap: {
-              enabled: false,
-            },
-          }}
-          height="75vh"
-          theme="vs-dark"
-          language={language}
-          defaultValue={question}
-          onMount={onMount}
-          value={value}
-          onChange={(value) => setValue(value)}
-        />
+    <div className="bg-dark vh-100">
+      <div className="d-flex justify-content-center vh-10 pt-2">
+        {/* <h5 className="text-danger te">Time Left: {Math.floor(timeLeft / 60)}:{('0' + (timeLeft % 60)).slice(-2)}</h5> */}
+        <button onClick={()=>run(runcase,runexpect)} className="btn btn-success px-5 mx-2">
+          {isLoading ?
+            <div className="spinner-border" role="status"><span className="sr-only"></span></div>
+            : <span>RUN</span>}
+        </button>
+        <button onClick={submit} className="btn btn-outline-success px-5 mx-2">
+          {isLoadings ?
+            <div className="spinner-border" role="status"><span className="sr-only"></span></div>
+            : <span>Submit</span>}
+        </button>
       </div>
-      <div className="output-container">
-        {output
-          ? output.map((line, i) => <p key={i}>{line}</p>)
-          : 'Click "Run" to see the output here'}
-      </div>
+      {isLoading ?
+        (<Spinner />)
+        : (<div className="d-flex justify-content-between pt-3">
+          {/* <LanguageSelector language={language} onSelect={onSelect} /> */}
+          <div className=" w-50 vh-75" >
+            <Editor
+              options={{
+                minimap: {
+                  enabled: false,
+                },
+              }}
+              height="75vh"
+              theme="vs-dark"
+              language={language}
+              defaultValue={question}
+              onMount={onMount}
+              value={value}
+              onChange={(value) => setValue(value)}
+            />
+          </div>
+          <div className=" w-50 vh-75 p-2 border text-light bg-black">
+            {output
+              ? output.map((line, i) => <p className="text-light mb-1" key={i}>{line}</p>)
+              : 'Click "Run" to see the output here'}
+          </div>
+
+        </div>)}
+      {/* {runerror?
+          (<div className="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>): */}
+      {runstate? 
+      (<div className="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Well done!</strong> You passed the fist test case.
+        {/* <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> */}
+      </div>):<></>}
     </div>
-  </div>
   );
 };
 export default CodeEditor;
